@@ -477,6 +477,165 @@
           "/img/works/tomarovo-maly-kottedzh/03.webp",
           "/img/works/tomarovo-maly-kottedzh/04.webp"
         ]
+      },
+      {
+        "title": "Зимний сад, Колычево",
+        "place": "Колычево · Alutech",
+        "tags": [
+          "cottage",
+          "aluminum"
+        ],
+        "images": [
+          "/img/works/kolychevo-zimnij-sad/01.webp",
+          "/img/works/kolychevo-zimnij-sad/02.webp",
+          "/img/works/kolychevo-zimnij-sad/03.webp",
+          "/img/works/kolychevo-zimnij-sad/04.webp",
+          "/img/works/kolychevo-zimnij-sad/05.webp",
+          "/img/works/kolychevo-zimnij-sad/06.webp",
+          "/img/works/kolychevo-zimnij-sad/07.webp"
+        ]
+      },
+      {
+        "title": "Коттедж, Мещерское полесье",
+        "place": "Мещерское полесье · Schuco, Alutech",
+        "tags": [
+          "cottage",
+          "aluminum"
+        ],
+        "images": [
+          "/img/works/meshcherskoe-kottedzh/01.webp",
+          "/img/works/meshcherskoe-kottedzh/02.webp",
+          "/img/works/meshcherskoe-kottedzh/03.webp",
+          "/img/works/meshcherskoe-kottedzh/04.webp",
+          "/img/works/meshcherskoe-kottedzh/05.webp",
+          "/img/works/meshcherskoe-kottedzh/06.webp",
+          "/img/works/meshcherskoe-kottedzh/07.webp"
+        ]
+      },
+      {
+        "title": "Коттедж, Красногорск",
+        "place": "Красногорск · алюминий",
+        "tags": [
+          "cottage",
+          "aluminum"
+        ],
+        "images": [
+          "/img/works/krasnogorsk-kottedzh/01.webp",
+          "/img/works/krasnogorsk-kottedzh/02.webp",
+          "/img/works/krasnogorsk-kottedzh/03.webp",
+          "/img/works/krasnogorsk-kottedzh/04.webp",
+          "/img/works/krasnogorsk-kottedzh/05.webp",
+          "/img/works/krasnogorsk-kottedzh/06.webp",
+          "/img/works/krasnogorsk-kottedzh/07.webp",
+          "/img/works/krasnogorsk-kottedzh/08.webp"
+        ]
+      },
+      {
+        "title": "Коттедж, Колычево",
+        "place": "Колычево · Schuco, Alutech",
+        "tags": [
+          "cottage",
+          "aluminum"
+        ],
+        "images": [
+          "/img/works/kolychevo-kottedzh-fasad/01.webp",
+          "/img/works/kolychevo-kottedzh-fasad/02.webp",
+          "/img/works/kolychevo-kottedzh-fasad/03.webp",
+          "/img/works/kolychevo-kottedzh-fasad/04.webp",
+          "/img/works/kolychevo-kottedzh-fasad/05.webp",
+          "/img/works/kolychevo-kottedzh-fasad/06.webp"
+        ]
+      },
+      {
+        "title": "Панорамные окна в коттедже",
+        "place": "Колычево · Schuco",
+        "tags": [
+          "cottage",
+          "aluminum"
+        ],
+        "images": [
+          "/img/works/kolychevo-kottedzh-panoramnye/01.webp",
+          "/img/works/kolychevo-kottedzh-panoramnye/02.webp",
+          "/img/works/kolychevo-kottedzh-panoramnye/03.webp",
+          "/img/works/kolychevo-kottedzh-panoramnye/04.webp"
+        ]
+      },
+      {
+        "title": "Коттедж, фасады",
+        "place": "Полуостров · Schuco",
+        "tags": [
+          "cottage",
+          "aluminum"
+        ],
+        "images": [
+          "/img/works/poluostrov-kottedzh-fasady/01.webp",
+          "/img/works/poluostrov-kottedzh-fasady/02.webp",
+          "/img/works/poluostrov-kottedzh-fasady/03.webp",
+          "/img/works/poluostrov-kottedzh-fasady/04.webp",
+          "/img/works/poluostrov-kottedzh-fasady/05.webp"
+        ]
+      },
+      {
+        "title": "Панорамные окна и двери",
+        "place": "Полуостров · Schuco",
+        "tags": [
+          "cottage",
+          "aluminum"
+        ],
+        "images": [
+          "/img/works/poluostrov-kottedzh-okna/01.webp",
+          "/img/works/poluostrov-kottedzh-okna/02.webp",
+          "/img/works/poluostrov-kottedzh-okna/03.webp",
+          "/img/works/poluostrov-kottedzh-okna/04.webp",
+          "/img/works/poluostrov-kottedzh-okna/05.webp",
+          "/img/works/poluostrov-kottedzh-okna/06.webp",
+          "/img/works/poluostrov-kottedzh-okna/07.webp"
+        ]
+      },
+      {
+        "title": "Терраса и зенитные фонари",
+        "place": "Полуостров · Schuco",
+        "tags": [
+          "cottage",
+          "aluminum"
+        ],
+        "images": [
+          "/img/works/poluostrov-kottedzh-terrasa/01.webp",
+          "/img/works/poluostrov-kottedzh-terrasa/02.webp",
+          "/img/works/poluostrov-kottedzh-terrasa/03.webp",
+          "/img/works/poluostrov-kottedzh-terrasa/04.webp",
+          "/img/works/poluostrov-kottedzh-terrasa/05.webp"
+        ]
+      },
+      {
+        "title": "Навес, Alutech F50",
+        "place": "Полуостров",
+        "tags": [
+          "cottage",
+          "aluminum"
+        ],
+        "images": [
+          "/img/works/poluostrov-naves/01.webp",
+          "/img/works/poluostrov-naves/02.webp",
+          "/img/works/poluostrov-naves/03.webp",
+          "/img/works/poluostrov-naves/04.webp",
+          "/img/works/poluostrov-naves/05.webp"
+        ]
+      },
+      {
+        "title": "Навес, Мещерское полесье",
+        "place": "Alutech F50",
+        "tags": [
+          "cottage",
+          "aluminum"
+        ],
+        "images": [
+          "/img/works/meshcherskoe-naves/01.webp",
+          "/img/works/meshcherskoe-naves/02.webp",
+          "/img/works/meshcherskoe-naves/03.webp",
+          "/img/works/meshcherskoe-naves/04.webp",
+          "/img/works/meshcherskoe-naves/05.webp"
+        ]
       }
     ]
   },
