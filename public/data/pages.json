@@ -1,0 +1,579 @@
+{
+  "home": {
+    "hero": [
+      "Окна из алюминия и ПВХ",
+      "для вашего дома"
+    ],
+    "prod": {
+      "title": "Продукция",
+      "text": "Алюминий Alutech и Schuco, пластик VEKA для квартир, коттеджей и коммерческих объектов.",
+      "cards": [
+        {
+          "title": "Алюминиевые окна",
+          "brand": "Alutech",
+          "href": "/okna/alyuminievye/#alutech",
+          "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793206642/Gemini_Generated_Image_jvsic0jvsic0jvsi.jpg"
+        },
+        {
+          "title": "Алюминиевые окна",
+          "brand": "Schuco",
+          "href": "/okna/alyuminievye/#schuco",
+          "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793206445/Gemini_Generated_Image_8z5ra78z5ra78z5r.jpg"
+        },
+        {
+          "title": "Окна ПВХ",
+          "brand": "VEKA",
+          "href": "/okna/pvh/",
+          "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793207418/%D0%BE%D0%BA%D0%BD%D0%BE_Veka.jpg"
+        },
+        {
+          "title": "Фасады и витражи",
+          "brand": "",
+          "href": "/okna/alyuminievye/#fasady",
+          "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793026953/%D1%84%D0%B0%D1%81%D0%B0%D0%B4%D1%8B.jpg"
+        },
+        {
+          "title": "Балконы и лоджии",
+          "brand": "",
+          "href": "/okna/pvh/#balkony",
+          "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793026993/g-balkon.jpg"
+        }
+      ]
+    },
+    "services": {
+      "title": "Услуги",
+      "items": [
+        {
+          "title": "Проектирование светопрозрачных конструкций"
+        },
+        {
+          "title": "Проектирование фасадов"
+        },
+        {
+          "title": "Производство светопрозрачных конструкций"
+        },
+        {
+          "title": "Монтажные работы"
+        }
+      ]
+    },
+    "works": {
+      "title": "Наши работы",
+      "text": "Выполненные объекты: квартиры, коттеджи, балконы, фасады. Алюминиевые конструкции и окна ПВХ."
+    }
+  },
+  "alyuminievye": {
+    "h1": [
+      "Алюминиевые конструкции",
+      "Alutech и Schuco"
+    ],
+    "lead": "Окна, двери, фасады, раздвижные системы, зимние сады, зенитные фонари и навесы из профилей Alutech и Schuco.",
+    "typesByBrand": {
+      "Alutech": [
+        {
+          "id": "okna",
+          "title": "Алюминиевые окна",
+          "text": "Тёплые с терморазрывом для жилья и холодные для лоджий.",
+          "points": "Любой цвет RAL\nСтворки до 3 м",
+          "images": [
+            "https://res.cloudinary.com/s87zgrcl/image/upload/v1793206642/Gemini_Generated_Image_jvsic0jvsic0jvsi.jpg"
+          ]
+        },
+        {
+          "id": "dveri",
+          "title": "Алюминиевые двери",
+          "text": "Входные, балконные и межкомнатные двери.",
+          "points": "Стекло и панели\nУсиленная фурнитура",
+          "images": [
+            "https://res.cloudinary.com/s87zgrcl/image/upload/v1793206906/Gemini_Generated_Image_bhkmp3bhkmp3bhkm.jpg"
+          ]
+        },
+        {
+          "id": "fasady",
+          "title": "Алюминиевые фасады",
+          "text": "Стоечно-ригельные фасады и большие витражи.",
+          "points": "Проект и расчёт\nМонтаж на высоте",
+          "images": [
+            "https://res.cloudinary.com/s87zgrcl/image/upload/v1793030506/simplistic-apartment-building-city.jpg"
+          ]
+        },
+        {
+          "id": "razdvizhnye",
+          "title": "Раздвижные конструкции",
+          "text": "Порталы, подъёмно-сдвижные и параллельно-раздвижные.",
+          "points": "Выход на террасу\nТёплые и холодные",
+          "images": [
+            "https://res.cloudinary.com/s87zgrcl/image/upload/v1793029378/Sliding_Doors_and_Windows.jpg"
+          ]
+        },
+        {
+          "id": "garmoshka",
+          "title": "Складные двери (гармошка)",
+          "text": "Складные створки, полностью открывающие проём.",
+          "points": "Открытый проём\nДля террас и кафе",
+          "images": [
+            "https://res.cloudinary.com/s87zgrcl/image/upload/v1793208622/%D0%A1%D0%BA%D0%BB%D0%B0%D0%B4%D0%BD%D1%8B%D0%B5_%D0%B4%D0%B2%D0%B5%D1%80%D0%B8_%D0%B3%D0%B0%D1%80%D0%BC%D0%BE%D1%88%D0%BA%D0%B0_Alutech.jpg"
+          ]
+        },
+        {
+          "id": "zimnie-sady",
+          "title": "Зимние сады",
+          "text": "Остеклённые веранды и зимние сады круглый год.",
+          "points": "Тёплые системы\nКровля и стены",
+          "images": [
+            "https://res.cloudinary.com/s87zgrcl/image/upload/v1793029033/%D0%97%D0%B8%D0%BC%D0%BD%D0%B8%D0%B5_%D1%81%D0%B0%D0%B4%D1%8B.jpg"
+          ]
+        },
+        {
+          "id": "zenitnye-fonari",
+          "title": "Зенитные фонари",
+          "text": "Световые фонари и мансардное остекление.",
+          "points": "Много света\nОткрывающиеся секции",
+          "images": [
+            "https://res.cloudinary.com/s87zgrcl/image/upload/v1793029033/Skylights_roof_windows.jpg"
+          ]
+        },
+        {
+          "id": "kozyrki-navesy",
+          "title": "Стеклянные козырьки и навесы",
+          "text": "Козырьки над входом, навесы и перголы.",
+          "points": "Триплекс\nАлюминиевый каркас",
+          "images": [
+            "https://res.cloudinary.com/s87zgrcl/image/upload/v1793029033/%D0%BD%D0%B0%D0%B2%D0%B5%D1%81%D1%8B.jpg"
+          ]
+        }
+      ],
+      "Schuco": [
+        {
+          "id": "okna",
+          "title": "Алюминиевые окна",
+          "text": "Тёплые с терморазрывом для жилья и холодные для лоджий.",
+          "points": "Любой цвет RAL\nСтворки до 3 м",
+          "images": [
+            "https://res.cloudinary.com/s87zgrcl/image/upload/v1793206445/Gemini_Generated_Image_8z5ra78z5ra78z5r.jpg"
+          ]
+        },
+        {
+          "id": "dveri",
+          "title": "Алюминиевые двери",
+          "text": "Входные, балконные и межкомнатные двери.",
+          "points": "Стекло и панели\nУсиленная фурнитура",
+          "images": [
+            "https://res.cloudinary.com/s87zgrcl/image/upload/v1793206927/dveri-schuco.jpg"
+          ]
+        },
+        {
+          "id": "fasady",
+          "title": "Алюминиевые фасады",
+          "text": "Стоечно-ригельные фасады и большие витражи.",
+          "points": "Проект и расчёт\nМонтаж на высоте",
+          "images": [
+            "https://res.cloudinary.com/s87zgrcl/image/upload/v1793208451/%D0%90%D0%BB%D1%8E%D0%BC%D0%B8%D0%BD%D0%B8%D0%B5%D0%B2%D1%8B%D0%B5_%D1%84%D0%B0%D1%81%D0%B0%D0%B4%D1%8B_Schuco1.jpg"
+          ]
+        },
+        {
+          "id": "razdvizhnye",
+          "title": "Раздвижные конструкции",
+          "text": "Порталы, подъёмно-сдвижные и параллельно-раздвижные.",
+          "points": "Выход на террасу\nТёплые и холодные",
+          "images": [
+            "https://res.cloudinary.com/s87zgrcl/image/upload/v1793208267/%D0%A1%D0%BA%D0%BB%D0%B0%D0%B4%D0%BD%D1%8B%D0%B5_%D0%B4%D0%B2%D0%B5%D1%80%D0%B8_Schuco.jpg"
+          ]
+        },
+        {
+          "id": "garmoshka",
+          "title": "Складные двери (гармошка)",
+          "text": "Складные створки, полностью открывающие проём.",
+          "points": "Открытый проём\nДля террас и кафе",
+          "images": [
+            "https://res.cloudinary.com/s87zgrcl/image/upload/v1793029034/Gemini_Generated_Image_qc827zqc827zqc82.jpg"
+          ]
+        },
+        {
+          "id": "zimnie-sady",
+          "title": "Зимние сады",
+          "text": "Остеклённые веранды и зимние сады круглый год.",
+          "points": "Тёплые системы\nКровля и стены",
+          "images": [
+            "https://res.cloudinary.com/s87zgrcl/image/upload/v1793208270/%D0%97%D0%B8%D0%BC%D0%BD%D0%B8%D0%B5_%D1%81%D0%B0%D0%B4%D1%8B_Schuco.jpg"
+          ]
+        },
+        {
+          "id": "zenitnye-fonari",
+          "title": "Зенитные фонари",
+          "text": "Световые фонари и мансардное остекление.",
+          "points": "Много света\nОткрывающиеся секции",
+          "images": [
+            "https://res.cloudinary.com/s87zgrcl/image/upload/v1793208269/%D0%97%D0%B5%D0%BD%D0%B8%D1%82%D0%BD%D1%8B%D0%B5_%D1%84%D0%BE%D0%BD%D0%B0%D1%80%D0%B8_Schuco.jpg"
+          ]
+        },
+        {
+          "id": "kozyrki-navesy",
+          "title": "Стеклянные козырьки и навесы",
+          "text": "Козырьки над входом, навесы и перголы.",
+          "points": "Триплекс\nАлюминиевый каркас",
+          "images": [
+            "https://res.cloudinary.com/s87zgrcl/image/upload/v1793208268/%D0%A1%D1%82%D0%B5%D0%BA%D0%BB%D1%8F%D0%BD%D0%BD%D1%8B%D0%B5_%D0%BA%D0%BE%D0%B7%D1%8B%D1%80%D1%8C%D0%BA%D0%B8_%D0%B8_%D0%BD%D0%B0%D0%B2%D0%B5%D1%81%D1%8B_Schuco.jpg"
+          ]
+        }
+      ]
+    },
+    "specs": [
+      {
+        "param": "Профиль",
+        "value": "Alutech, Schuco"
+      },
+      {
+        "param": "Терморазрыв",
+        "value": "Полиамидный"
+      },
+      {
+        "param": "Цвет",
+        "value": "RAL, анодирование"
+      },
+      {
+        "param": "Срок службы",
+        "value": "50+ лет"
+      },
+      {
+        "param": "Гарантия",
+        "value": "5 лет"
+      }
+    ],
+    "faq": [
+      {
+        "q": "Чем алюминиевые окна лучше пластиковых?",
+        "a": "Они прочнее и позволяют делать большие стёкла в тонких рамах. Тёплый алюминий не уступает ПВХ по сохранению тепла."
+      },
+      {
+        "q": "Можно ли ставить алюминий в обычной квартире?",
+        "a": "Да. Для жилья выбирайте тёплую серию с терморазрывом. Холодный алюминий подходит для лоджий и веранд."
+      },
+      {
+        "q": "Можно ли покрасить рамы в нужный цвет?",
+        "a": "Да, профиль окрашивается в любой цвет по каталогу RAL, возможна двусторонняя окраска."
+      }
+    ]
+  },
+  "pvh": {
+    "h1": [
+      "Пластиковые конструкции",
+      "VEKA"
+    ],
+    "lead": "Окна, двери и раздвижные конструкции из профиля VEKA, остекление балконов и лоджий. Изготавливаем по вашим размерам.",
+    "types": [
+      {
+        "id": "okna",
+        "title": "Пластиковые окна VEKA",
+        "text": "Одно-, двух- и трёхстворчатые окна для квартир и коттеджей.",
+        "points": "До 5 камер\nПрофиль 58–82 мм",
+        "images": [
+          "https://res.cloudinary.com/s87zgrcl/image/upload/v1793033980/okna-pvh-vred-ili-do.jpg"
+        ]
+      },
+      {
+        "id": "dveri",
+        "title": "Пластиковые двери VEKA",
+        "text": "Входные, балконные и межкомнатные двери из ПВХ.",
+        "points": "Тёплые\nУсиленные петли",
+        "images": [
+          "https://res.cloudinary.com/s87zgrcl/image/upload/v1793033980/%D0%B4%D0%B2%D0%B5%D1%80%D0%B8.jpg"
+        ]
+      },
+      {
+        "id": "razdvizhnye",
+        "title": "Пластиковые раздвижные конструкции VEKA",
+        "text": "Подъёмно-сдвижные порталы и раздвижные системы.",
+        "points": "Выход на террасу\nБольшие створки",
+        "images": [
+          "https://res.cloudinary.com/s87zgrcl/image/upload/v1793033979/%D0%9F%D0%BB%D0%B0%D1%81%D1%82%D0%B8%D0%BA%D0%BE%D0%B2%D1%8B%D0%B5_%D1%80%D0%B0%D0%B7%D0%B4%D0%B2%D0%B8%D0%B6%D0%BD%D1%8B%D0%B5_%D0%BA%D0%BE%D0%BD%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%86%D0%B8%D0%B8_VEKA.jpg"
+        ]
+      },
+      {
+        "id": "balkony",
+        "title": "Балконы и лоджии",
+        "text": "Тёплое и холодное остекление, утепление и отделка.",
+        "points": "Балкон как комната\nОтделка под ключ",
+        "images": [
+          "https://res.cloudinary.com/s87zgrcl/image/upload/v1793033981/belie-paneli.jpg"
+        ]
+      }
+    ],
+    "specs": [
+      {
+        "param": "Ширина профиля",
+        "value": "58 / 70 / 82 мм"
+      },
+      {
+        "param": "Камеры",
+        "value": "3–5"
+      },
+      {
+        "param": "Стеклопакет",
+        "value": "24–44 мм"
+      },
+      {
+        "param": "Звукоизоляция",
+        "value": "до 42 дБ"
+      },
+      {
+        "param": "Гарантия",
+        "value": "5 лет"
+      }
+    ],
+    "faq": [
+      {
+        "q": "Как быстро изготавливаются окна?",
+        "a": "Обычно от 7 до 14 рабочих дней после замера и договора. Монтаж занимает около одного дня на квартиру."
+      },
+      {
+        "q": "Какая гарантия?",
+        "a": "Гарантия 5 лет на изделия и монтаж. Бесплатно регулируем фурнитуру после установки."
+      },
+      {
+        "q": "Чем отличается тёплое остекление балкона от холодного?",
+        "a": "Холодное — защита от осадков и пыли. Тёплое — стеклопакеты и утепление: балкон можно использовать круглый год."
+      },
+      {
+        "q": "Можно ли оплатить частями?",
+        "a": "Да, доступна рассрочка и кредит. Подробности расскажет менеджер при расчёте."
+      }
+    ]
+  },
+  "works": {
+    "lead": "Объекты, которые мы остеклили. Фильтруйте по типу помещения и материалу.",
+    "items": [
+      {
+        "title": "Офисно-складской комплекс",
+        "place": "Видное · Alutech",
+        "tags": [
+          "aluminum"
+        ],
+        "images": [
+          "/img/works/vidnoe-alutech-sklad/01.webp",
+          "/img/works/vidnoe-alutech-sklad/02.webp",
+          "/img/works/vidnoe-alutech-sklad/03.webp",
+          "/img/works/vidnoe-alutech-sklad/04.webp",
+          "/img/works/vidnoe-alutech-sklad/05.webp",
+          "/img/works/vidnoe-alutech-sklad/06.webp"
+        ]
+      },
+      {
+        "title": "Склад: окна",
+        "place": "Южное Бутово · алюминий",
+        "tags": [
+          "aluminum"
+        ],
+        "images": [
+          "/img/works/yuzhnoe-butovo-okna/01.webp",
+          "/img/works/yuzhnoe-butovo-okna/02.webp",
+          "/img/works/yuzhnoe-butovo-okna/03.webp",
+          "/img/works/yuzhnoe-butovo-okna/04.webp",
+          "/img/works/yuzhnoe-butovo-okna/05.webp",
+          "/img/works/yuzhnoe-butovo-okna/06.webp"
+        ]
+      },
+      {
+        "title": "Склад: двери",
+        "place": "Южное Бутово · алюминий",
+        "tags": [
+          "aluminum"
+        ],
+        "images": [
+          "/img/works/yuzhnoe-butovo-dveri/01.webp",
+          "/img/works/yuzhnoe-butovo-dveri/02.webp",
+          "/img/works/yuzhnoe-butovo-dveri/03.webp"
+        ]
+      },
+      {
+        "title": "Коттедж, VEKA Softline 70",
+        "place": "Домодедово",
+        "tags": [
+          "cottage",
+          "pvc"
+        ],
+        "images": [
+          "/img/works/domodedovo-veka/01.webp",
+          "/img/works/domodedovo-veka/02.webp",
+          "/img/works/domodedovo-veka/03.webp",
+          "/img/works/domodedovo-veka/04.webp",
+          "/img/works/domodedovo-veka/05.webp",
+          "/img/works/domodedovo-veka/06.webp"
+        ]
+      },
+      {
+        "title": "Витраж в коттедже",
+        "place": "Домодедово",
+        "tags": [
+          "cottage",
+          "pvc"
+        ],
+        "images": [
+          "/img/works/domodedovo-vitrazh/01.webp"
+        ]
+      },
+      {
+        "title": "Баня с террасой",
+        "place": "Подмосковье · VEKA Softline 70",
+        "tags": [
+          "cottage",
+          "pvc"
+        ],
+        "images": [
+          "/img/works/banya-terrasa-veka/01.webp",
+          "/img/works/banya-terrasa-veka/02.webp",
+          "/img/works/banya-terrasa-veka/03.webp",
+          "/img/works/banya-terrasa-veka/04.webp",
+          "/img/works/banya-terrasa-veka/05.webp"
+        ]
+      },
+      {
+        "title": "Коттедж, окна ПВХ",
+        "place": "д. Томарово",
+        "tags": [
+          "cottage",
+          "pvc"
+        ],
+        "images": [
+          "/img/works/tomarovo-kottedzh/01.webp",
+          "/img/works/tomarovo-kottedzh/02.webp",
+          "/img/works/tomarovo-kottedzh/03.webp",
+          "/img/works/tomarovo-kottedzh/04.webp"
+        ]
+      },
+      {
+        "title": "Веранда, ПВХ",
+        "place": "д. Бородино",
+        "tags": [
+          "cottage",
+          "pvc"
+        ],
+        "images": [
+          "/img/works/borodino-veranda/01.webp",
+          "/img/works/borodino-veranda/02.webp"
+        ]
+      },
+      {
+        "title": "Арочный витраж",
+        "place": "Подмосковье · ПВХ",
+        "tags": [
+          "pvc"
+        ],
+        "images": [
+          "/img/works/pvh-arochnyj-vitrazh/01.webp",
+          "/img/works/pvh-arochnyj-vitrazh/02.webp"
+        ]
+      },
+      {
+        "title": "Малый коттедж, окна ПВХ",
+        "place": "д. Томарово",
+        "tags": [
+          "cottage",
+          "pvc"
+        ],
+        "images": [
+          "/img/works/tomarovo-maly-kottedzh/01.webp",
+          "/img/works/tomarovo-maly-kottedzh/02.webp",
+          "/img/works/tomarovo-maly-kottedzh/03.webp",
+          "/img/works/tomarovo-maly-kottedzh/04.webp"
+        ]
+      }
+    ]
+  },
+  "tech": {
+    "lead": "Технические каталоги. Смотрите на странице или скачивайте в PDF.",
+    "alutech": {
+      "text": "Профильные системы Alutech: окна, двери, раздвижные и фасадные конструкции. Каталоги систем, сечений и комплектующих.",
+      "files": [
+        {
+          "title": "C48: холодная система",
+          "pdf": "/docs/alutech/c48-holodnaya.pdf",
+          "size": "64 МБ"
+        },
+        {
+          "title": "W62 HS",
+          "pdf": "/docs/alutech/w62-hs.pdf",
+          "size": "18 МБ"
+        },
+        {
+          "title": "W72: тёплая система",
+          "pdf": "/docs/alutech/w72-teplaya.pdf",
+          "size": "108 МБ"
+        },
+        {
+          "title": "SL160: раздвижная система",
+          "pdf": "/docs/alutech/sl160.pdf",
+          "size": "73 МБ"
+        },
+        {
+          "title": "F50: стоечно-ригельная система",
+          "pdf": "/docs/alutech/f50-stoyka-rigel.pdf",
+          "size": "73 МБ"
+        },
+        {
+          "title": "GS-106",
+          "pdf": "/docs/alutech/gs-106.pdf",
+          "size": "41 МБ"
+        }
+      ]
+    },
+    "schuco": {
+      "text": "Профильные системы Schuco: окна, двери, подъёмно-раздвижные порталы и фасады. Каталоги систем, сечений и комплектующих.",
+      "files": [
+        {
+          "title": "Обзорный каталог Schuco",
+          "pdf": "/docs/schuco/obzornyj-katalog.pdf",
+          "size": "37 МБ"
+        },
+        {
+          "title": "AWS 75 SI",
+          "pdf": "/docs/schuco/aws-75-si.pdf",
+          "size": "0,7 МБ"
+        },
+        {
+          "title": "Ручки",
+          "pdf": "/docs/schuco/ruchki.pdf",
+          "size": "1,3 МБ"
+        }
+      ]
+    },
+    "veka": {
+      "text": "Три системы для пластиковых окон: от базовой до максимально тёплой.",
+      "profiles": [
+        {
+          "name": "Euroline 58",
+          "tag": "Базовый",
+          "text": "Классическая система для квартир и дач: надёжно и доступно.",
+          "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793183389/Gemini_Generated_Image_igjubmigjubmigju-removebg-preview.png",
+          "specs": "Монтажная глубина 58 мм\n3 камеры\nСтеклопакет до 32 мм"
+        },
+        {
+          "name": "Softline 70",
+          "tag": "Универсальный",
+          "text": "Оконные конструкции практически любой сложности.",
+          "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793023777/softline_70.png",
+          "specs": "Монтажная глубина 70 мм\n5 камер\nСтеклопакет до 42 мм"
+        },
+        {
+          "name": "Softline 82",
+          "tag": "Энергосберегающий",
+          "text": "Максимальная тепло- и шумоизоляция окна.",
+          "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793023777/softline_82.png",
+          "specs": "Монтажная глубина 82 мм\n6 камер\nСтеклопакет до 51 мм"
+        }
+      ],
+      "files": [
+        {
+          "title": "Обзор систем VEKA",
+          "pdf": "/docs/veka/obzor-sistem-veka.pdf",
+          "size": "9 МБ"
+        },
+        {
+          "title": "VEKA: фасадные соединители",
+          "pdf": "/docs/veka/veka-fasadnye-soediniteli.pdf",
+          "size": "11 МБ"
+        }
+      ]
+    }
+  }
+}

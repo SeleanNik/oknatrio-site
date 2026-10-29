@@ -1,0 +1,36 @@
+---
+// items: [{ q, a }]; отдаёт и разметку FAQPage для поисковиков
+const { items = [], title = 'Частые вопросы', edPath = '' } = Astro.props;
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: items.map((i) => ({ '@type': 'Question', name: i.q, acceptedAnswer: { '@type': 'Answer', text: i.a } })),
+};
+---
+{items.length > 0 && (
+  <section class="section section--white" aria-labelledby="faq-title">
+    <div class="container faq">
+      <h2 id="faq-title">{title}</h2>
+      <div class="faq__list" data-ed-faq={edPath || undefined}>
+        {items.map((i) => (
+          <details>
+            <summary>{i.q}</summary>
+            <p>{i.a}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+    <script type="application/ld+json" set:html={JSON.stringify(ld)} />
+  </section>
+)}
+
+<style>
+  .faq { max-width: 860px; }
+  .faq__list { display: grid; gap: var(--sp-3); }
+  details { background: var(--c-bg); border: 1px solid var(--c-line); border-radius: var(--r-md); padding: 0 var(--sp-5); }
+  summary { display: flex; justify-content: space-between; align-items: center; gap: var(--sp-4); min-height: 64px; cursor: pointer; list-style: none; font: 700 var(--fs-md)/1.35 var(--font-head); color: var(--c-navy-800); }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: '+'; flex: none; font-size: 1.6rem; color: var(--c-blue-600); }
+  details[open] summary::after { content: '\2212'; }
+  details p { margin: 0; padding-bottom: var(--sp-5); color: var(--c-text-muted); }
+</style>

@@ -1,0 +1,6 @@
+# Админка: без индексации и без списка файлов
+Options -Indexes
+DirectoryIndex index.php
+<IfModule mod_headers.c>
+  Header set X-Robots-Tag "noindex, nofollow"
+</IfModule>

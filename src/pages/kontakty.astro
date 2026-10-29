@@ -1,0 +1,106 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Icon from '../components/Icon.astro';
+import LeadForm from '../components/LeadForm.astro';
+import { site } from '../config/site.config.mjs';
+import { localBusiness } from '../config/schema.mjs';
+
+const { lat, lng } = site.geo;
+const mapSrc = `https://yandex.ru/map-widget/v1/?ll=${lng}%2C${lat}&z=16&pt=${lng}%2C${lat}%2Cpm2rdm`;
+---
+<Base
+  title="Контакты — адрес, телефон, карта"
+  description="Контакты компании «Трио»: Москва, пр-кт Солнцевский, д. 15. Телефон, e-mail, режим работы, карта проезда, WhatsApp и Telegram."
+  jsonLd={[localBusiness]}
+>
+  <div class="kpage">
+    <Breadcrumbs items={[{ title: 'Контакты' }]} />
+    <section class="kmain">
+      <div class="container">
+        <header class="khead">
+          <h1>Контакты</h1>
+          <p>Звоните, пишите в мессенджеры или приезжайте в офис.</p>
+        </header>
+
+        <div class="kgrid">
+          <div class="kinfo" style={`--n:${(site.legalName || site.requisites) ? 5 : 4}`}>
+            <a class="kc kc--phone" href={`tel:${site.phone.href}`} data-bind-href="phone.href" data-bind-prefix="tel:">
+              <span class="kc__ico"><Icon name="phone" size={18} /></span>
+              <span class="kc__lbl">Телефон</span>
+              <strong data-bind="phone.display">{site.phone.display}</strong>
+            </a>
+            <a class="kc" href={`mailto:${site.email}`} data-bind-href="email" data-bind-prefix="mailto:">
+              <span class="kc__ico"><Icon name="file" size={18} /></span>
+              <span class="kc__lbl">E-mail</span>
+              <strong data-bind="email">{site.email}</strong>
+            </a>
+            <div class="kc">
+              <span class="kc__ico"><Icon name="pin" size={18} /></span>
+              <span class="kc__lbl">Адрес</span>
+              <strong data-bind="address.full">{site.address.full}</strong>
+            </div>
+            <div class="kc kc--wide">
+              <span class="kc__ico"><Icon name="clock" size={18} /></span>
+              <span class="kc__lbl">Режим работы</span>
+              <strong data-bind="hours">{site.hours}</strong>
+            </div>
+            <div class="kmsgs kc--wide">
+              <a class="msg" href={site.messengers.whatsapp} data-bind-href="whatsapp" target="_blank" rel="noopener">WhatsApp</a>
+              <a class="msg" href={site.messengers.telegram} data-bind-href="telegram" target="_blank" rel="noopener">Telegram</a>
+            </div>
+            {(site.legalName || site.requisites) && <p class="req kc--wide">{site.legalName}<br />{site.requisites}</p>}
+            <div class="kmap kc--wide">
+              <iframe src={mapSrc} title={`Карта: ${site.address.city}, ${site.address.street}`} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+            </div>
+          </div>
+
+          <div class="kform">
+            <h2>Оставьте заявку</h2>
+            <p>Перезвоним и ответим на все ваши вопросы.</p>
+            <LeadForm type="measure" idPrefix="contacts" submitLabel="Оставить заявку" />
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </div>
+</Base>
+
+<style>
+  .kpage { background: radial-gradient(900px 500px at 85% -10%, rgb(54 114 255 / .22), transparent 60%), linear-gradient(180deg, #0b1522 0%, #0f1b2c 100%); color: #fff; }
+  .kpage :global(.breadcrumbs) { color: rgb(255 255 255 / .55); }
+  .kpage :global(.breadcrumbs a) { color: rgb(255 255 255 / .75); }
+  .kpage :global(.breadcrumbs span[aria-current]) { color: #fff; }
+  .kmain { padding-block: var(--sp-4) var(--sp-8); }
+  .khead { margin-bottom: var(--sp-6); }
+  .khead h1 { color: #fff; margin: 0 0 .3em; font-weight: 500; letter-spacing: -.02em; font-size: clamp(2.25rem, 1.5rem + 3vw, 4rem); line-height: 1; }
+  .khead p { margin: 0; color: rgb(255 255 255 / .65); font-size: var(--fs-md); }
+
+  .kgrid { display: grid; gap: var(--sp-4); }
+  .kinfo { display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: repeat(var(--n), min-content) 1fr; gap: .6rem; }
+  .kinfo .kmap { align-self: stretch; }
+  .kc { position: relative; display: grid; grid-template-columns: auto 1fr; column-gap: .75rem; row-gap: .2rem; align-items: center; padding: .7rem .9rem; border-radius: 16px; background: rgb(255 255 255 / .05); border: 1px solid rgb(255 255 255 / .12); color: #fff; text-decoration: none; transition: background .25s, border-color .25s, transform .25s var(--ease); }
+  a.kc:hover { background: rgb(255 255 255 / .09); border-color: rgb(255 255 255 / .28); transform: translateY(-2px); }
+  .kc__ico { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: rgb(255 255 255 / .08); color: #fff; grid-row: 1 / 3; }
+  .kc__lbl { align-self: end; font: 600 .6875rem/1 var(--font-head); letter-spacing: .1em; text-transform: uppercase; color: rgb(255 255 255 / .5); }
+  .kc strong { align-self: start; font: 700 var(--fs-sm)/1.25 var(--font-head); color: #fff; overflow-wrap: anywhere; }
+  .kc--phone { grid-column: 1 / -1; background: linear-gradient(135deg, #3672ff, #1b3fa8); border-color: transparent; }
+  .kc--phone .kc__ico { background: rgb(255 255 255 / .18); }
+  .kc--phone .kc__lbl { color: rgb(255 255 255 / .75); }
+  .kc--phone strong { font-size: clamp(1.25rem, 1.05rem + .8vw, 1.6rem); letter-spacing: -.01em; }
+  a.kc--phone:hover { background: linear-gradient(135deg, #4a82ff, #2149b8); }
+  .kc--wide { grid-column: 1 / -1; }
+  .kmsgs { display: flex; gap: var(--sp-3); flex-wrap: wrap; }
+  .msg { flex: 1; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: .4rem 1.1rem; border-radius: var(--r-pill); border: 1px solid rgb(255 255 255 / .22); color: #fff !important; text-decoration: none; font: 700 var(--fs-sm)/1 var(--font-head); transition: background .2s, border-color .2s; }
+  .msg:hover { background: #fff; border-color: #fff; color: #0b1522 !important; }
+  .req { margin: 0; color: rgb(255 255 255 / .5); font-size: var(--fs-sm); }
+
+  .kform { background: #fff; color: var(--c-text); border-radius: 26px; padding: var(--sp-5); }
+  .kform h2 { font-size: var(--fs-h3); margin-bottom: .3em; color: var(--c-navy-900); }
+  .kform p { color: var(--c-text-muted); font-size: var(--fs-sm); margin-bottom: var(--sp-4); }
+
+  .kmap { border-radius: 20px; overflow: hidden; border: 1px solid rgb(255 255 255 / .14); min-height: 280px; background: #1a2638; display: flex; }
+  .kmap iframe { width: 100%; flex: 1; min-height: 280px; border: 0; display: block; }
+  @media (min-width: 900px) { .kgrid { grid-template-columns: 1fr 1fr; gap: var(--sp-5); align-items: stretch; } .kform { padding: var(--sp-5); } }
+</style>

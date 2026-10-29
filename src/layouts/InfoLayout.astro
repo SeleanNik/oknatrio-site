@@ -1,0 +1,39 @@
+---
+// Шаблон текстовой страницы (О компании, Политика). Тело — из Markdown (<slot />).
+import Base from './Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Button from '../components/Button.astro';
+
+const { data } = Astro.props;
+---
+<Base title={data.seoTitle} description={data.description} noindex={data.noindex}>
+  <Breadcrumbs items={[...data.breadcrumbs, { title: data.title }]} />
+  <section class="section" style="padding-top:var(--sp-3)">
+    <div class="container info">
+      <h1>{data.h1}</h1>
+      {data.lead && <p class="lead">{data.lead}</p>}
+      <article class="prose"><slot /></article>
+    </div>
+  </section>
+  {data.cta && (
+    <section class="section section--dark">
+      <div class="container cta">
+        <div><h2>Остались вопросы?</h2><p>Позвоним, ответим и при необходимости приедем на бесплатный замер.</p></div>
+        <div class="cta__btns">
+          <Button href="/#zayavka">Оставить заявку</Button>
+          <Button modal="callback" variant="ghost-light">Заказать звонок</Button>
+        </div>
+      </div>
+    </section>
+  )}
+</Base>
+
+<style>
+  .info { max-width: 900px; }
+  .info :global(.prose) { margin-top: var(--sp-5); max-width: none; }
+  .info :global(.prose h2) { scroll-margin-top: calc(var(--header-h) + 1rem); font-size: var(--fs-h3); margin-top: 1.8em; }
+  .cta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-4); }
+  .cta h2 { margin-bottom: .2em; }
+  .cta p { margin: 0; color: var(--c-on-dark-muted); }
+  .cta__btns { display: flex; flex-wrap: wrap; gap: var(--sp-3); }
+</style>

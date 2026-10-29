@@ -1,0 +1,33 @@
+---
+// Три модалки сайта. Открываются любым элементом с data-modal="callback|measure|calc".
+import LeadForm from './LeadForm.astro';
+import { site } from '../config/site.config.mjs';
+
+const modals = [
+  { id: 'callback', title: 'Заказать звонок', lead: 'Перезвоним в течение 15 минут в рабочее время.', submit: 'Перезвоните мне' },
+  { id: 'measure', title: 'Оставить заявку', lead: 'Оставьте номер, и мы перезвоним, чтобы уточнить задачу и ответить на ваши вопросы.', submit: 'Оставить заявку' },
+  { id: 'calc', title: 'Заявка на расчёт', lead: 'Опишите, что нужно, — подготовим точный расчёт.', submit: 'Получить расчёт' },
+];
+---
+{modals.map((m) => (
+  <dialog class="modal" id={`modal-${m.id}`} aria-labelledby={`modal-${m.id}-title`} data-modal-dialog>
+    <div class="modal__wrap">
+      <div class="modal__inner">
+        <button class="modal__close" type="button" aria-label="Закрыть" data-modal-close>
+          <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 2l12 12M14 2L2 14" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg>
+        </button>
+        <h2 class="modal__title" id={`modal-${m.id}-title`}>{m.title}</h2>
+        <p class="modal__lead">{m.lead}</p>
+        <ul class="modal__chips">
+          <li data-bind="hours">{site.hours}</li>
+          <li data-bind="address.full">{site.address.full}</li>
+          <li><a href={`tel:${site.phone.href}`} data-bind-href="phone.href" data-bind-prefix="tel:" data-bind="phone.display">{site.phone.display}</a></li>
+        </ul>
+        <LeadForm type={m.id} idPrefix={`m-${m.id}`} submitLabel={m.submit} />
+      </div>
+      <div class="modal__photo" aria-hidden="true">
+        <img src="/img/hero-windows.jpg" alt="" loading="lazy" decoding="async" />
+      </div>
+    </div>
+  </dialog>
+))}

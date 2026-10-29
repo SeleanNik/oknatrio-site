@@ -1,0 +1,20 @@
+---
+// Карточка с фото. Если есть href — вся карточка ссылка.
+const { href, title, text, img, alt = '', price, more, headingLevel = 3 } = Astro.props;
+const Tag = href ? 'a' : 'div';
+const H = `h${headingLevel}`;
+---
+<Tag class="card" href={href}>
+  {img && (
+    <div class="card__media">
+      <img src={img} alt={alt} loading="lazy" decoding="async" width="640" height="480" />
+    </div>
+  )}
+  <div class="card__body">
+    <H class="card__title">{title}</H>
+    {text && <p class="card__text">{text}</p>}
+    <slot />
+    {price && <div class="card__price">{price}</div>}
+    {more && <span class="card__more">{more} →</span>}
+  </div>
+</Tag>

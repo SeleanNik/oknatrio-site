@@ -1,0 +1,218 @@
+---
+// Компактная страница-раздел: hero → виды (карточки с якорями) → характеристики → наши объекты →
+// тех. каталог → FAQ → заявка → SEO-текст. Данные: src/config/razdely.mjs
+import Base from './Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Button from '../components/Button.astro';
+import Faq from '../components/Faq.astro';
+import Icon from '../components/Icon.astro';
+import Img from '../components/Img.astro';
+import LeadBlock from '../components/home/LeadBlock.astro';
+import { site, siteUrl } from '../config/site.config.mjs';
+import { works } from '../config/works.mjs';
+import { photos, unsplash } from '../config/img.mjs';
+
+const { r } = Astro.props;
+const groups = r.splitBrands
+  ? r.brands.map((brand) => ({ brand, types: r.typesByBrand?.[brand] ?? r.types }))
+  : [{ brand: null, types: r.types }];
+const objects = (r.tag ? works.filter((w) => w.tags.includes(r.tag)) : []).slice(0, 4);
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: r.h1.replace('|', ' '),
+  description: r.description,
+  areaServed: 'Москва и Московская область',
+  provider: { '@type': 'HomeAndConstructionBusiness', name: site.name, url: siteUrl },
+};
+---
+<Base title={r.seoTitle} description={r.description} jsonLd={[ld]}>
+  <section class="rh">
+    <div class="rh__media">
+      {r.heroImage
+        ? <img src={r.heroImage} alt={r.photoAlt} width="828" height="1017" fetchpriority="high" decoding="async" />
+        : <Img photo={r.photo} alt={r.photoAlt} ratio={0.62} widths={[800, 1400, 2000]} sizes="70vw" eager />}
+    </div>
+    <div class="rh__crumbs"><Breadcrumbs items={[...r.breadcrumbs, { title: r.title }]} /></div>
+    <div class="container rh__inner">
+      <div class="rh__text">
+        <h1>{r.h1.split('|').map((line, i) => <Fragment>{i > 0 && ' '}<span data-ed={`${r.key}.h1.${i}`}>{line}</span></Fragment>)}</h1>
+        <p class="rh__lead" data-ed={`${r.key}.lead`}>{r.lead}</p>
+        <div class="rh__cta">
+          <Button href="/#zayavka" size="lg">Оставить заявку</Button>
+        </div>
+        {r.techHref && <a class="rh__cat" href={r.techHref}><Icon name="file" size={18} />Технический каталог</a>}
+      </div>
+    </div>
+  </section>
+
+  {groups.map((g, gi) => (
+    <section class="types" id={g.brand ? g.brand.toLowerCase() : 'types'} aria-labelledby={`types-title-${gi}`}>
+      <div class="container">
+        {g.brand ? (
+          <div class="bhead">
+            <div class="bhead__text">
+              <span class="bhead__num">{gi + 1}</span>
+              <h2 id={`types-title-${gi}`}>Алюминиевые конструкции<span class="sr-only"> {g.brand}</span></h2>
+              <p>Виды конструкций из профильной системы {g.brand}.</p>
+            </div>
+            <span class="bhead__brand" aria-hidden="true">{g.brand}</span>
+          </div>
+        ) : (
+          <h2 id={`types-title-${gi}`}>Виды</h2>
+        )}
+        <div class="tgrid" data-ed-types={g.brand ? `${r.key}.typesByBrand.${g.brand}` : `${r.key}.types`}>
+          {g.types.map((t) => (
+            <article class="tcard" id={gi === 0 ? t.id : `${g.brand.toLowerCase()}-${t.id}`}>
+              <div class="tcard__media" data-gallery={JSON.stringify(t.images && t.images.length ? t.images : (t.src ? [t.src] : []))}><img src={t.src ?? unsplash(photos[t.photo], 800, 600)} alt={t.alt} loading="lazy" decoding="async" width="800" height="600" /></div>
+              <div class="tcard__body">
+                <h3>{t.title}</h3>
+                <p class="tcard__text">{t.text}</p>
+                <ul class="tcard__feats">{t.points.map((p) => <li><Icon name="check" size={16} />{p}</li>)}</ul>
+                <a class="btn btn--dark btn--block tcard__btn" href="/#zayavka"><Icon name="file" size={18} />Оставить заявку</a>
+              </div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+  ))}
+
+  <section class="facts" aria-label="Характеристики">
+    <div class="container">
+      <ul class="fgrid" data-ed-specs={`${r.key}.specs`}>
+        {r.specs.map((sp, i) => (
+          <li class={`fcard fcard--t${(i % 5) + 1}`}>
+            <span class="fcard__tag">{sp.param}</span>
+            <div class="fcard__body"><i></i><strong>{sp.value}</strong></div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  {objects.length > 0 && (
+    <section class="objects" aria-labelledby="obj-title">
+      <div class="container">
+        <div class="head"><h2 id="obj-title">Наши работы</h2><Button href={`/nashi-raboty/#${r.tag}`} variant="outline" size="sm">Все работы</Button></div>
+        <ul class="ogrid" data-ed-works-tag={r.tag}>
+          {objects.map((w) => (
+            <li><figure data-gallery={JSON.stringify(w.images)}>
+              <img src={w.image} alt={w.title} loading="lazy" decoding="async" width="480" height="320" />
+            </figure></li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  {r.techHref && (
+    <section class="catband">
+      <div class="container">
+        <div class="catband__card">
+          <span class="catband__ico"><Icon name="file" size={26} /></span>
+          <div class="catband__text">
+            <strong>Технический каталог</strong>
+            <span>Каталоги систем, профили и параметры. Смотрите онлайн или скачивайте в PDF.</span>
+          </div>
+          <Button href={r.techHref} size="lg">Открыть каталог</Button>
+        </div>
+      </div>
+    </section>
+  )}
+
+  <Faq items={r.faq} edPath={`${r.key}.faq`} />
+
+  <LeadBlock product={r.title} />
+</Base>
+
+<style>
+  /* hero раздела: заголовок слева «перетекает» в фото справа; фото идёт от самой шапки (хлебные крошки — поверх) */
+  .rh { position: relative; isolation: isolate; overflow: hidden; display: flex; align-items: center; min-height: clamp(500px, 68svh, 700px); background: var(--c-bg); }
+  .rh__media { position: absolute; inset: 0 0 0 auto; width: 100%; z-index: -1; }
+  .rh__media img, .rh__media :global(img) { width: 100%; height: 100%; object-fit: cover; object-position: 50% 40%; display: block; }
+  .rh__media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgb(246 247 248 / .92) 0%, rgb(246 247 248 / .88) 55%, rgb(246 247 248 / .55) 100%); }
+  .rh__crumbs { position: absolute; top: 0; left: 0; right: 0; z-index: 2; }
+  .rh__inner { width: 100%; padding-block: var(--sp-8) var(--sp-7); }
+  .rh h1 { margin-bottom: .35em; font-size: clamp(1.5rem, 5.6vw, 3.6rem); font-weight: 700; letter-spacing: -.03em; line-height: 1.04; }
+  .rh h1 span { display: block; white-space: nowrap; }
+  .rh__lead { color: var(--c-text-muted); font-size: var(--fs-lg); max-width: 40ch; margin-bottom: var(--sp-5); }
+  .rh__cta { display: flex; flex-wrap: wrap; gap: var(--sp-3); }
+  .rh__cat { display: inline-flex; align-items: center; gap: .4rem; background: none; border: 0; padding: var(--sp-4) .25rem 0; cursor: pointer; font: 700 var(--fs-sm)/1 var(--font-head); color: var(--c-blue-600); text-decoration: none; }
+  .rh__cat:hover { color: var(--c-navy-800); text-decoration: underline; }
+
+  .types { padding-block: var(--section-y); }
+  .types + .types { padding-top: 0; }
+  .types + .types .bhead { margin-top: var(--sp-6); }
+  .bhead { position: relative; display: grid; grid-template-columns: 1fr; align-items: center; gap: var(--sp-3); margin-bottom: var(--sp-5); padding: var(--sp-5) var(--sp-4); border-radius: 26px; overflow: hidden; color: #fff; background: radial-gradient(520px 240px at 100% 0%, rgb(54 114 255 / .35), transparent 70%), #0b1017; }
+  .bhead__text { display: grid; justify-items: start; gap: .5rem; }
+  .bhead__num { display: inline-grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--c-amber-500); font: 800 .9rem/1 var(--font-head); }
+  .types .bhead h2 { margin: 0; color: #fff; font-size: clamp(1.4rem, 1.1rem + 1.3vw, 2.1rem); font-weight: 700; letter-spacing: -.02em; }
+  .bhead p { margin: 0; color: rgb(255 255 255 / .65); font-size: var(--fs-sm); }
+  .bhead__brand { font: 800 clamp(2.4rem, 1.4rem + 4.5vw, 5.5rem)/1 var(--font-head); letter-spacing: .02em; text-transform: uppercase; background: linear-gradient(120deg, #fff 30%, #8da9ff); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  @media (min-width: 800px) { .bhead { grid-template-columns: 1fr auto; padding: var(--sp-5) var(--sp-6); } }
+  .types h2 { margin-bottom: var(--sp-5); font-size: clamp(1.75rem, 1.3rem + 1.8vw, 2.75rem); font-weight: 600; letter-spacing: -.02em; }
+  .tgrid { display: grid; gap: var(--sp-4); grid-template-columns: 1fr; }
+  .tcard { scroll-margin-top: calc(var(--header-h) + 1rem); background: #fff; border: 1px solid var(--c-line); border-radius: 24px; padding: 8px 8px var(--sp-3); display: flex; flex-direction: column; }
+  .tcard__media { aspect-ratio: 4 / 3; border-radius: 18px; overflow: hidden; background: var(--c-blue-100); }
+  .tcard__media img { width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease); }
+  .tcard:hover .tcard__media img { transform: scale(1.04); }
+  .tcard__body { padding: var(--sp-3) var(--sp-2) 0; display: flex; flex-direction: column; gap: .5rem; flex: 1; }
+  .tcard h3 { margin: 0; font-size: var(--fs-md); font-weight: 700; line-height: 1.25; }
+  .tcard__text { margin: 0; color: var(--c-text-muted); font-size: var(--fs-xs); line-height: 1.5; }
+  .tcard__feats { list-style: none; margin: .25rem 0 var(--sp-3); padding: 0; display: flex; flex-wrap: wrap; gap: .35rem 1rem; font-size: var(--fs-xs); font-weight: 600; color: var(--c-navy-800); }
+  .tcard__feats li { display: inline-flex; align-items: center; gap: .35rem; }
+  .tcard__feats :global(svg) { color: var(--c-blue-600); }
+  .tcard__btn { margin-top: auto; }
+
+
+
+
+
+  /* параметры — карточки в стиле референса: тег-пилюля, акцентная точка, крупное значение */
+  .facts { padding-block: var(--sp-5) var(--sp-5); }
+  .fgrid { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-3); grid-template-columns: 1fr 1fr; }
+  .fcard { position: relative; min-height: 0; border-radius: 22px; padding: var(--sp-3); display: flex; flex-direction: column; justify-content: flex-start; gap: .9rem; color: #fff; overflow: hidden; }
+  .fcard__tag { align-self: flex-start; padding: .3rem .75rem; border-radius: var(--r-pill); border: 1px solid currentColor; font: 600 var(--fs-xs)/1 var(--font-head); opacity: .9; }
+  .fcard__body { display: grid; gap: .5rem; padding: 0 .25rem .35rem; }
+  .fcard__body i { width: 7px; height: 7px; border-radius: 50%; background: var(--c-amber-500); }
+  .fcard__body strong { font: 700 clamp(1.05rem, .9rem + .7vw, 1.4rem)/1.15 var(--font-head); }
+  .fcard--t1 { background: #0b0d11; }
+  .fcard--t2 { background: linear-gradient(135deg, #3672ff, #1b3fa8); }
+  .fcard--t3 { background: linear-gradient(160deg, #1d2a44, #0b1522); }
+  .fcard--t4 { background: #dfe3e8; color: var(--c-navy-900); }
+  .fcard--t4 .fcard__body i { background: var(--c-amber-500); }
+  .fcard--t5 { background: #fff; color: var(--c-navy-900); border: 1px solid var(--c-line); }
+  .fcard--t2 .fcard__body i { background: #fff; }
+
+  .objects { padding-block: var(--section-y); }
+  .head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-3); margin-bottom: var(--sp-4); }
+  .head h2 { margin: 0; }
+    .ogrid { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-3); grid-template-columns: 1fr 1fr; }
+  .ogrid figure { margin: 0; display: block; position: relative; border-radius: var(--r-md); overflow: hidden; color: #fff; text-decoration: none; aspect-ratio: 4 / 5; background: var(--c-navy-800); }
+  .ogrid img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s var(--ease); }
+  .ogrid figure:hover img { transform: scale(1.05); }
+
+  .catband { padding-block: var(--sp-6); }
+  .catband__card { position: relative; overflow: hidden; display: grid; grid-template-columns: 1fr; gap: var(--sp-4); align-items: center; padding: var(--sp-5); border-radius: 26px; color: #fff; background: radial-gradient(520px 260px at 100% 0%, rgb(54 114 255 / .45), transparent 70%), linear-gradient(135deg, #0b1522, #14233a); }
+  .catband__ico { width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; background: rgb(255 255 255 / .12); border: 1px solid rgb(255 255 255 / .22); color: #fff; }
+  .catband__text { display: grid; gap: .3rem; }
+  .catband__text strong { font: 700 clamp(1.3rem, 1.1rem + .8vw, 1.75rem)/1.15 var(--font-head); }
+  .catband__text span { color: rgb(255 255 255 / .7); font-size: var(--fs-sm); max-width: 52ch; }
+  @media (min-width: 800px) { .catband__card { grid-template-columns: auto 1fr auto; padding: var(--sp-5) var(--sp-6); gap: var(--sp-5); } }
+
+
+
+  @media (min-width: 640px) {
+    .tgrid { grid-template-columns: 1fr 1fr; }
+    .ogrid { grid-template-columns: repeat(4, 1fr); }
+  }
+  @media (min-width: 900px) {
+  }
+  @media (min-width: 800px) {
+    .rh__media { width: 68%; }
+    .rh__media::after { background: linear-gradient(90deg, var(--c-bg) 0%, rgb(246 247 248 / .55) 35%, rgb(246 247 248 / 0) 75%); }
+  }
+  @media (min-width: 900px) { .fgrid { grid-template-columns: repeat(5, 1fr); } .fcard { gap: .9rem; } .fgrid .fcard:nth-child(even) { transform: translateY(14px); } .facts { padding-bottom: var(--sp-6); } }
+  @media (min-width: 1000px) { .tgrid { grid-template-columns: repeat(4, 1fr); gap: var(--sp-4); } }
+</style>

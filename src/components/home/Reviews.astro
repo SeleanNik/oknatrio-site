@@ -1,0 +1,39 @@
+---
+import Icon from '../Icon.astro';
+import { reviews as all } from '../../config/reviews.mjs'; // TODO: черновые отзывы, см. config/reviews.mjs
+const reviews = all.filter((r) => r.home !== false);
+---
+<section class="section" aria-labelledby="rev-title">
+  <div class="container">
+    <h2 id="rev-title">Отзывы клиентов</h2>
+    <ul class="rev" data-reviews>
+      {reviews.map((r) => (
+        <li class="rcard">
+          <svg class="rcard__q" viewBox="0 0 48 40" width="44" height="36" aria-hidden="true"><path fill="currentColor" d="M0 40V22C0 9.5 6.5 2 19 0l2.2 6.2C14.5 8 11.5 12 11 18h10v22H0zm27 0V22C27 9.5 33.5 2 46 0l2 6.2C41.500 8 38.500 12 38 18h10v22H27z"/></svg>
+          <div class="rcard__stars" role="img" aria-label="Оценка 5 из 5">
+            {Array.from({ length: 5 }).map(() => <Icon name="star" size={16} />)}
+          </div>
+          <blockquote data-rev="text">{r.text}</blockquote>
+          <div class="rcard__who">
+            <img class="rcard__ava" data-rev="avatar" src={r.avatar} alt="" width="44" height="44" loading="lazy" decoding="async" />
+            <span class="rcard__name"><strong data-rev="name">{r.name}</strong></span>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  .rev { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-3); grid-template-columns: 1fr; }
+  .rcard { position: relative; display: flex; flex-direction: column; gap: var(--sp-3); padding: var(--sp-4); background: #fff; border: 1px solid var(--c-line); border-radius: 22px; overflow: hidden; }
+  .rcard__q { position: absolute; top: 1rem; right: 1.1rem; color: #dfe7ff; }
+  .rcard__stars { display: flex; gap: 3px; color: var(--c-amber-500); }
+  .rcard__stars :global(svg) { fill: currentColor; stroke: none; }
+  .rcard blockquote { margin: 0; flex: 1; font-size: var(--fs-md); line-height: 1.45; color: var(--c-navy-900); font-weight: 500; position: relative; }
+  .rcard__who { display: flex; align-items: center; gap: .75rem; padding-top: var(--sp-3); border-top: 1px solid var(--c-line); }
+  .rcard__ava { flex: none; width: 44px; height: 44px; border-radius: 50%; object-fit: cover; background: var(--c-blue-50); }
+  .rcard__name { display: grid; gap: .15rem; min-width: 0; }
+  .rcard__name strong { font: 700 var(--fs-sm)/1.2 var(--font-head); color: var(--c-navy-900); }
+  @media (min-width: 900px) { .rev { grid-template-columns: repeat(3, 1fr); gap: var(--sp-4); } }
+</style>

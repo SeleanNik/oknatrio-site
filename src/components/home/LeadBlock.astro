@@ -1,0 +1,44 @@
+---
+import Icon from '../Icon.astro';
+import LeadForm from '../LeadForm.astro';
+import { site } from '../../config/site.config.mjs';
+
+const { product = '' } = Astro.props;
+const { lat, lng } = site.geo;
+const mapSrc = `https://yandex.ru/map-widget/v1/?ll=${lng}%2C${lat}&z=16&pt=${lng}%2C${lat}%2Cpm2rdm`;
+---
+<section class="lead-block" id="zayavka" aria-labelledby="lead-title">
+  <div class="container lead-block__grid">
+    <div class="lead-block__left">
+      <h2 id="lead-title">Оставьте заявку</h2>
+      <p class="lead-block__lead">Перезвоним и ответим на все ваши вопросы.</p>
+      <ul class="lead-block__info">
+        <li><Icon name="pin" size={18} /><span data-bind="address.full">{site.address.full}</span></li>
+        <li><Icon name="phone" size={18} /><a href={`tel:${site.phone.href}`} data-bind-href="phone.href" data-bind-prefix="tel:" data-bind="phone.display">{site.phone.display}</a></li>
+        <li><Icon name="clock" size={18} /><span data-bind="hours">{site.hours}</span></li>
+      </ul>
+      <div class="lead-block__map">
+        <iframe src={mapSrc} title={`Карта: ${site.address.city}, ${site.address.street}`} loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+      </div>
+    </div>
+    <div class="lead-block__card">
+      <LeadForm type="measure" idPrefix="home" submitLabel="Оставить заявку" extra={product ? { product } : {}} />
+    </div>
+  </div>
+</section>
+
+<style>
+  .lead-block { padding-block: var(--section-y); color: #fff; background: linear-gradient(135deg, var(--c-navy-900), var(--c-navy-700)); }
+  .lead-block h2 { color: #fff; }
+  .lead-block__grid { display: grid; gap: var(--sp-5); align-items: stretch; }
+  .lead-block__left { display: flex; flex-direction: column; }
+  .lead-block__lead { color: var(--c-on-dark-muted); }
+  .lead-block__info { list-style: none; margin: 0 0 var(--sp-4); padding: 0; display: grid; gap: .5rem; font-size: var(--fs-sm); }
+  .lead-block__info li { display: flex; align-items: center; gap: .6rem; color: #fff; }
+  .lead-block__info a { color: #fff; font-weight: 700; text-decoration: none; }
+  .lead-block__info :global(svg) { color: var(--c-amber-400); flex: none; }
+  .lead-block__map { flex: 1; min-height: 260px; border-radius: var(--r-lg); overflow: hidden; background: var(--c-blue-100); }
+  .lead-block__map iframe { width: 100%; height: 100%; min-height: 260px; border: 0; display: block; }
+  .lead-block__card { background: var(--c-surface); color: var(--c-text); border-radius: var(--r-lg); padding: var(--sp-5); }
+  @media (min-width: 960px) { .lead-block__grid { grid-template-columns: 1fr 1fr; gap: var(--sp-7); } .lead-block__map, .lead-block__map iframe { min-height: 320px; } }
+</style>

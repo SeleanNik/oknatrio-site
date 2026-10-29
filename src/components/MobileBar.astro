@@ -1,0 +1,19 @@
+---
+import { site } from '../config/site.config.mjs';
+---
+<div class="mbar" role="region" aria-label="Быстрая связь">
+  <a class="mbar__call" href={`tel:${site.phone.href}`} data-bind-href="phone.href" data-bind-prefix="tel:">
+    <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11 11 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>
+    Позвонить
+  </a>
+  <a class="mbar__measure" href="/#zayavka">Оставить заявку</a>
+</div>
+
+<style>
+  .mbar { position: fixed; z-index: 90; left: 0; right: 0; bottom: 0; height: var(--mobilebar-h); display: grid; grid-template-columns: 1fr 1.4fr; gap: .5rem; padding: .5rem var(--gutter) calc(.5rem + env(safe-area-inset-bottom)); background: rgb(255 255 255 / .97); border-top: 1px solid var(--c-line); box-sizing: content-box; }
+  .mbar > * { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; border-radius: var(--r-pill); font: 800 var(--fs-sm)/1 var(--font-head); text-decoration: none; border: 0; cursor: pointer; }
+  .mbar__call { background: var(--c-navy-800); color: #fff; }
+  .mbar__call:hover { color: #fff; }
+  .mbar__measure { background: var(--c-amber-500); color: #fff; }
+  @media (min-width: 1024px) { .mbar { display: none; } }
+</style>

@@ -1,0 +1,13 @@
+{
+  "phone": { "display": "+7 (495) 225-44-03", "href": "+74952254403" },
+  "email": "info@oknatrio.ru",
+  "address": {
+    "full": "119620, г. Москва, пр-кт Солнцевский, д. 15",
+    "city": "Москва",
+    "street": "пр-кт Солнцевский, д. 15",
+    "postalCode": "119620"
+  },
+  "hours": "Пн–Вс 09:00–20:00",
+  "whatsapp": "https://wa.me/74952254403",
+  "telegram": "https://t.me/"
+}

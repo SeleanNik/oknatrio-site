@@ -1,0 +1,18 @@
+---
+// Текстовый логотип «ТРИО ИНЖИНИРИНГ» (без картинки-знака).
+const { light = false, compact = false } = Astro.props;
+---
+<a class:list={['logo', { 'logo--light': light, 'logo--compact': compact }]} href="/" aria-label="Трио Инжиниринг — на главную">
+  <span class="logo__text">ТРИО<small>Инжиниринг</small></span>
+</a>
+
+<style>
+  .logo { display: inline-flex; align-items: center; text-decoration: none; color: var(--c-navy-900); }
+  .logo:hover { color: var(--c-navy-900); }
+  .logo--light, .logo--light:hover { color: #fff; }
+  .logo__text { font: 800 1.6rem/1 var(--font-head); letter-spacing: .04em; display: grid; gap: 4px; }
+  .logo__text small { font: 700 .5625rem/1 var(--font-head); letter-spacing: .34em; margin-right: -.34em; text-transform: uppercase; color: var(--c-amber-500); }
+  .logo--light .logo__text small { color: #8fb0ff; }
+  .logo--compact .logo__text { font-size: 1.4rem; gap: 3px; }
+  .logo--compact .logo__text small { font-size: .5rem; }
+</style>

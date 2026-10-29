@@ -1,0 +1,27 @@
+---
+// items: [{ title, href? }] — последний элемент без ссылки. «Главная» добавляется автоматически.
+// Элемент без href (не последний) — просто текст, например «Окна» над разделом.
+import { siteUrl } from '../config/site.config.mjs';
+const { items = [] } = Astro.props;
+const all = [{ title: 'Главная', href: '/' }, ...items];
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: all.map((it, i) => ({
+    '@type': 'ListItem', position: i + 1, name: it.title,
+    ...(it.href ? { item: siteUrl + it.href } : {}),
+  })),
+};
+---
+<nav class="breadcrumbs container" aria-label="Хлебные крошки">
+  <ol>
+    {all.map((it, i) => (
+      <li>
+        {i === all.length - 1
+          ? <span aria-current="page">{it.title}</span>
+          : it.href ? <a href={it.href}>{it.title}</a> : <span>{it.title}</span>}
+      </li>
+    ))}
+  </ol>
+</nav>
+<script type="application/ld+json" set:html={JSON.stringify(ld)} />

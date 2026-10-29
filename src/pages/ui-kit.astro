@@ -1,0 +1,38 @@
+---
+// Внутренняя страница для проверки базовых компонентов (закрыта от индексации, не в sitemap).
+import Base from '../layouts/Base.astro';
+import Button from '../components/Button.astro';
+import Card from '../components/Card.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import LeadForm from '../components/LeadForm.astro';
+const img = 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=640&q=75&fm=webp';
+---
+<Base title="UI-kit" description="Внутренняя страница с компонентами сайта." noindex>
+  <Breadcrumbs items={[{ title: 'UI-kit' }]} />
+  <section class="section" style="padding-top:1rem">
+    <div class="container">
+      <p class="eyebrow">Кнопки</p>
+      <h1>UI-kit «Трио»</h1>
+      <div style="display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:2rem">
+        <Button modal="measure">Оставить заявку</Button>
+        <Button modal="callback" variant="secondary">Заказать звонок</Button>
+        <Button modal="calc" variant="outline">Заявка на расчёт</Button>
+        <Button href="/" size="sm">Small</Button>
+        <Button href="/" size="lg">Large</Button>
+      </div>
+      <div class="section--dark" style="padding:1.5rem;border-radius:16px;margin-bottom:2rem">
+        <Button href="/" variant="ghost-light">Ghost на тёмном</Button>
+      </div>
+
+      <p class="eyebrow">Карточки</p>
+      <div class="grid" style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr));margin-bottom:2rem">
+        <Card href="/okna/pvh/" title="Окна ПВХ" text="Тёплые и тихие окна для квартир и коттеджей." img={img} alt="Окно ПВХ в гостиной" more="Подробнее" />
+        <Card href="/okna/alyuminievye/" title="Алюминиевые окна" img={img} alt="Алюминиевое окно" />
+        <Card title="Без ссылки" text="Статичная карточка." />
+      </div>
+
+      <p class="eyebrow">Форма</p>
+      <div style="max-width:420px"><LeadForm type="measure" idPrefix="kit" /></div>
+    </div>
+  </section>
+</Base>

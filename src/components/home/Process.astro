@@ -1,0 +1,35 @@
+---
+// TODO: сроки изготовления и монтажа — уточнить у клиента
+const steps = [
+  { title: 'Заявка и замер', text: 'Замерщик приезжает бесплатно в удобное время.' },
+  { title: 'Расчёт и договор', text: 'Фиксируем цену и сроки в договоре.' },
+  { title: 'Изготовление', text: 'Делаем окна по вашим размерам.' },
+  { title: 'Монтаж и сдача', text: 'Устанавливаем, убираем, даём гарантию.' },
+];
+---
+<section class="process" aria-labelledby="process-title">
+  <div class="container">
+    <h2 id="process-title">Как мы работаем</h2>
+    <ol class="steps">
+      {steps.map((s, i) => (
+        <li><span class="steps__n">{i + 1}</span><div><h3>{s.title}</h3><p>{s.text}</p></div></li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  /* фон — «оконный переплёт» из тонких линий, без фото */
+  .process { padding-block: var(--section-y); color: #fff; background:
+    linear-gradient(90deg, transparent calc(33.33% - 1px), rgb(255 255 255 / .06) 33.33%, transparent calc(33.33% + 1px)),
+    linear-gradient(90deg, transparent calc(66.66% - 1px), rgb(255 255 255 / .06) 66.66%, transparent calc(66.66% + 1px)),
+    linear-gradient(135deg, var(--c-navy-900), var(--c-navy-700)); }
+  .process h2 { color: #fff; margin-bottom: var(--sp-4); }
+  .steps { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-3); grid-template-columns: 1fr; }
+  .steps li { display: flex; gap: var(--sp-3); align-items: flex-start; }
+  .steps__n { flex: none; display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: var(--c-amber-500); color: #fff; font: 800 var(--fs-sm)/1 var(--font-head); }
+  .steps h3 { color: #fff; font-size: var(--fs-sm); margin: 0 0 .15em; }
+  .steps p { margin: 0; color: var(--c-on-dark-muted); font-size: var(--fs-xs); line-height: 1.4; }
+  @media (min-width: 640px) { .steps { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1024px) { .steps { grid-template-columns: repeat(4, 1fr); gap: var(--sp-5); } }
+</style>

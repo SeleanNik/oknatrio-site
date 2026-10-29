@@ -1,0 +1,22 @@
+---
+// Один маршрут для двух источников:
+//  • страницы-разделы из config/razdely.mjs (/okna/alyuminievye/, /okna/pvh/)
+//  • информационные страницы из коллекции pages (/politika-konfidencialnosti/)
+import { getCollection, render } from 'astro:content';
+import InfoLayout from '../layouts/InfoLayout.astro';
+import RazdelLayout from '../layouts/RazdelLayout.astro';
+import { razdely } from '../config/razdely.mjs';
+
+export async function getStaticPaths() {
+  const razdel = Object.values(razdely).map((r) => ({ params: { page: r.path.slice(1, -1) }, props: { r } }));
+  const entries = await getCollection('pages');
+  const info = entries.map((entry) => ({ params: { page: entry.id }, props: { entry } }));
+  return [...razdel, ...info];
+}
+
+const { r, entry } = Astro.props;
+const Content = entry ? (await render(entry)).Content : null;
+---
+{r ? <RazdelLayout r={r} /> : (
+  <InfoLayout data={entry.data} path={`/${entry.id}/`}><Content /></InfoLayout>
+)}

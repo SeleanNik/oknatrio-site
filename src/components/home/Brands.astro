@@ -1,0 +1,44 @@
+---
+// «С кем мы работаем»: бегущая строка с брендами профилей (вторая секция главной, перед «Продукцией»).
+// Лёгкая CSS-анимация (transform), без JS. TODO: логотипы брендов вместо текста.
+const brands = ['Alutech', 'Schuco', 'VEKA'];
+const loop = [...brands, ...brands, ...brands]; // одна «лента»; вторая копия нужна для бесшовного цикла
+---
+<section class="brands" aria-label="Системы профилей, с которыми мы работаем">
+  <div class="container brands__cap">
+    <span class="brands__dot"></span>
+    <p>С кем мы работаем</p>
+  </div>
+  <div class="brands__marquee" aria-hidden="true">
+    <div class="brands__track">
+      {[0, 1].map(() => (
+        <ul class="brands__lane">
+          {loop.map((b, i) => (
+            <li class={i % 2 ? 'is-outline' : ''}><span>{b}</span><i></i></li>
+          ))}
+        </ul>
+      ))}
+    </div>
+  </div>
+  <ul class="sr-only">{brands.map((b) => <li>{b}</li>)}</ul>
+</section>
+
+<style>
+  .brands { background: #0b1522; color: #fff; padding-block: var(--sp-6) var(--sp-2); overflow: hidden; }
+  .brands__cap { display: flex; align-items: center; gap: .6rem; margin-bottom: var(--sp-4); }
+  .brands__cap p { margin: 0; font: 600 .75rem/1 var(--font-head); letter-spacing: .24em; text-transform: uppercase; color: rgb(255 255 255 / .55); }
+  .brands__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--c-amber-500); box-shadow: 0 0 0 4px rgb(54 114 255 / .22); }
+
+  .brands__marquee { position: relative; border-block: 1px solid rgb(255 255 255 / .1);
+    -webkit-mask: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+            mask: linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent); }
+  .brands__track { display: flex; width: max-content; animation: brands-run 40s linear infinite; will-change: transform; }
+  .brands__lane { list-style: none; margin: 0; padding: 0; display: flex; flex: none; }
+  .brands__lane li { display: flex; align-items: center; gap: clamp(1.5rem, 3vw, 3rem); padding: clamp(.9rem, 2vw, 1.5rem) 0 clamp(.9rem, 2vw, 1.5rem) clamp(1.5rem, 3vw, 3rem); }
+  .brands__lane span { font: 800 clamp(2rem, 1.2rem + 4vw, 4.25rem)/1 var(--font-head); letter-spacing: -.02em; text-transform: uppercase; color: rgb(255 255 255 / .92); white-space: nowrap; }
+  .brands__lane .is-outline span { color: transparent; -webkit-text-stroke: 1.2px rgb(255 255 255 / .5); }
+  .brands__lane i { width: 12px; height: 12px; flex: none; background: var(--c-amber-500); transform: rotate(45deg); border-radius: 2px; }
+
+  @keyframes brands-run { to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) { .brands__track { animation: none; } }
+</style>

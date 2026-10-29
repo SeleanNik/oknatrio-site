@@ -1,0 +1,25 @@
+node_modules
+dist
+.astro
+.env
+_archive/
+
+# секреты и данные сервера
+form-config.php
+public/form-config.php
+public/admin/_data/*
+!public/admin/_data/.htaccess
+!public/admin/_data/index.html
+public/uploads/*
+!public/uploads/.htaccess
+public/docs/files/*
+
+# служебное
+references/
+.claude/
+.tools/
+.DS_Store
+tools/*.sqlite
+
+# PDF-каталоги производителей: тяжёлые (до 100 МБ) и чужие, на хостинг заливаются вручную
+public/docs/**/*.pdf

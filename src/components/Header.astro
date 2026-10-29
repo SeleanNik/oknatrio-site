@@ -1,0 +1,140 @@
+---
+import Logo from './Logo.astro';
+import Button from './Button.astro';
+import { nav } from '../config/nav.mjs';
+import { site } from '../config/site.config.mjs';
+
+const path = Astro.url.pathname;
+const isActive = (item) => {
+  const hrefs = [item.href, ...(item.groups ?? []).map((g) => g.href)].filter((h) => h && !h.includes('#'));
+  return hrefs.some((h) => (h === '/' ? false : path.startsWith(h)));
+};
+---
+<header class="header" data-header>
+  <div class="container header__bar">
+    <Logo compact />
+
+    <nav class="nav" aria-label="Основное меню">
+      <ul class="nav__list">
+        {nav.map((item) => (
+          <li class:list={['nav__item', { 'nav__item--sub': item.groups }]}>
+            {item.groups && !item.href ? (
+              <button class="nav__link" type="button" aria-expanded="false" aria-current={isActive(item) ? 'true' : undefined}>{item.title}</button>
+            ) : (
+              <a class="nav__link" href={item.href} aria-current={isActive(item) ? 'true' : undefined}>{item.title}</a>
+            )}
+            {item.groups && (
+              <div class="nav__panel">
+                <div class="container nav__cols">
+                  {item.groups.map((g) => (
+                    <div class="nav__col">
+                      <a class="nav__head" href={g.href}>{g.title}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" /></svg></a>
+                      <ul>{g.links.map(([t, h]) => <li><a href={h}>{t}</a></li>)}</ul>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <div class="header__actions">
+      <a class="header__phone" href={`tel:${site.phone.href}`} data-bind-href="phone.href" data-bind-prefix="tel:" aria-label={`Позвонить: ${site.phone.display}`}>
+        <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M6.6 10.8a15 15 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25 11 11 0 0 0 3.6.58 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1z"/></svg>
+        <span class="header__phone-text" data-bind="phone.display">{site.phone.display}</span>
+      </a>
+      <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobile-menu" data-burger>
+        <span></span><span></span>
+      </button>
+    </div>
+  </div>
+  <div class="navdim" aria-hidden="true"></div>
+
+  <div class="mmenu" id="mobile-menu" hidden data-mmenu>
+    <div class="container">
+      <ul class="mmenu__list">
+        {nav.map((item) => (
+          <li>
+            {item.groups ? (
+              <details>
+                <summary>{item.title}</summary>
+                <div class="mmenu__sub">
+                  {item.groups.map((g) => (
+                    <>
+                      <a class="mmenu__all" href={g.href}>{g.title} →</a>
+                      <ul>{g.links.map(([t, h]) => <li><a href={h}>{t}</a></li>)}</ul>
+                    </>
+                  ))}
+                </div>
+              </details>
+            ) : (
+              <a class="mmenu__link" href={item.href}>{item.title}</a>
+            )}
+          </li>
+        ))}
+      </ul>
+      <Button href="/#zayavka" block>Оставить заявку</Button>
+      <p class="mmenu__contact"><span data-bind="address.full">{site.address.full}</span> · <span data-bind="hours">{site.hours}</span></p>
+    </div>
+  </div>
+</header>
+
+<style>
+  .header { position: sticky; top: 0; z-index: 100; background: #fff; border-bottom: 1px solid var(--c-line); }
+  .header__bar { height: var(--header-h); display: flex; align-items: center; gap: var(--sp-4); }
+  .nav { display: none; margin-inline: auto; }
+  .header__actions { display: flex; align-items: center; gap: var(--sp-2); margin-left: auto; }
+  .header__phone { display: inline-flex; align-items: center; gap: .45rem; font: 700 .9375rem/1 var(--font-head); color: var(--c-navy-900); text-decoration: none; min-height: 40px; padding-inline: .5rem; white-space: nowrap; }
+  .header__phone svg { color: var(--c-blue-600); }
+  .header__phone-text { display: none; }
+
+  .burger { width: 36px; height: 36px; border: 0; background: transparent; display: grid; place-content: center; gap: 6px; cursor: pointer; }
+  .burger span { width: 20px; height: 1.8px; background: var(--c-navy-800); border-radius: 2px; transition: transform .25s var(--ease); }
+  .burger[aria-expanded="true"] span:nth-child(1) { transform: translateY(4px) rotate(45deg); }
+  .burger[aria-expanded="true"] span:nth-child(2) { transform: translateY(-4px) rotate(-45deg); }
+
+  .mmenu { position: fixed; inset: var(--header-h) 0 0 0; background: #fff; overflow-y: auto; padding-block: var(--sp-2) calc(var(--sp-5) + var(--mobilebar-h)); }
+  .mmenu__list { list-style: none; margin: 0 0 var(--sp-4); padding: 0; }
+  .mmenu__list > li { border-bottom: 1px solid var(--c-line); }
+  .mmenu summary, .mmenu__link { display: flex; justify-content: space-between; align-items: center; min-height: 50px; font: 700 var(--fs-md)/1.2 var(--font-head); color: var(--c-navy-800); text-decoration: none; cursor: pointer; list-style: none; }
+  .mmenu summary::-webkit-details-marker { display: none; }
+  .mmenu summary::after { content: '+'; font-size: 1.4rem; color: var(--c-blue-600); }
+  .mmenu details[open] summary::after { content: '\2212'; }
+  .mmenu__sub { padding-bottom: var(--sp-3); }
+  .mmenu__sub ul { list-style: none; padding: 0; margin: 0 0 var(--sp-2); }
+  .mmenu__sub li a { display: block; padding: .5rem 0; color: var(--c-text); text-decoration: none; font-size: var(--fs-sm); }
+  .mmenu__all { display: inline-block; padding: .4rem 0; font: 700 var(--fs-sm)/1.2 var(--font-head); text-decoration: none; }
+  .mmenu__contact { color: var(--c-text-muted); font-size: var(--fs-xs); margin-top: var(--sp-4); }
+
+  .header__phone, .nav__link { white-space: nowrap; }
+  @media (min-width: 640px) { .header__phone-text { display: inline; } }
+  @media (min-width: 1024px) and (max-width: 1279px) { .header__phone-text { display: none; } .nav__link { padding-inline: .8rem; font-size: .875rem; } }
+  @media (min-width: 1024px) {
+    .burger, .mmenu { display: none !important; }
+    .nav { display: block; }
+    .nav__list { display: flex; gap: 0; list-style: none; margin: 0; padding: 0; }
+    .nav__link { display: inline-flex; align-items: center; height: var(--header-h); padding-inline: 1.15rem; font: 600 .9375rem/1 var(--font-head); color: var(--c-navy-900); text-decoration: none; background: none; border: 0; cursor: pointer; transition: color .2s; }
+    .nav__item:hover > .nav__link, .nav__link[aria-current="true"] { color: var(--c-blue-600); }
+
+    /* Выпадающее меню в стиле Apple: на всю ширину, матовое стекло, плавное появление, затемнение страницы */
+    .nav__panel { position: absolute; top: 100%; left: 0; right: 0; background: rgb(255 255 255 / .985); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--c-line); padding: var(--sp-5) 0 var(--sp-6); opacity: 0; visibility: hidden; transform: translateY(-6px); transition: opacity .25s var(--ease), transform .25s var(--ease), visibility 0s linear .25s; }
+    .nav__item:hover > .nav__panel, .nav__item:focus-within > .nav__panel { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+    .nav__cols { display: flex; gap: var(--sp-8); }
+    .nav__col { min-width: 220px; }
+    .nav__col ul { list-style: none; margin: var(--sp-3) 0 0; padding: 0; display: grid; gap: .1rem; }
+    .nav__head { display: inline-flex; align-items: center; gap: .4rem; font: 700 var(--fs-xs)/1 var(--font-head); letter-spacing: .02em; color: var(--c-text-muted); text-decoration: none; }
+    .nav__head:hover { color: var(--c-blue-600); }
+    .nav__col li a { display: block; padding: .25rem 0; font: 700 1.125rem/1.25 var(--font-head); letter-spacing: -.01em; color: var(--c-navy-800); text-decoration: none; transition: color .15s, transform .25s var(--ease), opacity .25s; opacity: 0; transform: translateY(6px); }
+    .nav__item:hover .nav__col li a, .nav__item:focus-within .nav__col li a { opacity: 1; transform: none; }
+    .nav__col li a:hover { color: var(--c-blue-600); }
+    .nav__col li:nth-child(2) a { transition-delay: .03s, .03s, .03s; }
+    .nav__col li:nth-child(3) a { transition-delay: .06s, .06s, .06s; }
+    .nav__col li:nth-child(4) a { transition-delay: .09s, .09s, .09s; }
+    .nav__col li:nth-child(5) a { transition-delay: .12s, .12s, .12s; }
+    .nav__col li:nth-child(6) a { transition-delay: .15s, .15s, .15s; }
+    .navdim { position: fixed; inset: var(--header-h) 0 0 0; background: rgb(11 15 20 / .45); opacity: 0; pointer-events: none; transition: opacity .25s; z-index: -1; }
+    .header:has(.nav__item--sub:hover) .navdim, .header:has(.nav__item--sub:focus-within) .navdim { opacity: 1; }
+  }
+</style>

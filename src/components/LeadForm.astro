@@ -1,0 +1,64 @@
+---
+// type: callback | measure | calc — набор полей; обработчик: /form-handler.php
+const { type = 'callback', idPrefix = type, submitLabel = 'Отправить заявку', extra = {} } = Astro.props;
+const id = (n) => `${idPrefix}-${n}`;
+const withFiles = type === 'measure' || type === 'calc';
+---
+<form class="form" method="post" action="/form-handler.php" enctype="multipart/form-data" novalidate data-lead-form>
+  <input type="hidden" name="form_type" value={type} />
+  <input type="hidden" name="page" value="" data-page />
+  <input type="hidden" name="ts" value="" data-ts />
+  {Object.entries(extra).map(([k, v]) => <input type="hidden" name={k} value={v} />)}
+  <div class="hp" aria-hidden="true">
+    <label for={id('website')}>Не заполняйте это поле</label>
+    <input type="text" id={id('website')} name="website" tabindex="-1" autocomplete="off" />
+  </div>
+
+  <div class="form__row">
+    <div class="field">
+      <label for={id('name')}>Ваше имя</label>
+      <input class="input" id={id('name')} name="name" type="text" autocomplete="name" required />
+      <span class="field__error" role="alert" data-error-for="name"></span>
+    </div>
+    <div class="field">
+      <label for={id('phone')}>Телефон</label>
+      <input class="input" id={id('phone')} name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="+7 (___) ___-__-__" required />
+      <span class="field__error" role="alert" data-error-for="phone"></span>
+    </div>
+  </div>
+  {type === 'measure' && (
+    <div class="field">
+      <label for={id('email')}>Ваша почта</label>
+      <input class="input" id={id('email')} name="email" type="email" autocomplete="email" placeholder="name@example.com" required />
+      <span class="field__error" role="alert" data-error-for="email"></span>
+    </div>
+  )}
+  {(type === 'calc' || type === 'measure') && (
+    <div class="field">
+      <label for={id('comment')}>Комментарий</label>
+      <textarea class="input" id={id('comment')} name="comment" rows="2" placeholder="Если у вас есть пожелания, напишите их здесь: что нужно остеклить, размеры, сроки"></textarea>
+    </div>
+  )}
+
+  {withFiles && (
+    <div class="upload" data-upload>
+      <input class="upload__input" id={id('files')} type="file" name="files[]" multiple accept="image/*,.pdf,.dwg,.doc,.docx,.xls,.xlsx" data-files />
+      <label class="upload__btn" for={id('files')}>
+        <svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M21 12.5l-8.6 8.6a5 5 0 0 1-7-7l9-9a3.5 3.5 0 0 1 5 5l-9 9a2 2 0 0 1-3-3l8.3-8.3" /></svg>
+        <span data-upload-label>Прикрепить файл</span>
+      </label>
+      <span class="upload__hint" data-upload-hint>До 3 файлов, по 10 МБ</span>
+      <ul class="upload__list" data-file-list></ul>
+      <span class="field__error" role="alert" data-error-for="files"></span>
+    </div>
+  )}
+
+  <label class="consent">
+    <input type="checkbox" name="consent" required />
+    <span>Я согласен(а) на обработку <a href="/politika-konfidencialnosti/" target="_blank">персональных данных</a> в соответствии с 152-ФЗ</span>
+  </label>
+  <span class="field__error" role="alert" data-error-for="consent"></span>
+
+  <button class="btn btn--lg btn--block btn--dark" type="submit">{submitLabel}</button>
+  <p class="form__status" role="status" aria-live="polite" data-status></p>
+</form>

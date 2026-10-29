@@ -1,0 +1,54 @@
+---
+import '@fontsource-variable/manrope';
+import '@fontsource-variable/inter';
+import '../styles/tokens.css';
+import '../styles/base.css';
+import '../styles/ui.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import MobileBar from '../components/MobileBar.astro';
+import Modals from '../components/Modals.astro';
+import { site, siteUrl } from '../config/site.config.mjs';
+
+const { title, description, noindex = false, image = '/og-default.jpg', jsonLd = [] } = Astro.props;
+const fullTitle = title.includes(site.name) ? title : `${title} — ${site.name}`;
+const canonical = siteUrl + Astro.url.pathname;
+const robots = noindex || site.noindex ? 'noindex, nofollow' : 'index, follow';
+const ym = site.ymId;
+---
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <meta name="robots" content={robots} />
+    <meta name="theme-color" content="#12324a" />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:type" content="website" />
+    <meta property="og:locale" content="ru_RU" />
+    <meta property="og:site_name" content={site.name} />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={siteUrl + image} />
+    <meta name="twitter:card" content="summary_large_image" />
+    {jsonLd.map((d) => <script type="application/ld+json" set:html={JSON.stringify(d)} />)}
+    {ym && (
+      <script is:inline set:html={`window.__YM_ID__=${Number(ym)};(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,'script','https://mc.yandex.ru/metrika/tag.js','ym');ym(${Number(ym)},'init',{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:false});`} />
+    )}
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Перейти к содержимому</a>
+    <Header />
+    <main id="main"><slot /></main>
+    <Footer />
+    <MobileBar />
+    <Modals />
+    <script src="../scripts/ui.js"></script>
+    <script src="../scripts/live-data.js"></script>
+    <script src="../scripts/stat.js"></script>
+  </body>
+</html>

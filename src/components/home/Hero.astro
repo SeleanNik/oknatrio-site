@@ -1,0 +1,43 @@
+---
+import Img from '../Img.astro';
+import Button from '../Button.astro';
+import { pagesData } from '../../config/pages.mjs';
+const hero = pagesData.home.hero;
+
+// Главный экран (референс клиента: фото дома на весь экран, стеклянная карточка справа внизу).
+// Заголовок строго в 2 строки. TODO: итоговое фото дома с окнами от клиента (сейчас сток).
+---
+<section class="hero">
+  <Img class="hero__bg" photo="houseGlass" alt="Загородный дом с панорамными окнами" ratio={0.6} widths={[900, 1400, 2000, 2600]} sizes="100vw" eager />
+  <div class="hero__shade"></div>
+
+  <div class="container hero__inner">
+    <div class="hero__text">
+      <h1><span data-ed="home.hero.0">{hero[0]}</span> <span data-ed="home.hero.1">{hero[1]}</span></h1>
+      <div class="hero__cta">
+        <Button href="/#zayavka" size="lg">Оставить заявку</Button>
+        <Button href="#produkciya" variant="ghost-light" size="lg">Узнать больше</Button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<style>
+  .hero { position: relative; isolation: isolate; color: #fff; background: #0b1522; overflow: hidden;
+    height: calc(100svh - var(--header-h)); min-height: 520px; display: flex; align-items: center; }
+  .hero :global(.hero__bg) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 55%; z-index: -3; }
+  .hero__shade { position: absolute; inset: 0; z-index: -2;
+    background:
+      linear-gradient(90deg, rgb(8 16 26 / .72) 0%, rgb(8 16 26 / .35) 45%, rgb(8 16 26 / 0) 75%),
+      linear-gradient(180deg, rgb(8 16 26 / .35) 0%, rgb(8 16 26 / 0) 25%, rgb(8 16 26 / 0) 60%, rgb(8 16 26 / .7) 88%, #0b1522 100%); }
+  /* блок текста стоит чуть выше геометрического центра */
+  .hero__inner { width: 100%; padding-block: 0 calc(var(--mobilebar-h) + 4svh); margin-top: -4svh; }
+  .hero h1 { color: #fff; font-weight: 700; letter-spacing: -.035em; line-height: 1.02; margin: 0 0 clamp(1.25rem, 2.5vw, 2.25rem);
+    font-size: clamp(1.7rem, 6.3vw, 5rem); text-shadow: 0 2px 40px rgb(0 0 0 / .4); }
+  .hero h1 span { display: block; white-space: nowrap; }
+  .hero h1 span + span { color: rgb(255 255 255 / .82); font-weight: 500; }
+  .hero__cta { display: flex; flex-wrap: wrap; gap: var(--sp-3); }
+
+  @media (min-width: 900px) { .hero__inner { padding-bottom: 0; margin-top: -6svh; } }
+</style>

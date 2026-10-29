@@ -1,0 +1,24 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/home/Hero.astro';
+import Brands from '../components/home/Brands.astro';
+import Entries from '../components/home/Entries.astro';
+import Advantages from '../components/home/Advantages.astro';
+import Works from '../components/home/Works.astro';
+import Reviews from '../components/home/Reviews.astro';
+import LeadBlock from '../components/home/LeadBlock.astro';
+import { localBusiness } from '../config/schema.mjs';
+---
+<Base
+  title="Алюминиевые окна и окна ПВХ в Москве"
+  description="Трио: алюминиевые окна и окна ПВХ, двери, фасады, остекление балконов и лоджий в Москве. Бесплатный замер, цена в договоре, монтаж по ГОСТ, гарантия."
+  jsonLd={[localBusiness]}
+>
+  <Hero />
+  <Brands />
+  <Entries />
+  <Advantages />
+  <Works />
+  <Reviews />
+  <LeadBlock />
+</Base>

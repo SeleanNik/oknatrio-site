@@ -1,0 +1,55 @@
+---
+// «Наши работы» в стиле референса клиента (портфолио-bento): текстовый блок + фото разной высоты с подписью.
+import { pagesData } from '../../config/pages.mjs';
+import Icon from '../Icon.astro';
+import { works } from '../../config/works.mjs'; // TODO: реальные объекты
+const items = works.slice(0, 5);
+const hw = pagesData.home.works;
+---
+<section class="works" id="raboty" aria-labelledby="works-title">
+  <div class="container">
+    <div class="grid">
+      <div class="intro">
+        <h2 id="works-title" data-ed="home.works.title">{hw.title}</h2>
+        <p data-ed="home.works.text">{hw.text}</p>
+        <a class="intro__btn" href="/nashi-raboty/">Все работы <Icon name="arrow" size={18} /></a>
+      </div>
+      {items.map((w, i) => (
+        <figure class={`w w--${i + 1}`} data-ed-work={i} data-gallery={JSON.stringify(w.images)}>
+          <img src={w.image} alt={w.title} width="800" height="1000" loading="lazy" decoding="async" />
+          <figcaption><strong>{w.title}</strong><span>{w.place}</span></figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .works { padding-block: var(--section-y); background: var(--c-bg); }
+  .grid { display: grid; gap: var(--sp-3); grid-template-columns: 1fr 1fr; }
+  .intro { grid-column: 1 / -1; padding-bottom: var(--sp-2); }
+  .intro h2 { margin-bottom: .35em; font-weight: 500; letter-spacing: -.02em; font-size: clamp(1.75rem, 1.3rem + 1.8vw, 2.5rem); }
+  .intro p { margin: 0; color: var(--c-text-muted); font-size: var(--fs-sm); max-width: 38ch; }
+  .intro__btn { display: inline-flex; align-items: center; gap: .5rem; margin-top: var(--sp-4); min-height: 44px; padding: .55rem 1.25rem; border-radius: var(--r-pill); background: #0b0f14; color: #fff; text-decoration: none; font: 700 var(--fs-sm)/1 var(--font-head); transition: background .2s, gap .2s var(--ease); }
+  .intro__btn:hover { background: var(--c-amber-500); color: #fff; gap: .8rem; }
+  .w { position: relative; margin: 0; border-radius: 22px; overflow: hidden; background: var(--c-navy-800); min-height: 190px; }
+  .w :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease); }
+  .w:hover :global(img) { transform: scale(1.04); }
+  .w figcaption { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; display: grid; gap: .1rem; padding: 3rem 1rem 2.4rem; background: linear-gradient(180deg, transparent, rgb(8 16 26 / .66)); color: #fff; pointer-events: none; opacity: 0; transform: translateY(6px); transition: opacity .25s, transform .25s; }
+  .w:hover figcaption { opacity: 1; transform: none; }
+  @media (hover: none) { .w figcaption { opacity: 1; transform: none; } }
+  .w figcaption strong { font: 600 var(--fs-sm)/1.25 var(--font-head); }
+  .w figcaption span { font-size: var(--fs-xs); color: rgb(255 255 255 / .78); }
+  .w--1 { grid-column: 1 / -1; min-height: 240px; }
+
+  @media (min-width: 900px) {
+    .grid { grid-template-columns: 1fr 1.25fr 1fr; grid-template-rows: repeat(3, 190px); gap: var(--sp-4); }
+    .intro { grid-column: 1; grid-row: 1; padding: var(--sp-2) var(--sp-3) 0 0; }
+    .w { min-height: 0; }
+    .w--1 { grid-column: 1; grid-row: 2 / 4; }
+    .w--2 { grid-column: 2; grid-row: 1 / 3; }
+    .w--3 { grid-column: 2; grid-row: 3; }
+    .w--4 { grid-column: 3; grid-row: 1; }
+    .w--5 { grid-column: 3; grid-row: 2 / 4; }
+  }
+</style>

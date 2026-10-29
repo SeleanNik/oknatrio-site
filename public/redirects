@@ -1,0 +1,8 @@
+# Заготовка 301-редиректов со старых URL (заполняет владелец сайта).
+# Формат: <старый путь> <новый путь> 301
+# Пример:
+# /plastikovye-okna/ /okna/pvh/ 301
+# /catalog/alyuminievye-okna/ /okna/alyuminievye/ 301
+#
+# Для Apache эти строки конвертируются в .htaccess (Redirect 301 ...);
+# окнатрио.рф -> oknatrio.ru редиректится на уровне хостинга/DNS.

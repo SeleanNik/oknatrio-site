@@ -1,0 +1,96 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Button from '../components/Button.astro';
+import { pagesData } from '../config/pages.mjs';
+import { works, workFilters } from '../config/works.mjs'; // TODO: реальные объекты
+
+const tagLabel = { apartment: 'Квартира', cottage: 'Коттедж', balcony: 'Балкон', aluminum: 'Алюминий', pvc: 'ПВХ' };
+---
+<Base
+  title="Наши работы — объекты и фото"
+  description="Выполненные работы компании «Трио»: алюминиевые конструкции и окна ПВХ для квартир и коттеджей, остекление балконов и фасадов."
+>
+  <Breadcrumbs items={[{ title: 'Наши работы' }]} />
+  <section class="section" style="padding-top:var(--sp-4)">
+    <div class="container">
+      <div class="sec-head"><h1>Наши работы</h1><p data-ed="works.lead">{pagesData.works?.lead}</p></div>
+
+      <div class="filters" role="group" aria-label="Фильтр работ">
+        {workFilters.map((f, i) => (
+          <button type="button" class="chip" data-filter={f.key} aria-pressed={i === 0 ? 'true' : 'false'}>{f.label}</button>
+        ))}
+      </div>
+
+      <ul class="works" data-works>
+        {works.map((w) => (
+          <li data-tags={w.tags.join(' ')}>
+            <figure>
+              <div class="wmedia" data-gallery={JSON.stringify(w.images)}>
+                <img src={w.image} alt={w.title} width="800" height="600" loading="lazy" decoding="async" />
+              </div>
+              <figcaption>
+                <small>{w.tags.map((t) => tagLabel[t]).join(' · ')}</small>
+                <strong>{w.title}</strong>
+                <span>{w.place}</span>
+              </figcaption>
+            </figure>
+          </li>
+        ))}
+      </ul>
+      <p class="empty" data-empty hidden>В этой категории пока нет объектов.</p>
+
+      <div class="cta">
+        <h2>Хотите такой же результат?</h2>
+        <Button href="/#zayavka" size="lg">Оставить заявку</Button>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const list = document.querySelector('[data-works]');
+  const empty = document.querySelector('[data-empty]');
+  const chips = document.querySelectorAll('[data-filter]');
+  const apply = (key) => {
+    let shown = 0;
+    list.querySelectorAll('li').forEach((li) => {
+      const ok = key === 'all' || li.dataset.tags.split(' ').includes(key);
+      li.hidden = !ok;
+      if (ok) shown++;
+    });
+    empty.hidden = shown > 0;
+    chips.forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.filter === key)));
+  };
+  chips.forEach((c) => c.addEventListener('click', () => {
+    apply(c.dataset.filter);
+    history.replaceState(null, '', c.dataset.filter === 'all' ? location.pathname : `#${c.dataset.filter}`);
+  }));
+  const initial = location.hash.slice(1);
+  if ([...chips].some((c) => c.dataset.filter === initial)) apply(initial);
+</script>
+
+<style>
+  .filters { display: flex; flex-wrap: wrap; gap: var(--sp-2); margin-bottom: var(--sp-5); }
+  .chip { min-height: 44px; padding: .5rem 1.1rem; border-radius: var(--r-pill); border: 1.5px solid var(--c-line); background: #fff; color: var(--c-navy-800); font: 700 var(--fs-sm)/1 var(--font-head); cursor: pointer; transition: background .15s, color .15s, border-color .15s; }
+  .chip:hover { border-color: var(--c-navy-800); }
+  .chip[aria-pressed="true"] { background: var(--c-navy-800); border-color: var(--c-navy-800); color: #fff; }
+  .works { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-4); grid-template-columns: 1fr; }
+  .works li[hidden] { display: none; }
+  /* минимализм: фото на всю карточку, подпись появляется только при наведении */
+  .works figure { position: relative; margin: 0; aspect-ratio: 4 / 3; border-radius: 22px; overflow: hidden; background: var(--c-navy-800); }
+  .wmedia { position: absolute; inset: 0; }
+  .wmedia :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease); }
+  .works figure:hover .wmedia :global(img) { transform: scale(1.04); }
+  .works figcaption { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; display: grid; gap: .1rem; padding: 3rem 1rem 2.4rem; background: linear-gradient(180deg, transparent, rgb(8 16 26 / .62)); color: #fff; pointer-events: none; opacity: 0; transform: translateY(6px); transition: opacity .25s, transform .25s; }
+  .works figure:hover figcaption { opacity: 1; transform: none; }
+  @media (hover: none) { .works figcaption { opacity: 1; transform: none; } }
+  .works small { display: none; }
+  .works strong { font: 600 var(--fs-sm)/1.25 var(--font-head); color: #fff; }
+  .works span { font-size: var(--fs-xs); color: rgb(255 255 255 / .75); }
+  .empty { color: var(--c-text-muted); }
+  .cta { margin-top: var(--sp-8); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-4); padding: var(--sp-6); background: var(--c-navy-800); border-radius: var(--r-lg); }
+  .cta h2 { color: #fff; margin: 0; font-size: var(--fs-h3); }
+  @media (min-width: 600px) { .works { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 1000px) { .works { grid-template-columns: repeat(3, 1fr); gap: var(--sp-5); } }
+</style>

@@ -1,0 +1,39 @@
+---
+// Блок «Услуги» (якорь #uslugi в меню) по референсу клиента: 4 колонки с крупными номерами и тонкой вертикальной линией.
+// TODO: подтвердить перечень услуг и тексты с клиентом
+import { pagesData } from '../../config/pages.mjs';
+const services = pagesData.home.services;
+const items = services.items;
+---
+<section class="uslugi" id="uslugi" aria-labelledby="adv-title">
+  <div class="container">
+    <div class="uslugi__head">
+      <h2 id="adv-title" data-ed="home.services.title">{services.title}</h2>
+    </div>
+
+    <ol class="uslugi__grid">
+      {items.map((i, n) => (
+        <li class="uc">
+          <span class="uc__num">0{n + 1}</span>
+          <h3 data-ed={`home.services.items.${n}.title`}>{i.title}</h3>
+        </li>
+      ))}
+    </ol>
+  </div>
+</section>
+
+<style>
+  .uslugi { background: #12161c; color: #fff; padding-block: var(--section-y); }
+  .uslugi__head { margin-bottom: var(--sp-6); }
+  .uslugi h2 { color: #fff; margin: 0; font-weight: 500; letter-spacing: -.02em; font-size: clamp(2rem, 1.4rem + 2.6vw, 3.5rem); line-height: 1; display: flex; align-items: center; gap: .6em; }
+  .uslugi h2::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, rgb(255 255 255 / .28), transparent); }
+
+  /* 4 колонки: тонкая вертикальная линия, крупный номер, короткий заголовок (референс клиента) */
+  .uslugi__grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-6) var(--sp-4); }
+  .uc { position: relative; padding-left: var(--sp-4); border-left: 2px solid rgb(120 150 255 / .55); display: grid; align-content: start; gap: .6rem; transition: border-color .3s; }
+  .uc:hover { border-color: var(--c-amber-500); }
+  .uc__num { font: 700 clamp(2.75rem, 2rem + 3.6vw, 4.5rem)/1 var(--font-head); letter-spacing: -.02em; color: #8da9ff; opacity: .9; }
+  .uc h3 { margin: 0; max-width: 24ch; font: 500 clamp(.95rem, .9rem + .3vw, 1.1rem)/1.35 var(--font-body); color: rgb(255 255 255 / .88); }
+
+  @media (min-width: 900px) { .uslugi__grid { grid-template-columns: repeat(4, 1fr); gap: var(--sp-4); } .uc { padding-left: var(--sp-5); } }
+</style>

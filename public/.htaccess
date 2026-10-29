@@ -1,0 +1,23 @@
+# Apache: HTTPS, 404-страница, редиректы. Домен в коде сайта не используется,
+# поэтому правила с доменом ниже закомментированы — раскомментировать при деплое.
+ErrorDocument 404 /404.html
+DirectoryIndex index.html
+
+RewriteEngine On
+
+# Принудительный HTTPS (не зависит от домена)
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP:X-Forwarded-Proto} !https
+RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# окнатрио.рф -> основной домен (301). TODO: подставить punycode и основной домен при деплое
+# RewriteCond %{HTTP_HOST} ^(www\.)?xn--80aqemdemp\.xn--p1ai$ [NC]
+# RewriteRule ^(.*)$ https://oknatrio.ru/$1 [L,R=301]
+
+# 301 со старых URL: переносить строки из файла "redirects", например:
+# Redirect 301 /plastikovye-okna/ /okna/pvh/
+
+# Заявки обрабатывает form-handler.php; конфиг с e-mail закрыт от прямого доступа
+<Files "form-config.php">
+  Require all denied
+</Files>

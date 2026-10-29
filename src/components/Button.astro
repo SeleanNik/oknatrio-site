@@ -1,0 +1,12 @@
+---
+// variant: primary | secondary | outline | ghost-light; size: sm | md | lg
+// modal: имя модалки (callback | measure | calc) — тогда рендерится <button>
+const { href, modal, variant = 'primary', size = 'md', block = false, class: cls = '', ...rest } = Astro.props;
+const classes = ['btn', variant !== 'primary' && `btn--${variant}`, size !== 'md' && `btn--${size}`, block && 'btn--block', cls]
+  .filter(Boolean).join(' ');
+---
+{modal ? (
+  <button type="button" class={classes} data-modal={modal} {...rest}><slot /></button>
+) : (
+  <a href={href} class={classes} {...rest}><slot /></a>
+)}
