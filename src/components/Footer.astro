@@ -11,10 +11,6 @@ const cols = Object.values(razdely).map((r) => ({ title: r.title, href: r.path, 
     <div class="footer__brand">
       <Logo light />
       <a href={`tel:${site.phone.href}`} class="footer__phone" data-bind-href="phone.href" data-bind-prefix="tel:" data-bind="phone.display">{site.phone.display}</a>
-      <div class="footer__msgs">
-        <a class="pill" href={site.messengers.whatsapp} data-bind-href="whatsapp" rel="noopener" target="_blank">WhatsApp</a>
-        <a class="pill" href={site.messengers.telegram} data-bind-href="telegram" rel="noopener" target="_blank">Telegram</a>
-      </div>
       <dl class="footer__contacts">
         <div><dt>Адрес</dt><dd data-bind="address.full">{site.address.full}</dd></div>
         <div><dt>Почта</dt><dd><a href={`mailto:${site.email}`} data-bind-href="email" data-bind-prefix="mailto:" data-bind="email">{site.email}</a></dd></div>
@@ -46,9 +42,6 @@ const cols = Object.values(razdely).map((r) => ({ title: r.title, href: r.path, 
   .footer__brand { grid-column: 1 / -1; }
   .footer__brand { display: grid; gap: var(--sp-4); justify-items: start; align-content: start; }
   .footer__phone { font: 800 1.5rem/1 var(--font-head); color: #fff !important; letter-spacing: -.01em; }
-  .footer__msgs { display: flex; gap: .5rem; }
-  .footer .pill { padding: .45rem 1rem; border-radius: var(--r-pill); border: 1px solid rgb(255 255 255 / .22); color: #fff; font: 600 var(--fs-xs)/1 var(--font-head); }
-  .footer .pill:hover { background: var(--c-amber-500); border-color: var(--c-amber-500); }
   .footer__title { font: 700 var(--fs-xs)/1 var(--font-head); letter-spacing: .1em; text-transform: uppercase; color: #fff; margin: 0 0 var(--sp-3); }
   .footer__title a { color: #fff; }
   .footer__col ul { list-style: none; padding: 0; margin: 0; display: grid; gap: .1rem; }

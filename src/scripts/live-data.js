@@ -4,6 +4,7 @@
 // чтобы сохранялись стили (Astro scoped).
 import { applyGallery, initGalleries } from './slider.js';
 import './lightbox.js';
+import { reveal } from './reveal.js';
 
 const get = (obj, path) => String(path).split('.').reduce((a, k) => (a == null ? a : a[k]), obj);
 const load = (url) => fetch(url, { cache: 'no-cache' }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
@@ -30,6 +31,7 @@ const rebuild = (container, tplSel, items, fill) => {
     frag.append(n);
   });
   container.replaceChildren(frag);
+  reveal(container); // новые карточки появляются с той же анимацией, что и остальные блоки
 };
 
 // ---------- контакты ----------

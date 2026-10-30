@@ -122,36 +122,6 @@ document.querySelectorAll('[data-lead-form]').forEach((form) => {
   });
 });
 
-// ---- Появление блоков при прокрутке ----
-// Скрываем только то, что ниже первого экрана; после показа возвращаем элементу его обычные transition.
-if (!matchMedia('(prefers-reduced-motion: reduce)').matches && 'IntersectionObserver' in window) {
-  const targets = [
-    '.prod__head', '.tile', '.uslugi h2', '.uc', '.works .intro', '.works .w', '.rev h2', '.rcard',
-    '.lead-block__left', '.lead-block__card', '.types h2', '.tcard', '.fgrid .fcard', '.faq h2', '.faq details',
-    '.breadcrumbs', '.sec-head > *', '.head h1', '.head .lead', '.head .chips', '.info > h1', '.rh__text > *', '.khead > *', '.filters', '.works li', '.ogrid li', '.objects .head', '.catband__in', '.brands__in', '.cta', '.cta__in', '.prose > *', '.info > .lead', '.container > .eyebrow', '.khead', '.kc', '.kform', '.kmap', '.vcard', '.file', '.banner', '.brands__row li', '.footer__col', '.footer__brand',
-  ].join(',');
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach((en) => {
-      if (!en.isIntersecting) return;
-      const el = en.target;
-      io.unobserve(el);
-      el.classList.add('in');
-      setTimeout(() => { el.removeAttribute('data-rv'); el.classList.remove('in'); el.style.removeProperty('--d'); }, 1300);
-    });
-  }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
-  const seen = new Map();
-  document.querySelectorAll(targets).forEach((el) => {
-    const parent = el.parentElement;
-    const i = seen.get(parent) || 0; seen.set(parent, i + 1);
-    if (el.getBoundingClientRect().top < innerHeight * 0.92) { // уже на экране: короткая анимация входа при загрузке
-      el.style.setProperty('--d', `${120 + Math.min(i, 5) * 90}ms`);
-      el.setAttribute('data-rl', '');
-      setTimeout(() => { el.removeAttribute('data-rl'); el.style.removeProperty('--d'); }, 1600);
-      return;
-    }
-    el.style.setProperty('--d', `${Math.min(i, 5) * 70}ms`);
-    el.setAttribute('data-rv', '');
-    io.observe(el);
-  });
-}
-
+// ---- Появление блоков при прокрутке (reveal.js; после обновления данных из админки вызывается снова) ----
+import { reveal } from './reveal.js';
+reveal();

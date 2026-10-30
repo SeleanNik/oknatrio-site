@@ -12,13 +12,13 @@
           "title": "Алюминиевые окна",
           "brand": "Alutech",
           "href": "/okna/alyuminievye/#alutech",
-          "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793206642/Gemini_Generated_Image_jvsic0jvsic0jvsi.jpg"
+          "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793206445/Gemini_Generated_Image_8z5ra78z5ra78z5r.jpg"
         },
         {
           "title": "Алюминиевые окна",
           "brand": "Schuco",
           "href": "/okna/alyuminievye/#schuco",
-          "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793206445/Gemini_Generated_Image_8z5ra78z5ra78z5r.jpg"
+          "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793206642/Gemini_Generated_Image_jvsic0jvsic0jvsi.jpg"
         },
         {
           "title": "Окна ПВХ",
@@ -60,7 +60,37 @@
     "works": {
       "title": "Наши работы",
       "text": "Выполненные объекты: квартиры, коттеджи, балконы, фасады. Алюминиевые конструкции и окна ПВХ."
-    }
+    },
+    "faq": [
+      {
+        "q": "Сколько стоит остекление?",
+        "a": "Стоимость зависит от размеров, профильной системы, стекла и фурнитуры, поэтому цен на сайте нет. Мастер бесплатно приедет на замер, и вы получите точный расчёт с фиксированной суммой в договоре."
+      },
+      {
+        "q": "Какие профильные системы вы используете?",
+        "a": "Для алюминиевых конструкций мы работаем с профилями Alutech и Schuco, для окон из ПВХ с профилем VEKA. Подскажем, что лучше подойдёт для вашего дома, квартиры или объекта."
+      },
+      {
+        "q": "Чем алюминиевые окна отличаются от пластиковых?",
+        "a": "Алюминий прочнее и позволяет делать большие стёкла в тонких рамах: витражи, раздвижные порталы, зимние сады. Тёплый алюминий с терморазрывом подходит для жилья, холодный для лоджий и веранд. Окна ПВХ хороши для квартир и коттеджей, когда важны тепло и разумный бюджет."
+      },
+      {
+        "q": "Вы делаете замер и проект?",
+        "a": "Да. Приезжаем на замер, проектируем светопрозрачные конструкции и фасады, изготавливаем и монтируем. Весь цикл проходит в одной компании."
+      },
+      {
+        "q": "Как быстро изготавливаются и устанавливаются конструкции?",
+        "a": "Сроки зависят от типа конструкции и объёма работ. Точную дату мы называем после замера и фиксируем в договоре."
+      },
+      {
+        "q": "Работаете ли вы за пределами Москвы?",
+        "a": "Да, мы работаем в Москве и Московской области: коттеджи, квартиры, склады и коммерческие объекты. Примеры можно посмотреть в разделе «Наши работы»."
+      },
+      {
+        "q": "Есть ли гарантия?",
+        "a": "Да, мы даём гарантию на конструкции и монтаж. Её условия указываются в договоре."
+      }
+    ]
   },
   "alyuminievye": {
     "h1": [
@@ -76,7 +106,7 @@
           "text": "Тёплые с терморазрывом для жилья и холодные для лоджий.",
           "points": "Любой цвет RAL\nСтворки до 3 м",
           "images": [
-            "https://res.cloudinary.com/s87zgrcl/image/upload/v1793206642/Gemini_Generated_Image_jvsic0jvsic0jvsi.jpg"
+            "https://res.cloudinary.com/s87zgrcl/image/upload/v1793206445/Gemini_Generated_Image_8z5ra78z5ra78z5r.jpg"
           ]
         },
         {
@@ -150,7 +180,7 @@
           "text": "Тёплые с терморазрывом для жилья и холодные для лоджий.",
           "points": "Любой цвет RAL\nСтворки до 3 м",
           "images": [
-            "https://res.cloudinary.com/s87zgrcl/image/upload/v1793206445/Gemini_Generated_Image_8z5ra78z5ra78z5r.jpg"
+            "https://res.cloudinary.com/s87zgrcl/image/upload/v1793206642/Gemini_Generated_Image_jvsic0jvsic0jvsi.jpg"
           ]
         },
         {
@@ -344,146 +374,170 @@
     "lead": "Объекты, которые мы остеклили. Фильтруйте по типу помещения и материалу.",
     "items": [
       {
+        "title": "Офисные перегородки",
+        "place": "Кутузовский проспект · алюминий",
+        "tags": [
+          "aluminum"
+        ],
+        "images": [
+          "/img/works/kutuzovsky-peregorodki/01.webp",
+          "/img/works/kutuzovsky-peregorodki/02.webp",
+          "/img/works/kutuzovsky-peregorodki/03.webp",
+          "/img/works/kutuzovsky-peregorodki/04.webp"
+        ]
+      },
+      {
+        "title": "Входная группа",
+        "place": "метро Киевская · алюминий",
+        "tags": [
+          "aluminum"
+        ],
+        "images": [
+          "/img/works/kievskaya-vhodnaya-gruppa/01.webp",
+          "/img/works/kievskaya-vhodnaya-gruppa/02.webp"
+        ]
+      },
+      {
+        "title": "Конструкции МГТ",
+        "place": "Москва · Alutech",
+        "tags": [
+          "aluminum"
+        ],
+        "images": [
+          "/img/works/mgt-alutech/01.webp",
+          "/img/works/mgt-alutech/02.webp",
+          "/img/works/mgt-alutech/03.webp",
+          "/img/works/mgt-alutech/04.webp",
+          "/img/works/mgt-alutech/05.webp",
+          "/img/works/mgt-alutech/06.webp",
+          "/img/works/mgt-alutech/07.webp",
+          "/img/works/mgt-alutech/08.webp"
+        ]
+      },
+      {
         "title": "Офисно-складской комплекс",
         "place": "Видное · Alutech",
         "tags": [
           "aluminum"
         ],
         "images": [
-          "/img/works/vidnoe-alutech-sklad/01.webp",
-          "/img/works/vidnoe-alutech-sklad/02.webp",
-          "/img/works/vidnoe-alutech-sklad/03.webp",
-          "/img/works/vidnoe-alutech-sklad/04.webp",
-          "/img/works/vidnoe-alutech-sklad/05.webp",
-          "/img/works/vidnoe-alutech-sklad/06.webp"
+          "/img/works/vidnoe-sklad/01.webp",
+          "/img/works/vidnoe-sklad/02.webp",
+          "/img/works/vidnoe-sklad/03.webp",
+          "/img/works/vidnoe-sklad/04.webp",
+          "/img/works/vidnoe-sklad/05.webp",
+          "/img/works/vidnoe-sklad/06.webp"
         ]
       },
       {
-        "title": "Склад: окна",
-        "place": "Южное Бутово · алюминий",
+        "title": "Рынок",
+        "place": "Бибирево · алюминий",
         "tags": [
           "aluminum"
         ],
         "images": [
-          "/img/works/yuzhnoe-butovo-okna/01.webp",
-          "/img/works/yuzhnoe-butovo-okna/02.webp",
-          "/img/works/yuzhnoe-butovo-okna/03.webp",
-          "/img/works/yuzhnoe-butovo-okna/04.webp",
-          "/img/works/yuzhnoe-butovo-okna/05.webp",
-          "/img/works/yuzhnoe-butovo-okna/06.webp"
-        ]
-      },
-      {
-        "title": "Склад: двери",
-        "place": "Южное Бутово · алюминий",
-        "tags": [
-          "aluminum"
-        ],
-        "images": [
-          "/img/works/yuzhnoe-butovo-dveri/01.webp",
-          "/img/works/yuzhnoe-butovo-dveri/02.webp",
-          "/img/works/yuzhnoe-butovo-dveri/03.webp"
-        ]
-      },
-      {
-        "title": "Коттедж, VEKA Softline 70",
-        "place": "Домодедово",
-        "tags": [
-          "cottage",
-          "pvc"
-        ],
-        "images": [
-          "/img/works/domodedovo-veka/01.webp",
-          "/img/works/domodedovo-veka/02.webp",
-          "/img/works/domodedovo-veka/03.webp",
-          "/img/works/domodedovo-veka/04.webp",
-          "/img/works/domodedovo-veka/05.webp",
-          "/img/works/domodedovo-veka/06.webp"
-        ]
-      },
-      {
-        "title": "Витраж в коттедже",
-        "place": "Домодедово",
-        "tags": [
-          "cottage",
-          "pvc"
-        ],
-        "images": [
-          "/img/works/domodedovo-vitrazh/01.webp"
+          "/img/works/bibirevo-rynok/01.webp",
+          "/img/works/bibirevo-rynok/02.webp",
+          "/img/works/bibirevo-rynok/03.webp"
         ]
       },
       {
         "title": "Баня с террасой",
-        "place": "Подмосковье · VEKA Softline 70",
+        "place": "Veka Softline 70",
         "tags": [
-          "cottage",
-          "pvc"
+          "pvc",
+          "cottage"
         ],
         "images": [
-          "/img/works/banya-terrasa-veka/01.webp",
-          "/img/works/banya-terrasa-veka/02.webp",
-          "/img/works/banya-terrasa-veka/03.webp",
-          "/img/works/banya-terrasa-veka/04.webp",
-          "/img/works/banya-terrasa-veka/05.webp"
+          "/img/works/banya-terrasa/01.webp",
+          "/img/works/banya-terrasa/02.webp",
+          "/img/works/banya-terrasa/03.webp",
+          "/img/works/banya-terrasa/04.webp",
+          "/img/works/banya-terrasa/05.webp"
         ]
       },
       {
-        "title": "Коттедж, окна ПВХ",
-        "place": "д. Томарово",
+        "title": "Беседка",
+        "place": "Томарово · Veka Softline 70",
         "tags": [
-          "cottage",
-          "pvc"
+          "pvc",
+          "cottage"
+        ],
+        "images": [
+          "/img/works/tomarovo-besedka/01.webp",
+          "/img/works/tomarovo-besedka/02.webp",
+          "/img/works/tomarovo-besedka/03.webp",
+          "/img/works/tomarovo-besedka/04.webp",
+          "/img/works/tomarovo-besedka/05.webp",
+          "/img/works/tomarovo-besedka/06.webp",
+          "/img/works/tomarovo-besedka/07.webp",
+          "/img/works/tomarovo-besedka/08.webp"
+        ]
+      },
+      {
+        "title": "Коттедж",
+        "place": "Томарово · ПВХ",
+        "tags": [
+          "pvc",
+          "cottage"
         ],
         "images": [
           "/img/works/tomarovo-kottedzh/01.webp",
-          "/img/works/tomarovo-kottedzh/02.webp",
-          "/img/works/tomarovo-kottedzh/03.webp",
-          "/img/works/tomarovo-kottedzh/04.webp"
+          "/img/works/tomarovo-kottedzh/02.webp"
         ]
       },
       {
-        "title": "Веранда, ПВХ",
-        "place": "д. Бородино",
+        "title": "Коттедж: окна ПВХ",
+        "place": "Томарово · ПВХ",
         "tags": [
-          "cottage",
-          "pvc"
+          "pvc",
+          "cottage"
         ],
         "images": [
-          "/img/works/borodino-veranda/01.webp",
-          "/img/works/borodino-veranda/02.webp"
+          "/img/works/tomarovo-okna-kottedzh/01.webp",
+          "/img/works/tomarovo-okna-kottedzh/02.webp",
+          "/img/works/tomarovo-okna-kottedzh/03.webp",
+          "/img/works/tomarovo-okna-kottedzh/04.webp",
+          "/img/works/tomarovo-okna-kottedzh/05.webp",
+          "/img/works/tomarovo-okna-kottedzh/06.webp",
+          "/img/works/tomarovo-okna-kottedzh/07.webp"
         ]
       },
       {
-        "title": "Арочный витраж",
-        "place": "Подмосковье · ПВХ",
+        "title": "Коттеджный посёлок «Фаворит»",
+        "place": "Alutech · алюминий",
         "tags": [
-          "pvc"
+          "aluminum",
+          "cottage"
         ],
         "images": [
-          "/img/works/pvh-arochnyj-vitrazh/01.webp",
-          "/img/works/pvh-arochnyj-vitrazh/02.webp"
+          "/img/works/favorit-alutech/01.webp",
+          "/img/works/favorit-alutech/02.webp",
+          "/img/works/favorit-alutech/03.webp",
+          "/img/works/favorit-alutech/04.webp",
+          "/img/works/favorit-alutech/05.webp"
         ]
       },
       {
-        "title": "Малый коттедж, окна ПВХ",
-        "place": "д. Томарово",
+        "title": "Коттеджный посёлок «Фаворит»: детали",
+        "place": "Alutech · алюминий",
         "tags": [
-          "cottage",
-          "pvc"
+          "aluminum",
+          "cottage"
         ],
         "images": [
-          "/img/works/tomarovo-maly-kottedzh/01.webp",
-          "/img/works/tomarovo-maly-kottedzh/02.webp",
-          "/img/works/tomarovo-maly-kottedzh/03.webp",
-          "/img/works/tomarovo-maly-kottedzh/04.webp"
+          "/img/works/favorit-alutech-2/01.webp",
+          "/img/works/favorit-alutech-2/02.webp",
+          "/img/works/favorit-alutech-2/03.webp",
+          "/img/works/favorit-alutech-2/04.webp"
         ]
       },
       {
-        "title": "Зимний сад, Колычево",
+        "title": "Зимний сад",
         "place": "Колычево · Alutech",
         "tags": [
-          "cottage",
-          "aluminum"
+          "aluminum",
+          "cottage"
         ],
         "images": [
           "/img/works/kolychevo-zimnij-sad/01.webp",
@@ -496,11 +550,11 @@
         ]
       },
       {
-        "title": "Коттедж, Мещерское полесье",
+        "title": "Коттедж",
         "place": "Мещерское полесье · Schuco, Alutech",
         "tags": [
-          "cottage",
-          "aluminum"
+          "aluminum",
+          "cottage"
         ],
         "images": [
           "/img/works/meshcherskoe-kottedzh/01.webp",
@@ -513,106 +567,164 @@
         ]
       },
       {
-        "title": "Коттедж, Красногорск",
+        "title": "Коттедж: детали",
+        "place": "Мещерское полесье · Schuco, Alutech",
+        "tags": [
+          "aluminum",
+          "cottage"
+        ],
+        "images": [
+          "/img/works/meshcherskoe-kottedzh-2/01.webp",
+          "/img/works/meshcherskoe-kottedzh-2/02.webp",
+          "/img/works/meshcherskoe-kottedzh-2/03.webp",
+          "/img/works/meshcherskoe-kottedzh-2/04.webp",
+          "/img/works/meshcherskoe-kottedzh-2/05.webp",
+          "/img/works/meshcherskoe-kottedzh-2/06.webp",
+          "/img/works/meshcherskoe-kottedzh-2/07.webp"
+        ]
+      },
+      {
+        "title": "Коттедж",
         "place": "Красногорск · алюминий",
         "tags": [
-          "cottage",
-          "aluminum"
+          "aluminum",
+          "cottage"
         ],
         "images": [
           "/img/works/krasnogorsk-kottedzh/01.webp",
           "/img/works/krasnogorsk-kottedzh/02.webp",
           "/img/works/krasnogorsk-kottedzh/03.webp",
           "/img/works/krasnogorsk-kottedzh/04.webp",
-          "/img/works/krasnogorsk-kottedzh/05.webp",
-          "/img/works/krasnogorsk-kottedzh/06.webp",
-          "/img/works/krasnogorsk-kottedzh/07.webp",
-          "/img/works/krasnogorsk-kottedzh/08.webp"
+          "/img/works/krasnogorsk-kottedzh/05.webp"
         ]
       },
       {
-        "title": "Коттедж, Колычево",
+        "title": "Коттедж: детали",
+        "place": "Красногорск · алюминий",
+        "tags": [
+          "aluminum",
+          "cottage"
+        ],
+        "images": [
+          "/img/works/krasnogorsk-kottedzh-2/01.webp",
+          "/img/works/krasnogorsk-kottedzh-2/02.webp",
+          "/img/works/krasnogorsk-kottedzh-2/03.webp",
+          "/img/works/krasnogorsk-kottedzh-2/04.webp"
+        ]
+      },
+      {
+        "title": "Коттедж",
         "place": "Колычево · Schuco, Alutech",
         "tags": [
-          "cottage",
-          "aluminum"
+          "aluminum",
+          "cottage"
         ],
         "images": [
-          "/img/works/kolychevo-kottedzh-fasad/01.webp",
-          "/img/works/kolychevo-kottedzh-fasad/02.webp",
-          "/img/works/kolychevo-kottedzh-fasad/03.webp",
-          "/img/works/kolychevo-kottedzh-fasad/04.webp",
-          "/img/works/kolychevo-kottedzh-fasad/05.webp",
-          "/img/works/kolychevo-kottedzh-fasad/06.webp"
+          "/img/works/kolychevo-kottedzh/01.webp",
+          "/img/works/kolychevo-kottedzh/02.webp",
+          "/img/works/kolychevo-kottedzh/03.webp",
+          "/img/works/kolychevo-kottedzh/04.webp",
+          "/img/works/kolychevo-kottedzh/05.webp",
+          "/img/works/kolychevo-kottedzh/06.webp"
         ]
       },
       {
-        "title": "Панорамные окна в коттедже",
-        "place": "Колычево · Schuco",
+        "title": "Коттедж: детали",
+        "place": "Колычево · Schuco, Alutech",
         "tags": [
-          "cottage",
-          "aluminum"
+          "aluminum",
+          "cottage"
         ],
         "images": [
-          "/img/works/kolychevo-kottedzh-panoramnye/01.webp",
-          "/img/works/kolychevo-kottedzh-panoramnye/02.webp",
-          "/img/works/kolychevo-kottedzh-panoramnye/03.webp",
-          "/img/works/kolychevo-kottedzh-panoramnye/04.webp"
+          "/img/works/kolychevo-kottedzh-2/01.webp",
+          "/img/works/kolychevo-kottedzh-2/02.webp",
+          "/img/works/kolychevo-kottedzh-2/03.webp",
+          "/img/works/kolychevo-kottedzh-2/04.webp",
+          "/img/works/kolychevo-kottedzh-2/05.webp"
         ]
       },
       {
-        "title": "Коттедж, фасады",
+        "title": "Коттедж",
+        "place": "Домодедово · Veka Softline 70",
+        "tags": [
+          "pvc",
+          "cottage"
+        ],
+        "images": [
+          "/img/works/domodedovo-veka/01.webp",
+          "/img/works/domodedovo-veka/02.webp",
+          "/img/works/domodedovo-veka/03.webp",
+          "/img/works/domodedovo-veka/04.webp",
+          "/img/works/domodedovo-veka/05.webp"
+        ]
+      },
+      {
+        "title": "Коттедж: детали",
+        "place": "Домодедово · Veka Softline 70",
+        "tags": [
+          "pvc",
+          "cottage"
+        ],
+        "images": [
+          "/img/works/domodedovo-veka-2/01.webp",
+          "/img/works/domodedovo-veka-2/02.webp",
+          "/img/works/domodedovo-veka-2/03.webp",
+          "/img/works/domodedovo-veka-2/04.webp"
+        ]
+      },
+      {
+        "title": "Фасады коттеджей",
         "place": "Полуостров · Schuco",
         "tags": [
-          "cottage",
-          "aluminum"
+          "aluminum",
+          "cottage"
         ],
         "images": [
-          "/img/works/poluostrov-kottedzh-fasady/01.webp",
-          "/img/works/poluostrov-kottedzh-fasady/02.webp",
-          "/img/works/poluostrov-kottedzh-fasady/03.webp",
-          "/img/works/poluostrov-kottedzh-fasady/04.webp",
-          "/img/works/poluostrov-kottedzh-fasady/05.webp"
+          "/img/works/poluostrov-kottedzh/01.webp",
+          "/img/works/poluostrov-kottedzh/02.webp",
+          "/img/works/poluostrov-kottedzh/03.webp",
+          "/img/works/poluostrov-kottedzh/04.webp",
+          "/img/works/poluostrov-kottedzh/05.webp",
+          "/img/works/poluostrov-kottedzh/06.webp"
         ]
       },
       {
-        "title": "Панорамные окна и двери",
+        "title": "Фасады коттеджей: детали",
         "place": "Полуостров · Schuco",
         "tags": [
-          "cottage",
-          "aluminum"
+          "aluminum",
+          "cottage"
         ],
         "images": [
-          "/img/works/poluostrov-kottedzh-okna/01.webp",
-          "/img/works/poluostrov-kottedzh-okna/02.webp",
-          "/img/works/poluostrov-kottedzh-okna/03.webp",
-          "/img/works/poluostrov-kottedzh-okna/04.webp",
-          "/img/works/poluostrov-kottedzh-okna/05.webp",
-          "/img/works/poluostrov-kottedzh-okna/06.webp",
-          "/img/works/poluostrov-kottedzh-okna/07.webp"
+          "/img/works/poluostrov-kottedzh-2/01.webp",
+          "/img/works/poluostrov-kottedzh-2/02.webp",
+          "/img/works/poluostrov-kottedzh-2/03.webp",
+          "/img/works/poluostrov-kottedzh-2/04.webp",
+          "/img/works/poluostrov-kottedzh-2/05.webp",
+          "/img/works/poluostrov-kottedzh-2/06.webp"
         ]
       },
       {
-        "title": "Терраса и зенитные фонари",
+        "title": "Фасады коттеджей: детали",
         "place": "Полуостров · Schuco",
         "tags": [
-          "cottage",
-          "aluminum"
+          "aluminum",
+          "cottage"
         ],
         "images": [
-          "/img/works/poluostrov-kottedzh-terrasa/01.webp",
-          "/img/works/poluostrov-kottedzh-terrasa/02.webp",
-          "/img/works/poluostrov-kottedzh-terrasa/03.webp",
-          "/img/works/poluostrov-kottedzh-terrasa/04.webp",
-          "/img/works/poluostrov-kottedzh-terrasa/05.webp"
+          "/img/works/poluostrov-kottedzh-3/01.webp",
+          "/img/works/poluostrov-kottedzh-3/02.webp",
+          "/img/works/poluostrov-kottedzh-3/03.webp",
+          "/img/works/poluostrov-kottedzh-3/04.webp",
+          "/img/works/poluostrov-kottedzh-3/05.webp"
         ]
       },
       {
-        "title": "Навес, Alutech F50",
-        "place": "Полуостров",
+        "title": "Навес",
+        "place": "Полуостров · Alutech F50",
         "tags": [
-          "cottage",
-          "aluminum"
+          "aluminum",
+          "cottage"
         ],
         "images": [
           "/img/works/poluostrov-naves/01.webp",
@@ -623,11 +735,53 @@
         ]
       },
       {
-        "title": "Навес, Мещерское полесье",
-        "place": "Alutech F50",
+        "title": "Пластиковые окна",
+        "place": "Купавна · ПВХ",
         "tags": [
-          "cottage",
+          "pvc"
+        ],
+        "images": [
+          "/img/works/kupavna-okna/01.webp",
+          "/img/works/kupavna-okna/02.webp",
+          "/img/works/kupavna-okna/03.webp",
+          "/img/works/kupavna-okna/04.webp",
+          "/img/works/kupavna-okna/05.webp",
+          "/img/works/kupavna-okna/06.webp",
+          "/img/works/kupavna-okna/07.webp",
+          "/img/works/kupavna-okna/08.webp"
+        ]
+      },
+      {
+        "title": "Лоджия",
+        "place": "Ленинский проспект · Veka",
+        "tags": [
+          "pvc"
+        ],
+        "images": [
+          "/img/works/leninsky-lodzhiya/01.webp",
+          "/img/works/leninsky-lodzhiya/02.webp",
+          "/img/works/leninsky-lodzhiya/03.webp",
+          "/img/works/leninsky-lodzhiya/04.webp"
+        ]
+      },
+      {
+        "title": "Конструкции МГТ",
+        "place": "ул. Павла Корчагина · Schuco, Alutech",
+        "tags": [
           "aluminum"
+        ],
+        "images": [
+          "/img/works/korchagina-mgt/01.webp",
+          "/img/works/korchagina-mgt/02.webp",
+          "/img/works/korchagina-mgt/03.webp"
+        ]
+      },
+      {
+        "title": "Навес",
+        "place": "Мещерское полесье · Alutech F50",
+        "tags": [
+          "aluminum",
+          "cottage"
         ],
         "images": [
           "/img/works/meshcherskoe-naves/01.webp",
@@ -635,6 +789,214 @@
           "/img/works/meshcherskoe-naves/03.webp",
           "/img/works/meshcherskoe-naves/04.webp",
           "/img/works/meshcherskoe-naves/05.webp"
+        ]
+      },
+      {
+        "title": "Огнестойкие двери",
+        "place": "Москва · без термомоста",
+        "tags": [
+          "aluminum"
+        ],
+        "images": [
+          "/img/works/mgt-ognestojkie/01.webp",
+          "/img/works/mgt-ognestojkie/02.webp",
+          "/img/works/mgt-ognestojkie/03.webp",
+          "/img/works/mgt-ognestojkie/04.webp",
+          "/img/works/mgt-ognestojkie/05.webp",
+          "/img/works/mgt-ognestojkie/06.webp"
+        ]
+      },
+      {
+        "title": "Арочный витраж",
+        "place": "ПВХ · Veka",
+        "tags": [
+          "pvc"
+        ],
+        "images": [
+          "/img/works/arochnyj-vitrazh/01.webp",
+          "/img/works/arochnyj-vitrazh/02.webp",
+          "/img/works/arochnyj-vitrazh/03.webp",
+          "/img/works/arochnyj-vitrazh/04.webp",
+          "/img/works/arochnyj-vitrazh/05.webp"
+        ]
+      },
+      {
+        "title": "Пластиковая конструкция",
+        "place": "ПВХ",
+        "tags": [
+          "pvc"
+        ],
+        "images": [
+          "/img/works/pvh-konstrukciya/01.webp",
+          "/img/works/pvh-konstrukciya/02.webp"
+        ]
+      },
+      {
+        "title": "ПВХ-конструкции МГТ",
+        "place": "Москва · Veka",
+        "tags": [
+          "pvc"
+        ],
+        "images": [
+          "/img/works/mgt-veka/01.webp",
+          "/img/works/mgt-veka/02.webp",
+          "/img/works/mgt-veka/03.webp",
+          "/img/works/mgt-veka/04.webp"
+        ]
+      },
+      {
+        "title": "Веранда",
+        "place": "Бородино · ПВХ",
+        "tags": [
+          "pvc",
+          "cottage"
+        ],
+        "images": [
+          "/img/works/borodino-veranda/01.webp",
+          "/img/works/borodino-veranda/02.webp",
+          "/img/works/borodino-veranda/03.webp"
+        ]
+      },
+      {
+        "title": "Пластиковые конструкции",
+        "place": "ул. Фестивальная · ПВХ",
+        "tags": [
+          "pvc"
+        ],
+        "images": [
+          "/img/works/festivalnaya/01.webp",
+          "/img/works/festivalnaya/02.webp"
+        ]
+      },
+      {
+        "title": "Пластиковые окна",
+        "place": "Томарово · ПВХ",
+        "tags": [
+          "pvc",
+          "cottage"
+        ],
+        "images": [
+          "/img/works/tomarovo-okna/01.webp",
+          "/img/works/tomarovo-okna/02.webp",
+          "/img/works/tomarovo-okna/03.webp",
+          "/img/works/tomarovo-okna/04.webp",
+          "/img/works/tomarovo-okna/05.webp",
+          "/img/works/tomarovo-okna/06.webp"
+        ]
+      },
+      {
+        "title": "Коттедж",
+        "place": "«Фаворит» · Veka Softline 70",
+        "tags": [
+          "pvc",
+          "cottage"
+        ],
+        "images": [
+          "/img/works/favorit-veka/01.webp",
+          "/img/works/favorit-veka/02.webp",
+          "/img/works/favorit-veka/03.webp",
+          "/img/works/favorit-veka/04.webp",
+          "/img/works/favorit-veka/05.webp"
+        ]
+      },
+      {
+        "title": "Пластиковые окна",
+        "place": "Подмосковье · ПВХ",
+        "tags": [
+          "pvc"
+        ],
+        "images": [
+          "/img/works/podmoskovie-okna/01.webp",
+          "/img/works/podmoskovie-okna/02.webp"
+        ]
+      },
+      {
+        "title": "Склад: витражи и двери",
+        "place": "Южное Бутово · Alutech, Veka",
+        "tags": [
+          "aluminum",
+          "pvc"
+        ],
+        "images": [
+          "/img/works/yuzhnoe-butovo-sklad/01.webp",
+          "/img/works/yuzhnoe-butovo-sklad/02.webp",
+          "/img/works/yuzhnoe-butovo-sklad/03.webp",
+          "/img/works/yuzhnoe-butovo-sklad/04.webp",
+          "/img/works/yuzhnoe-butovo-sklad/05.webp",
+          "/img/works/yuzhnoe-butovo-sklad/06.webp"
+        ]
+      },
+      {
+        "title": "Склад: витражи и двери: детали",
+        "place": "Южное Бутово · Alutech, Veka",
+        "tags": [
+          "aluminum",
+          "pvc"
+        ],
+        "images": [
+          "/img/works/yuzhnoe-butovo-sklad-2/01.webp",
+          "/img/works/yuzhnoe-butovo-sklad-2/02.webp",
+          "/img/works/yuzhnoe-butovo-sklad-2/03.webp",
+          "/img/works/yuzhnoe-butovo-sklad-2/04.webp",
+          "/img/works/yuzhnoe-butovo-sklad-2/05.webp"
+        ]
+      },
+      {
+        "title": "Коттедж",
+        "place": "СНТ Мичуринец · Veka Softline 70",
+        "tags": [
+          "pvc",
+          "cottage"
+        ],
+        "images": [
+          "/img/works/michurinec-kottedzh/01.webp",
+          "/img/works/michurinec-kottedzh/02.webp",
+          "/img/works/michurinec-kottedzh/03.webp",
+          "/img/works/michurinec-kottedzh/04.webp",
+          "/img/works/michurinec-kottedzh/05.webp"
+        ]
+      },
+      {
+        "title": "Малый коттедж",
+        "place": "Томарово · ПВХ",
+        "tags": [
+          "pvc",
+          "cottage"
+        ],
+        "images": [
+          "/img/works/tomarovo-malyj/01.webp",
+          "/img/works/tomarovo-malyj/02.webp",
+          "/img/works/tomarovo-malyj/03.webp",
+          "/img/works/tomarovo-malyj/04.webp"
+        ]
+      },
+      {
+        "title": "Торгово-офисный центр",
+        "place": "у реки Яузы · алюминий",
+        "tags": [
+          "aluminum"
+        ],
+        "images": [
+          "/img/works/yauza-centr/01.webp",
+          "/img/works/yauza-centr/02.webp",
+          "/img/works/yauza-centr/03.webp",
+          "/img/works/yauza-centr/04.webp",
+          "/img/works/yauza-centr/05.webp",
+          "/img/works/yauza-centr/06.webp",
+          "/img/works/yauza-centr/07.webp",
+          "/img/works/yauza-centr/08.webp"
+        ]
+      },
+      {
+        "title": "Бассейн",
+        "place": "Чеховский район · Veka",
+        "tags": [
+          "pvc"
+        ],
+        "images": [
+          "/img/works/chehov-bassejn/01.webp",
+          "/img/works/chehov-bassejn/02.webp",
+          "/img/works/chehov-bassejn/03.webp"
         ]
       }
     ]

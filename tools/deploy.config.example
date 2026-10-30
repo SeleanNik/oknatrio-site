@@ -1,0 +1,7 @@
+# Скопируйте в tools/deploy.config и заполните. Файл deploy.config в git не попадает.
+DEPLOY_HOST=192.168.1.222
+DEPLOY_USER=deploy
+DEPLOY_PORT=22
+DEPLOY_PATH=/var/www/oknatrio-site
+# адрес для проверки после деплоя (необязательно)
+SITE_URL=https://trio.selean.site

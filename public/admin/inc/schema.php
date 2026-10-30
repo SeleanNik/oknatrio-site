@@ -89,6 +89,12 @@ function page_schemas(): array
                 ['k' => 'works.title', 'type' => 'text', 'max' => 40, 'label' => 'Заголовок'],
                 ['k' => 'works.text', 'type' => 'textarea', 'max' => 170, 'rows' => 2, 'label' => 'Описание'],
             ]],
+            ['title' => 'Вопросы и ответы', 'hint' => 'Блок «Частые вопросы» перед формой заявки.', 'fields' => [
+                ['k' => 'faq', 'type' => 'list', 'max' => 12, 'row' => 'q', 'sub' => 'a', 'label' => 'Вопросы', 'add' => 'Добавить вопрос', 'item' => [
+                    ['k' => 'q', 'type' => 'text', 'label' => 'Вопрос', 'max' => 150, 'req' => true],
+                    ['k' => 'a', 'type' => 'textarea', 'label' => 'Ответ', 'max' => 600, 'rows' => 4],
+                ]],
+            ]],
         ]],
 
         'alyuminievye' => $razdel('Алюминиевые окна', [

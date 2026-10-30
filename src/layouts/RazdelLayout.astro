@@ -64,7 +64,7 @@ const ld = {
         <div class="tgrid" data-ed-types={g.brand ? `${r.key}.typesByBrand.${g.brand}` : `${r.key}.types`}>
           {g.types.map((t) => (
             <article class="tcard" id={gi === 0 ? t.id : `${g.brand.toLowerCase()}-${t.id}`}>
-              <div class="tcard__media" data-gallery={JSON.stringify(t.images && t.images.length ? t.images : (t.src ? [t.src] : []))}><img src={t.src ?? unsplash(photos[t.photo], 800, 600)} alt={t.alt} loading="lazy" decoding="async" width="800" height="600" /></div>
+              <div class="tcard__media" data-nolb={r.key === 'alyuminievye' ? '' : undefined} data-gallery={JSON.stringify(t.images && t.images.length ? t.images : (t.src ? [t.src] : []))}><img src={t.src ?? unsplash(photos[t.photo], 800, 600)} alt={t.alt} loading="lazy" decoding="async" width="800" height="600" /></div>
               <div class="tcard__body">
                 <h3>{t.title}</h3>
                 <p class="tcard__text">{t.text}</p>

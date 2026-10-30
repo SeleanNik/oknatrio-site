@@ -7,6 +7,8 @@ import Advantages from '../components/home/Advantages.astro';
 import Works from '../components/home/Works.astro';
 import Reviews from '../components/home/Reviews.astro';
 import LeadBlock from '../components/home/LeadBlock.astro';
+import Faq from '../components/Faq.astro';
+import { pagesData } from '../config/pages.mjs';
 import { localBusiness } from '../config/schema.mjs';
 ---
 <Base
@@ -20,5 +22,6 @@ import { localBusiness } from '../config/schema.mjs';
   <Advantages />
   <Works />
   <Reviews />
+  <Faq items={pagesData.home.faq ?? []} edPath="home.faq" />
   <LeadBlock />
 </Base>
