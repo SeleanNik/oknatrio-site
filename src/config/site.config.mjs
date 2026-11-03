@@ -7,7 +7,7 @@ const read = (k, d = '') => import.meta.env?.[k] ?? globalThis.process?.env?.[k]
 export const siteUrl = read('PUBLIC_SITE_URL', 'https://oknatrio.ru').replace(/\/$/, '');
 
 export const site = {
-  name: 'Трио',
+  name: 'Трио Инжиниринг',
   legalName: '', // TODO: юридическое название (ООО «…») — пока не выводится
   requisites: '', // TODO: «ИНН 0000000000 · ОГРН 0000000000000» — пока не выводится
   tagline: 'Алюминиевые окна и окна ПВХ в Москве',

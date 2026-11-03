@@ -30,6 +30,18 @@
     document.getElementById('pw').value = [...buf].map((n) => chars[n % chars.length]).join('');
   });
 
+  // ---------- разделы страницы: свернуть / развернуть, переход из оглавления ----------
+  document.querySelectorAll('[data-fold]').forEach((b) => b.addEventListener('click', () => {
+    document.querySelectorAll('details.fold').forEach((d) => { d.open = b.dataset.fold === 'open'; });
+  }));
+  document.querySelectorAll('[data-toc]').forEach((a) => a.addEventListener('click', (e) => {
+    const d = document.querySelector(a.getAttribute('href'));
+    if (!d) return;
+    e.preventDefault();
+    d.open = true;
+    d.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }));
+
   const form = document.querySelector('form.pageform');
   if (!form) return;
 

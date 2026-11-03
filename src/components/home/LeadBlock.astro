@@ -2,6 +2,8 @@
 import Icon from '../Icon.astro';
 import LeadForm from '../LeadForm.astro';
 import { site } from '../../config/site.config.mjs';
+import { pagesData } from '../../config/pages.mjs';
+const lead = pagesData.home.lead;
 
 const { product = '' } = Astro.props;
 const { lat, lng } = site.geo;
@@ -10,8 +12,8 @@ const mapSrc = `https://yandex.ru/map-widget/v1/?ll=${lng}%2C${lat}&z=16&pt=${ln
 <section class="lead-block" id="zayavka" aria-labelledby="lead-title">
   <div class="container lead-block__grid">
     <div class="lead-block__left">
-      <h2 id="lead-title">Оставьте заявку</h2>
-      <p class="lead-block__lead">Перезвоним и ответим на все ваши вопросы.</p>
+      <h2 id="lead-title" data-ed="home.lead.title">{lead.title}</h2>
+      <p class="lead-block__lead" data-ed="home.lead.text">{lead.text}</p>
       <ul class="lead-block__info">
         <li><Icon name="pin" size={18} /><span data-bind="address.full">{site.address.full}</span></li>
         <li><Icon name="phone" size={18} /><a href={`tel:${site.phone.href}`} data-bind-href="phone.href" data-bind-prefix="tel:" data-bind="phone.display">{site.phone.display}</a></li>

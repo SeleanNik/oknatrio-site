@@ -91,7 +91,7 @@ function shell(string $title, string $body, string $active = '', ?array $user = 
 <meta name="robots" content="noindex, nofollow">
 <title><?= h($title) ?> — Админка «Трио»</title>
 <link rel="icon" href="/favicon.svg">
-<link rel="stylesheet" href="assets/admin.css">
+<link rel="stylesheet" href="assets/admin.css?v=<?= (int)@filemtime(__DIR__ . '/../assets/admin.css') ?>">
 </head>
 <body class="<?= $user ? 'app' : 'plain' ?>">
 <?php if ($user): ?>
@@ -138,7 +138,7 @@ function shell(string $title, string $body, string $active = '', ?array $user = 
   <?= $body ?>
 </main>
 <?php endif; ?>
-<script src="assets/admin.js" defer></script>
+<script src="assets/admin.js?v=<?= (int)@filemtime(__DIR__ . '/../assets/admin.js') ?>" defer></script>
 </body>
 </html>
 <?php

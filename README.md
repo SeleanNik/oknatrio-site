@@ -39,7 +39,7 @@ npm run build            # сборка в dist/
 1. В `.env` на сборке: `PUBLIC_NOINDEX=false`, реальные `PUBLIC_SITE_URL` и `PUBLIC_YM_ID`.
 2. `npm run build`, загрузить содержимое `dist/` на PHP-хостинг.
 3. На сервере создать `form-config.php` из `form-config.example.php` (e-mail получателя, отправитель на домене сайта).
-4. В `.htaccess` раскомментировать редирект окнатрио.рф → oknatrio.ru; старые URL перенести из файла `redirects`.
+4. В `.htaccess` раскомментировать редирект окнатрио.рф → oknatrio.ru (старые URL со старого сайта уже перенаправлены, см. файл `redirects`).
 5. Проверить отправку каждой формы (callback, measure, calc) и получение письма.
 
 Список данных, которые нужно получить от клиента: `CONTENT_TODO.md`. Ключевые решения: `CLAUDE.md`.

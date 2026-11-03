@@ -60,8 +60,8 @@ if (revTpl) {
     rebuild(revList, '.rcard', shown, (li, r) => {
       li.querySelector('[data-rev="text"]').textContent = r.text;
       li.querySelector('[data-rev="name"]').textContent = r.name || '';
-      const img = li.querySelector('[data-rev="avatar"]');
-      if (img) { if (r.avatar) img.src = r.avatar; else img.removeAttribute('src'); }
+      const ava = li.querySelector('[data-rev="ava"]');
+      if (ava) ava.textContent = (r.name || '').split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
     });
   });
 }
@@ -79,6 +79,16 @@ if (document.querySelector(EDITABLE)) {
       const v = get(d, el.dataset.ed);
       if (typeof v === 'string') el.textContent = v;
     });
+
+    // главная: карточка со статистикой (число + подпись)
+    const hs = d.home && d.home.heroStats;
+    if (Array.isArray(hs)) {
+      document.querySelectorAll('.hero__stats li[data-stat]').forEach((li) => {
+        const [num, ...rest] = String(hs[li.dataset.stat] || '').split(' ');
+        li.querySelector('b').textContent = num;
+        li.querySelector('span').textContent = rest.join(' ');
+      });
+    }
 
     // главная: «Продукция» (5 фиксированных карточек)
     const cards = d.home && d.home.prod && d.home.prod.cards;

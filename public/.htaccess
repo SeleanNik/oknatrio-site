@@ -10,6 +10,20 @@ RewriteCond %{HTTPS} off
 RewriteCond %{HTTP:X-Forwarded-Proto} !https
 RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
+# www -> без www
+RewriteCond %{HTTP_HOST} ^www\.oknatrio\.ru$ [NC]
+RewriteRule ^(.*)$ https://oknatrio.ru/$1 [L,R=301]
+
+# ===== 301 со старого сайта (NetCat, *.php) на новые страницы. Список и пояснения: файл "redirects" =====
+RewriteRule ^index\.php$ / [L,R=301]
+RewriteRule ^(windows|window|antisound-windows|raskladka|saveenergy-windows|color-windows|custom-windows|accessories|usable|balcon)\.php$ /okna/pvh/ [L,R=301]
+RewriteRule ^cottage\.php$ /nashi-raboty/ [L,R=301]
+RewriteRule ^gallery\.php$ /nashi-raboty/ [L,R=301]
+RewriteRule ^contacts\.php$ /kontakty/ [L,R=301]
+RewriteRule ^(about_us|warranty)\.php$ /o-kompanii/ [L,R=301]
+RewriteRule ^(reviews|services|price|credit|discounts|articles|forbuilders)\.php$ / [L,R=301]
+RewriteRule ^(articles|accessories|window|catalog)/ / [L,R=301]
+
 # окнатрио.рф -> основной домен (301). TODO: подставить punycode и основной домен при деплое
 # RewriteCond %{HTTP_HOST} ^(www\.)?xn--80aqemdemp\.xn--p1ai$ [NC]
 # RewriteRule ^(.*)$ https://oknatrio.ru/$1 [L,R=301]
@@ -21,3 +35,17 @@ RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 <Files "form-config.php">
   Require all denied
 </Files>
+
+# Сжатие и кэш статики (скорость = ранжирование)
+<IfModule mod_deflate.c>
+  AddOutputFilterByType DEFLATE text/html text/css application/javascript application/json image/svg+xml application/xml text/plain
+</IfModule>
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType image/webp "access plus 1 year"
+  ExpiresByType image/jpeg "access plus 1 year"
+  ExpiresByType image/svg+xml "access plus 1 year"
+  ExpiresByType font/woff2 "access plus 1 year"
+  ExpiresByType text/css "access plus 1 month"
+  ExpiresByType application/javascript "access plus 1 month"
+</IfModule>

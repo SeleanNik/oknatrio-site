@@ -1,0 +1,240 @@
+---
+// Страница производителя профиля: hero → переключатель систем (вкладки) → наши работы → каталог → FAQ → заявка → SEO-текст.
+// Данные: src/config/brands.mjs. Все панели лежат в HTML, скрытие делает скрипт внизу.
+import Base from './Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Button from '../components/Button.astro';
+import Faq from '../components/Faq.astro';
+import Icon from '../components/Icon.astro';
+import LeadBlock from '../components/home/LeadBlock.astro';
+import { site, siteUrl } from '../config/site.config.mjs';
+import { works } from '../config/works.mjs';
+import { razdely } from '../config/razdely.mjs';
+import { typesOf } from '../config/brands.mjs';
+
+const { b } = Astro.props;
+const parent = razdely[b.parent];
+const types = typesOf(b);
+const objects = works.filter((w) => `${w.title} ${w.place}`.toLowerCase().includes(b.worksMatch.toLowerCase())).slice(0, 4);
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: b.h1,
+  description: b.description,
+  areaServed: 'Москва и Московская область',
+  provider: { '@type': 'HomeAndConstructionBusiness', name: site.name, url: siteUrl },
+};
+---
+<Base title={b.seoTitle} description={b.description} jsonLd={[ld]}>
+  <section class="bh">
+    <Breadcrumbs items={[{ title: 'Окна', href: '' }, { title: parent.title, href: parent.path }, { title: b.name }]} />
+    <div class="container bh__in">
+      <div class="bh__text">
+        <h1>{b.h1}</h1>
+        <p class="bh__lead">{b.lead}</p>
+        <div class="bh__cta">
+          <Button href="/#zayavka" size="lg">Оставить заявку</Button>
+          <Button href="#sistemy" variant="ghost-light" size="lg">Системы {b.name}</Button>
+        </div>
+      </div>
+      <span class="bh__brand" aria-hidden="true">{b.name}</span>
+    </div>
+  </section>
+
+  <section class="sys" id="sistemy" aria-labelledby="sys-title" data-tabs>
+    <div class="container">
+      <h2 id="sys-title">Что мы делаем из профиля {b.name}</h2>
+      <p class="sys__hint">Выберите тип конструкции.</p>
+
+      <div class="sys__tabs sys__tabs--types" role="tablist" aria-label="Типы конструкций">
+        {types.map((t, i) => (
+          <button class="ctab" role="tab" type="button" id={`tab-${t.id}`} aria-controls={`panel-${t.id}`} aria-selected={i === 0 ? 'true' : 'false'} data-type={t.id}>{t.title}</button>
+        ))}
+      </div>
+
+      {types.map((t) => (
+        <div class="tpanel" role="tabpanel" id={`panel-${t.id}`} aria-labelledby={`tab-${t.id}`} data-tpanel={t.id}>
+          {t.systems ? (
+            <>
+              <p class="sys__hint">Профильные системы {b.name} для окон: выберите, чтобы увидеть параметры.</p>
+              <div class="sys__tabs" role="tablist" aria-label={`Системы ${b.name}`}>
+                {t.systems.map((s, i) => (
+                  <button class="stab" role="tab" type="button" id={`tab-${s.id}`} aria-controls={`panel-${s.id}`} aria-selected={i === 0 ? 'true' : 'false'} data-sys={s.id}>
+                    <span class="stab__thumb">
+                      {s.image ? <img src={s.image} alt="" loading="lazy" decoding="async" width="120" height="120" /> : <b>{s.name}</b>}
+                    </span>
+                    <span class="stab__name">{s.name}</span>
+                    <span class="stab__tag">{s.tag}</span>
+                  </button>
+                ))}
+              </div>
+              {t.systems.map((s) => (
+                <article class="spanel" role="tabpanel" id={`panel-${s.id}`} aria-labelledby={`tab-${s.id}`} data-spanel={s.id}>
+                  <div class="spanel__media">
+                    {s.image
+                      ? <img src={s.image} alt={`Профиль ${b.name} ${s.name} в разрезе`} loading="lazy" decoding="async" width="500" height="500" />
+                      : <span class="spanel__ph"><small>{b.name}</small><b>{s.name}</b></span>}
+                  </div>
+                  <div class="spanel__body">
+                    <span class="spanel__tag">{s.tag}</span>
+                    <h3>{b.name} {s.name}</h3>
+                    <p>{s.text}</p>
+                    <ul class="spanel__specs">{s.specs.map((x) => <li><Icon name="check" size={16} />{x}</li>)}</ul>
+                    <div class="spanel__cta">
+                      <Button href="/#zayavka" size="lg">Оставить заявку</Button>
+                      <a class="spanel__cat" href={b.techHref}><Icon name="file" size={18} />Каталог системы</a>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </>
+          ) : (
+            <article class="spanel">
+              <div class="spanel__media"><img src={t.src} alt={t.alt || t.title} loading="lazy" decoding="async" width="800" height="600" class="spanel__photo" /></div>
+              <div class="spanel__body">
+                <h3>{t.title}</h3>
+                <p>{t.text}</p>
+                <ul class="spanel__specs">{t.points.map((x) => <li><Icon name="check" size={16} />{x}</li>)}</ul>
+                <div class="spanel__cta">
+                  <Button href="/#zayavka" size="lg">Оставить заявку</Button>
+                  <a class="spanel__cat" href={b.techHref}><Icon name="file" size={18} />Технический каталог</a>
+                </div>
+              </div>
+            </article>
+          )}
+        </div>
+      ))}
+    </div>
+  </section>
+
+  {objects.length > 0 && (
+    <section class="objects" aria-labelledby="obj-title">
+      <div class="container">
+        <div class="head"><h2 id="obj-title">Наши работы</h2><Button href={`/nashi-raboty/#${b.tag}`} variant="outline" size="sm">Все работы</Button></div>
+        <ul class="ogrid">
+          {objects.map((w) => (
+            <li><figure data-gallery={JSON.stringify(w.images)}>
+              <img src={w.image} alt={w.title} loading="lazy" decoding="async" width="480" height="320" />
+            </figure></li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  <Faq items={b.faq} />
+
+  <section class="seo container">
+    {b.seo.map((t) => <p>{t}</p>)}
+  </section>
+
+  <LeadBlock product={`${parent.title} ${b.name}`} />
+</Base>
+
+<script>
+  // Два уровня вкладок: тип конструкции → система профиля. Якорь #тип или #система открывает нужное.
+  const root = document.querySelector('[data-tabs]');
+  if (root) {
+    const types = [...root.querySelectorAll('[data-type]')];
+    const tpanels = [...root.querySelectorAll('[data-tpanel]')];
+    const syss = [...root.querySelectorAll('[data-sys]')];
+    const spanels = [...root.querySelectorAll('[data-spanel]')];
+    const setTabs = (tabs, attr, id) => tabs.forEach((t) => { const on = t.dataset[attr] === id; t.setAttribute('aria-selected', String(on)); t.tabIndex = on ? 0 : -1; });
+    const showType = (id) => { setTabs(types, 'type', id); tpanels.forEach((p) => { p.hidden = p.dataset.tpanel !== id; }); };
+    const showSys = (id) => { setTabs(syss, 'sys', id); spanels.forEach((p) => { p.hidden = p.dataset.spanel !== id; }); };
+    const go = (id, push) => {
+      if (types.some((t) => t.dataset.type === id)) showType(id);
+      else if (syss.some((t) => t.dataset.sys === id)) { showSys(id); showType(syss.find((t) => t.dataset.sys === id).closest('[data-tpanel]').dataset.tpanel); }
+      else return false;
+      if (push) history.replaceState(null, '', `#${id}`);
+      return true;
+    };
+    const bind = (tabs, attr) => tabs.forEach((t, i) => {
+      t.addEventListener('click', () => go(t.dataset[attr], true));
+      t.addEventListener('keydown', (e) => {
+        const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (!d) return;
+        e.preventDefault();
+        const n = tabs[(i + d + tabs.length) % tabs.length];
+        n.focus();
+        go(n.dataset[attr], true);
+      });
+    });
+    bind(types, 'type');
+    bind(syss, 'sys');
+    const fromHash = () => {
+      if (go(location.hash.slice(1), false)) root.scrollIntoView();
+      else showType(types[0].dataset.type);
+    };
+    if (syss[0]) showSys(syss[0].dataset.sys);
+    fromHash();
+    window.addEventListener('hashchange', fromHash);
+  }
+</script>
+
+<style>
+  .bh { position: relative; overflow: hidden; background: linear-gradient(135deg, #0b1522, #14233a); color: #fff; }
+  .bh :global(.breadcrumbs), .bh :global(.breadcrumbs a) { color: rgb(255 255 255 / .7); }
+  .bh__in { position: relative; display: grid; gap: var(--sp-4); padding-block: var(--sp-6) var(--sp-7); }
+  .bh__text { position: relative; z-index: 1; max-width: 40rem; }
+  .bh h1 { color: #fff; margin: 0 0 var(--sp-3); font-size: clamp(2rem, 1.2rem + 3.4vw, 3.5rem); letter-spacing: -.03em; line-height: 1.05; }
+  .bh__lead { color: rgb(255 255 255 / .78); margin: 0 0 var(--sp-5); font-size: var(--fs-md, 1.0625rem); max-width: 34rem; }
+  .bh__cta { display: flex; flex-wrap: wrap; gap: var(--sp-3); }
+  .bh__brand { position: absolute; right: -.05em; bottom: -.18em; font: 800 clamp(5rem, 22vw, 15rem)/1 var(--font-head); letter-spacing: -.05em; color: transparent; -webkit-text-stroke: 1.5px rgb(255 255 255 / .14); pointer-events: none; user-select: none; }
+
+  .sys { padding-block: var(--section-y); scroll-margin-top: var(--header-h); }
+  .sys h2 { margin: 0 0 .35rem; }
+  .sys__hint { margin: 0 0 var(--sp-4); color: var(--c-muted, #5b6b7d); }
+  .sys__tabs { display: flex; gap: .6rem; overflow-x: auto; scroll-snap-type: x proximity; padding: .25rem .1rem .6rem; margin-bottom: var(--sp-3); scrollbar-width: thin; }
+  .sys__tabs--types { gap: .5rem; margin-bottom: var(--sp-4); }
+  .ctab { flex: 0 0 auto; scroll-snap-align: start; padding: .55rem 1rem; border: 1.5px solid var(--c-line); border-radius: 999px; background: #fff; font: 600 .9rem/1 var(--font-head); color: var(--c-navy-900); cursor: pointer; white-space: nowrap; transition: background .2s var(--ease), color .2s var(--ease), border-color .2s var(--ease); }
+  .ctab:hover { border-color: #b9ccf8; }
+  .ctab[aria-selected='true'] { background: var(--c-navy-900); border-color: var(--c-navy-900); color: #fff; }
+  .ctab:focus-visible { outline: 2px solid var(--c-amber-500); outline-offset: 2px; }
+  .tpanel[hidden] { display: none; }
+  .spanel__media img.spanel__photo { object-fit: cover; padding: 0; background: none; }
+  .stab { flex: 0 0 auto; scroll-snap-align: start; width: 8.25rem; display: grid; gap: .15rem; justify-items: start; padding: .5rem .5rem .65rem; text-align: left; font: inherit; color: var(--c-navy-900); background: #fff; border: 1.5px solid var(--c-line); border-radius: 16px; cursor: pointer; transition: border-color .2s var(--ease), background .2s var(--ease); }
+  .stab:hover { border-color: #b9ccf8; }
+  .stab[aria-selected='true'] { border-color: var(--c-amber-500); background: #eef3ff; }
+  .stab:focus-visible { outline: 2px solid var(--c-amber-500); outline-offset: 2px; }
+  .stab__thumb { width: 100%; aspect-ratio: 16 / 11; border-radius: 10px; overflow: hidden; display: grid; place-items: center; background: linear-gradient(160deg, #1d2a44, #0b1522); margin-bottom: .35rem; }
+  .stab__thumb img { width: 100%; height: 100%; object-fit: contain; padding: .4rem; background: #dfe5ee; }
+  .stab__thumb b { color: rgb(255 255 255 / .9); font: 700 .8rem/1.1 var(--font-head); text-align: center; padding: 0 .3rem; }
+  .stab__name { font: 700 .9rem/1.2 var(--font-head); }
+  .stab__tag { font-size: .72rem; color: var(--c-muted, #5b6b7d); }
+
+  .spanel { display: grid; gap: var(--sp-4); padding: var(--sp-4); background: #fff; border: 1px solid var(--c-line); border-radius: 24px; }
+  .spanel[hidden] { display: none; }
+  .spanel__media { border-radius: 18px; overflow: hidden; aspect-ratio: 4 / 3; display: grid; place-items: center; background: linear-gradient(160deg, #1d2a44, #0b1522); }
+  .spanel__media img { width: 100%; height: 100%; object-fit: contain; padding: .4rem; background: #dfe5ee; }
+  .spanel__ph { display: grid; gap: .25rem; text-align: center; color: #fff; }
+  .spanel__ph small { color: rgb(255 255 255 / .6); font: 600 .8rem var(--font-head); letter-spacing: .12em; text-transform: uppercase; }
+  .spanel__ph b { font: 800 clamp(1.8rem, 1.2rem + 3vw, 3rem)/1 var(--font-head); letter-spacing: -.03em; }
+  .spanel__body { display: grid; gap: var(--sp-3); align-content: start; }
+  .spanel__tag { justify-self: start; padding: .25rem .7rem; border-radius: 999px; background: #eef3ff; color: #2a5bd7; font: 600 .78rem var(--font-head); }
+  .spanel h3 { margin: 0; font-size: clamp(1.4rem, 1.1rem + 1.2vw, 2rem); letter-spacing: -.02em; }
+  .spanel p { margin: 0; color: var(--c-muted, #5b6b7d); max-width: 52ch; }
+  .spanel__specs { list-style: none; margin: 0; padding: 0; display: grid; gap: .5rem; }
+  .spanel__specs li { display: flex; align-items: center; gap: .55rem; padding: .6rem .85rem; background: var(--c-bg); border-radius: 12px; font-weight: 600; font-size: .9rem; }
+  .spanel__specs :global(svg) { color: var(--c-amber-500); flex: none; }
+  .spanel__cta { display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-3) var(--sp-4); }
+  .spanel__cat { display: inline-flex; align-items: center; gap: .45rem; font-weight: 600; color: #2a5bd7; text-decoration: none; }
+  .spanel__cat:hover { text-decoration: underline; }
+
+  .objects { padding-block: var(--section-y); }
+  .head { display: flex; align-items: baseline; justify-content: space-between; gap: var(--sp-3); margin-bottom: var(--sp-4); }
+  .head h2 { margin: 0; }
+  .ogrid { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-3); grid-template-columns: 1fr 1fr; }
+  .ogrid figure { margin: 0; position: relative; border-radius: var(--r-md); overflow: hidden; aspect-ratio: 4 / 5; background: var(--c-navy-800); }
+  .ogrid img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s var(--ease); }
+  .ogrid figure:hover img { transform: scale(1.05); }
+  .seo { padding-block: var(--sp-6); display: grid; gap: var(--sp-3); max-width: 56rem; }
+  .seo p { margin: 0; color: var(--c-muted, #5b6b7d); }
+
+  @media (min-width: 800px) {
+    .spanel { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: var(--sp-6); padding: var(--sp-5); align-items: center; }
+    .spanel__media { aspect-ratio: 1 / 1; }
+    .stab { width: 9.5rem; }
+    .ogrid { grid-template-columns: repeat(4, 1fr); }
+  }
+</style>

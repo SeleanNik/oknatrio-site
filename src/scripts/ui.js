@@ -125,3 +125,5 @@ document.querySelectorAll('[data-lead-form]').forEach((form) => {
 // ---- Появление блоков при прокрутке (reveal.js; после обновления данных из админки вызывается снова) ----
 import { reveal } from './reveal.js';
 reveal();
+
+import './reviews.js';

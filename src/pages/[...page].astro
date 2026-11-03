@@ -5,18 +5,21 @@
 import { getCollection, render } from 'astro:content';
 import InfoLayout from '../layouts/InfoLayout.astro';
 import RazdelLayout from '../layouts/RazdelLayout.astro';
+import BrandLayout from '../layouts/BrandLayout.astro';
 import { razdely } from '../config/razdely.mjs';
+import { brandList } from '../config/brands.mjs';
 
 export async function getStaticPaths() {
   const razdel = Object.values(razdely).map((r) => ({ params: { page: r.path.slice(1, -1) }, props: { r } }));
+  const brand = brandList.map((b) => ({ params: { page: b.path.slice(1, -1) }, props: { b } }));
   const entries = await getCollection('pages');
   const info = entries.map((entry) => ({ params: { page: entry.id }, props: { entry } }));
-  return [...razdel, ...info];
+  return [...razdel, ...brand, ...info];
 }
 
-const { r, entry } = Astro.props;
+const { r, b, entry } = Astro.props;
 const Content = entry ? (await render(entry)).Content : null;
 ---
-{r ? <RazdelLayout r={r} /> : (
+{r ? <RazdelLayout r={r} /> : b ? <BrandLayout b={b} /> : (
   <InfoLayout data={entry.data} path={`/${entry.id}/`}><Content /></InfoLayout>
 )}

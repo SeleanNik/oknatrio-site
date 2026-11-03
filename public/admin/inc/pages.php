@@ -155,11 +155,21 @@ function page_editor(string $key): string
     $schema = $schemas[$key];
     $data = content_get('page_' . $key, []);
     ob_start(); ?>
-    <p class="lead">Изменения видны на сайте сразу после сохранения. Страница на сайте: <a href="<?= h(PAGE_URLS[$key]) ?>" target="_blank" rel="noopener"><?= h(PAGE_URLS[$key]) ?></a></p>
-    <form method="post" enctype="multipart/form-data" class="pageform" id="page-form">
+    <form method="post" enctype="multipart/form-data" class="pageform editor" id="page-form">
       <?= csrf_field() ?><input type="hidden" name="page" value="<?= h($key) ?>">
-      <?= render_page_form($schema, $data) ?>
-      <div class="savebar"><span class="savebar__msg" data-savemsg>Фото — jpg, png, webp до 4 МБ. PDF — до 100 МБ (не больше лимита хостинга).</span><button class="btn" name="action" value="save_page">Сохранить страницу</button></div>
+      <div class="editor__main"><?= render_page_form($schema, $data) ?></div>
+      <aside class="editor__side">
+        <div class="sidebox">
+          <button class="btn btn--block" name="action" value="save_page">Сохранить страницу</button>
+          <span class="savebar__msg" data-savemsg>Изменения видны на сайте сразу после сохранения.</span>
+          <a class="btn btn--ghost btn--sm btn--block" href="<?= h(PAGE_URLS[$key]) ?>" target="_blank" rel="noopener">Открыть страницу на сайте</a>
+        </div>
+        <nav class="sidebox toc" aria-label="Разделы страницы">
+          <div class="toc__head"><strong>Разделы</strong><span><button type="button" class="linkbtn" data-fold="open">развернуть</button> · <button type="button" class="linkbtn" data-fold="close">свернуть</button></span></div>
+          <?php foreach ($schema['groups'] as $n => $g): ?><a href="#g<?= $n ?>" data-toc><?= h($g['title']) ?></a><?php endforeach; ?>
+        </nav>
+        <p class="hint">Фото: jpg, png, webp до 4 МБ. PDF до 100 МБ (не больше лимита хостинга).</p>
+      </aside>
     </form>
     <?= versions_box('page_' . $key) ?>
     <?php return (string)ob_get_clean();

@@ -1,5 +1,4 @@
 import { defineConfig } from 'astro/config';
-import sitemap from '@astrojs/sitemap';
 import { loadEnv } from 'vite';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -31,5 +30,5 @@ export default defineConfig({
   site: siteUrl,
   trailingSlash: 'always',
   build: { format: 'directory' },
-  integrations: [sitemap({ filter: (p) => !p.includes('/ui-kit/') }), stripComments()],
+  integrations: [stripComments()],
 });

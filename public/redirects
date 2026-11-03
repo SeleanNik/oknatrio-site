@@ -1,8 +1,26 @@
-# Заготовка 301-редиректов со старых URL (заполняет владелец сайта).
+# Карта 301-редиректов со СТАРОГО сайта (oknatrio.ru на NetCat) на новый. Правила уже включены в .htaccess.
 # Формат: <старый путь> <новый путь> 301
-# Пример:
-# /plastikovye-okna/ /okna/pvh/ 301
-# /catalog/alyuminievye-okna/ /okna/alyuminievye/ 301
-#
-# Для Apache эти строки конвертируются в .htaccess (Redirect 301 ...);
-# окнатрио.рф -> oknatrio.ru редиректится на уровне хостинга/DNS.
+/index.php                 /                          301
+/windows.php               /okna/pvh/                 301
+/window.php                /okna/pvh/                 301
+/antisound-windows.php     /okna/pvh/                 301
+/raskladka.php             /okna/pvh/                 301
+/saveenergy-windows.php    /okna/pvh/                 301
+/color-windows.php         /okna/pvh/                 301
+/custom-windows.php        /okna/pvh/                 301
+/balcon.php                /okna/pvh/                 301
+/accessories.php           /okna/pvh/                 301
+/usable.php                /okna/pvh/                 301
+/cottage.php               /nashi-raboty/             301
+/gallery.php               /nashi-raboty/             301
+/contacts.php              /kontakty/                 301
+/about_us.php              /o-kompanii/               301
+/warranty.php              /o-kompanii/               301
+/reviews.php               /                          301
+/services.php              /                          301
+/price.php                 /                          301
+/credit.php                /                          301
+/discounts.php             /                          301
+/articles.php              /                          301
+/forbuilders.php           /                          301
+# /articles/*, /accessories/*, /window/*, /catalog/*  ->  /   (на старом сайте эти адреса отдают 404, но могут быть в индексе)

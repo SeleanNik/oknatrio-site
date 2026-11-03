@@ -1,0 +1,183 @@
+---
+// «О компании»: тексты со старого сайта (oknatrio.ru/about_us.php), переписаны под новый стиль.
+// TODO: фото диплома и производства от клиента → public/img/about/diplom.jpg и proizvodstvo.jpg (без файла блок скрыт);
+//       подтвердить «более 10 лет», год запуска производства (2008) и партнёров по стеклопакетам.
+import fs from 'node:fs';
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Button from '../components/Button.astro';
+import { localBusiness } from '../config/schema.mjs';
+
+const has = (f) => fs.existsSync(new URL(`../../public/img/about/${f}`, import.meta.url));
+const diplom = has('diplom.jpg');
+const proizv = has('proizvodstvo.jpg');
+
+const values = ['Качество', 'Надёжность', 'Долговечность', 'Ремонтопригодность', 'Простота обслуживания'];
+const facts = [
+  { n: '10+', t: 'лет на оконном рынке' },
+  { n: '2008', t: 'запустили собственное производство' },
+  { n: '20 000', t: 'циклов открывания выдерживает наша фурнитура' },
+];
+const steps = [
+  { tag: '10+ лет назад', title: 'Появились на оконном рынке', text: 'Сначала заказывали окна у партнёров и сами объясняли поставщикам, какие параметры важны. Не принимали дешёвые комплектующие и устаревшие стандарты качества.' },
+  { tag: 'Учились', title: 'Набирались опыта', text: 'Изучали новые технологии и добивались нужного качества. Мы сами были покупателями, поэтому знаем, чего ждёт клиент.' },
+  { tag: 'Принципы', title: 'Всё решаемо', text: 'Наш девиз. Самое важное для нас:', motto: true },
+  { tag: '2008', title: 'Запустили своё производство', text: 'Постарались убрать человеческий фактор: станки делают раму и створку целиком, без вмешательства оператора.' },
+];
+const prod = [
+  ['Станки с ЧПУ', 'Сами сваривают все четыре угла ПВХ-профиля с заданной точностью.'],
+  ['Стеклопакеты', 'Свои или у проверенных партнёров: «РСК», «Modern Glass», «STIS».'],
+  ['Фурнитура', 'Siegenia-Aubi и Roto: ресурс 20 000 открываний.'],
+];
+const range = [
+  ['Окна, двери и входные группы', 'ПВХ-профиль VEKA'],
+  ['Тёплое остекление балконов и лоджий', 'ПВХ, алюминий Alutech и Schuco'],
+  ['Алюминиевые окна и двери', 'тёплый и холодный профиль Alutech и Schuco, панорамные окна «джамбо»'],
+  ['Раздвижные конструкции', 'параллельно-сдвижные, подъёмно-раздвижные, «гармошки» Alutech и Schuco'],
+  ['Окна для коттеджей', 'под размеры и архитектуру дома'],
+  ['Окна для дачи', 'тёплые и практичные решения'],
+  ['Отделка балконов и лоджий', 'под ключ'],
+  ['Остекление фасадов зданий', 'витражи и стоечно-ригельные системы'],
+];
+---
+<Base
+  title="О компании «Трио Инжиниринг» — окна ПВХ и алюминий в Москве"
+  description="Трио Инжиниринг: более 10 лет на оконном рынке, собственное производство с 2008 года. Алюминиевые конструкции Alutech и Schuco, окна ПВХ VEKA. Замер бесплатно."
+  jsonLd={[localBusiness]}
+>
+  <Breadcrumbs items={[{ title: 'О компании' }]} />
+
+  <section class="ab-hero">
+    <div class="container ab-hero__grid">
+      <div>
+        <h1>Добро пожаловать в «Трио Инжиниринг»</h1>
+        <p class="ab-lead">Более 10 лет делаем окна и светопрозрачные конструкции для квартир, дач, коттеджей и фасадов.</p>
+        <div class="ab-hero__cta">
+          <Button href="/nashi-raboty/" size="lg">Наши работы</Button>
+        </div>
+      </div>
+      {diplom && <figure class="ab-photo"><img src="/img/about/diplom.jpg" alt="Диплом компании «Трио Инжиниринг»" loading="lazy" decoding="async" /></figure>}
+    </div>
+  </section>
+
+  <section class="ab-facts">
+    <div class="container">
+      <ul class="ab-facts__grid">
+        {facts.map((f) => <li><strong>{f.n}</strong><span>{f.t}</span></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section ab-story">
+    <div class="container">
+      <h2>Наша история</h2>
+      <ol class="ab-tl">
+        {steps.map((s) => (
+          <li class={s.motto ? 'is-motto' : ''}>
+            <span class="ab-tl__tag">{s.tag}</span>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
+            {s.motto && <ul class="ab-values">{values.map((v) => <li>{v}</li>)}</ul>}
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  <section class="section ab-prod">
+    <div class="container">
+      <h2>Из чего сделаны наши окна</h2>
+      <ul class="ab-prod__grid">
+        {prod.map(([t, d]) => <li><strong>{t}</strong><span>{d}</span></li>)}
+      </ul>
+      {(diplom || proizv) && (
+        <div class="ab-prod__photos">
+          {proizv && <figure class="ab-photo"><img src="/img/about/proizvodstvo.jpg" alt="Производство окон «Трио Инжиниринг»" loading="lazy" decoding="async" /></figure>}
+        </div>
+      )}
+    </div>
+  </section>
+
+  <section class="section ab-range">
+    <div class="container">
+      <h2>Что мы делаем</h2>
+      <ul class="ab-range__grid">
+        {range.map(([t, d]) => <li><strong>{t}</strong><span>{d}</span></li>)}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section ab-outro">
+    <div class="container ab-outro__box">
+      <div>
+        <h2>Мы ценим ваше доверие</h2>
+        <p>Расскажем о плюсах и минусах профиля и подберём вариант для вашего дома. Если другие не могут, мы сможем.</p>
+      </div>
+      <div class="ab-outro__btns">
+        <Button href="/#zayavka" size="lg">Оставить заявку</Button>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .ab-hero { padding-block: var(--sp-3) var(--sp-6); }
+  .ab-hero__grid { display: grid; gap: var(--sp-5); align-items: center; }
+  .ab-hero h1 { margin: 0 0 var(--sp-3); font-size: clamp(1.9rem, 1.2rem + 3.2vw, 3.5rem); letter-spacing: -.03em; line-height: 1.05; color: var(--c-navy-900); }
+  .ab-lead { margin: 0 0 var(--sp-4); max-width: 38rem; font-size: clamp(1.0625rem, 1rem + .4vw, 1.25rem); line-height: 1.5; color: var(--c-text-muted); }
+  .ab-hero__cta { display: flex; flex-wrap: wrap; gap: var(--sp-3); }
+  .ab-photo { margin: 0; border-radius: 22px; overflow: hidden; background: var(--c-blue-100); }
+  .ab-photo img { display: block; width: 100%; height: auto; }
+
+  .ab-facts { padding-bottom: var(--sp-6); }
+  .ab-facts__grid { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-3); grid-template-columns: 1fr; }
+  .ab-facts li { display: grid; gap: .35rem; padding: var(--sp-4); border-radius: 22px; background: #fff; border: 1px solid var(--c-line); }
+  .ab-facts strong { font: 700 clamp(2.25rem, 1.8rem + 2vw, 3.25rem)/1 var(--font-head); letter-spacing: -.03em; color: #3672ff; }
+  .ab-facts span { color: var(--c-text-muted); font-size: var(--fs-sm); line-height: 1.4; }
+
+  .ab-two { display: grid; gap: var(--sp-5); align-items: start; }
+  .ab-story h2, .ab-prod h2, .ab-range h2 { margin: 0 0 var(--sp-3); font-size: clamp(1.5rem, 1.2rem + 1.4vw, 2.25rem); letter-spacing: -.02em; color: var(--c-navy-900); }
+  .ab-tl { list-style: none; margin: var(--sp-4) 0 0; padding: 0 0 0 1.4rem; display: grid; gap: var(--sp-3); border-left: 2px solid #c9d7ff; max-width: 48rem; }
+  .ab-tl > li { position: relative; display: grid; gap: .3rem; padding: var(--sp-4); border-radius: 20px; background: #fff; border: 1px solid var(--c-line); }
+  .ab-tl > li::before { content: ''; position: absolute; left: calc(-1.4rem - 7px); top: 1.7rem; width: 12px; height: 12px; border-radius: 50%; background: #3672ff; box-shadow: 0 0 0 4px #f6f7f8; }
+  .ab-tl > li.is-motto { color: #fff; border-color: transparent; background: radial-gradient(520px 260px at 100% 0%, rgb(54 114 255 / .45), transparent 70%), linear-gradient(135deg, #0b1522, #14233a); }
+  .ab-tl__tag { font: 700 .75rem/1 var(--font-head); letter-spacing: .08em; text-transform: uppercase; color: #3672ff; }
+  .ab-tl .is-motto .ab-tl__tag { color: #8da9ff; }
+  .ab-tl h3 { margin: 0; font: 700 clamp(1.15rem, 1.05rem + .5vw, 1.4rem)/1.2 var(--font-head); color: var(--c-navy-900); letter-spacing: -.01em; }
+  .ab-tl .is-motto h3 { color: #fff; }
+  .ab-tl p { margin: 0; line-height: 1.5; color: var(--c-text-muted); }
+  .ab-tl .is-motto p { color: rgb(255 255 255 / .8); }
+  .ab-tl .is-motto .ab-values li { background: rgb(255 255 255 / .12); color: #fff; }
+  .ab-short { margin: 0; max-width: 34rem; font-size: clamp(1.0625rem, 1rem + .4vw, 1.25rem); line-height: 1.5; color: var(--c-text-muted); }
+  .ab-prod__grid { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-3); grid-template-columns: 1fr; }
+  .ab-prod__grid li { display: grid; gap: .35rem; align-content: start; padding: var(--sp-4); border-radius: 20px; background: #fff; border: 1px solid var(--c-line); }
+  .ab-prod__grid strong { font: 700 1.125rem/1.25 var(--font-head); color: var(--c-navy-900); }
+  .ab-prod__grid span { color: var(--c-text-muted); line-height: 1.45; }
+  .ab-prod__photos { margin-top: var(--sp-4); }
+  .ab-values { list-style: none; margin: var(--sp-3) 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: .5rem; }
+  .ab-values li { padding: .45rem .95rem; border-radius: var(--r-pill); background: #e6edff; color: #2a5bd7; font: 600 var(--fs-sm)/1.2 var(--font-head); }
+  .ab-motto { display: grid; gap: .5rem; align-content: center; padding: var(--sp-5); min-height: 12rem; border-radius: 26px; color: #fff; background: radial-gradient(520px 260px at 100% 0%, rgb(54 114 255 / .45), transparent 70%), linear-gradient(135deg, #0b1522, #14233a); }
+  .ab-motto span { font: 600 .75rem/1 var(--font-head); letter-spacing: .16em; text-transform: uppercase; color: rgb(255 255 255 / .7); }
+  .ab-motto strong { font: 700 clamp(2rem, 1.4rem + 2.6vw, 3.25rem)/1.05 var(--font-head); letter-spacing: -.03em; }
+
+  .ab-range__grid { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--sp-3); grid-template-columns: 1fr; }
+  .ab-range li { display: grid; gap: .3rem; align-content: start; padding: var(--sp-4); border-radius: 20px; background: #fff; border: 1px solid var(--c-line); border-left: 3px solid #3672ff; }
+  .ab-range strong { font: 700 1.0625rem/1.25 var(--font-head); color: var(--c-navy-900); }
+  .ab-range span { color: var(--c-text-muted); font-size: var(--fs-sm); line-height: 1.4; }
+
+  .ab-outro { padding-top: 0; }
+  .ab-outro__box { display: grid; gap: var(--sp-4); padding: var(--sp-5); border-radius: 26px; color: #fff; background: radial-gradient(520px 260px at 100% 0%, rgb(54 114 255 / .45), transparent 70%), linear-gradient(135deg, #0b1522, #14233a); }
+  .ab-outro h2 { margin: 0 0 var(--sp-3); color: #fff; font-size: clamp(1.5rem, 1.2rem + 1.4vw, 2.25rem); letter-spacing: -.02em; }
+  .ab-outro p { margin: 0; max-width: 40rem; line-height: 1.55; color: rgb(255 255 255 / .85); }
+  .ab-outro__btns { display: flex; flex-wrap: wrap; gap: var(--sp-3); align-items: center; }
+
+  @media (min-width: 640px) { .ab-facts__grid, .ab-range__grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 960px) {
+    .ab-hero__grid { grid-template-columns: 1.2fr .8fr; gap: var(--sp-7); }
+    .ab-facts__grid { grid-template-columns: repeat(3, 1fr); }
+    .ab-range__grid { grid-template-columns: repeat(4, 1fr); }
+    .ab-two { grid-template-columns: 1.4fr .8fr; gap: var(--sp-7); }
+    .ab-prod__grid { grid-template-columns: repeat(3, 1fr); }
+    .ab-outro__box { grid-template-columns: 1fr auto; align-items: center; padding: var(--sp-6); }
+  }
+</style>

@@ -16,6 +16,7 @@ const items = services.items;
         <li class="uc">
           <span class="uc__num">0{n + 1}</span>
           <h3 data-ed={`home.services.items.${n}.title`}>{i.title}</h3>
+          <p data-ed={`home.services.items.${n}.text`}>{i.text}</p>
         </li>
       ))}
     </ol>
@@ -33,7 +34,8 @@ const items = services.items;
   .uc { position: relative; padding-left: var(--sp-4); border-left: 2px solid rgb(120 150 255 / .55); display: grid; align-content: start; gap: .6rem; transition: border-color .3s; }
   .uc:hover { border-color: var(--c-amber-500); }
   .uc__num { font: 700 clamp(2.75rem, 2rem + 3.6vw, 4.5rem)/1 var(--font-head); letter-spacing: -.02em; color: #8da9ff; opacity: .9; }
-  .uc h3 { margin: 0; max-width: 24ch; font: 500 clamp(.95rem, .9rem + .3vw, 1.1rem)/1.35 var(--font-body); color: rgb(255 255 255 / .88); }
+  .uc h3 { margin: 0; max-width: 24ch; font: 600 clamp(1.05rem, .95rem + .4vw, 1.25rem)/1.25 var(--font-head); color: #fff; }
+  .uc p { margin: 0; max-width: 26ch; font-size: .9375rem; line-height: 1.45; color: rgb(255 255 255 / .7); }
 
   @media (min-width: 900px) { .uslugi__grid { grid-template-columns: repeat(4, 1fr); gap: var(--sp-4); } .uc { padding-left: var(--sp-5); } }
 </style>

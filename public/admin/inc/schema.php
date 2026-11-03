@@ -68,6 +68,7 @@ function page_schemas(): array
         'home' => ['label' => 'Главная', 'groups' => [
             ['title' => 'Главный экран', 'fields' => [
                 ['k' => 'hero', 'type' => 'lines', 'n' => 2, 'max' => 50, 'label' => 'Заголовок (2 строки)'],
+                ['k' => 'heroStats', 'type' => 'lines', 'n' => 3, 'max' => 30, 'label' => 'Карточка справа внизу (3 пункта: лет на рынке, объектов, оценка отзывов)'],
             ]],
             ['title' => 'Блок «Продукция»', 'fields' => [
                 ['k' => 'prod.title', 'type' => 'text', 'max' => 40, 'label' => 'Заголовок'],
@@ -80,14 +81,19 @@ function page_schemas(): array
                 ]],
             ]],
             ['title' => 'Блок «Услуги»', 'fields' => [
-                ['k' => 'services.title', 'type' => 'text', 'max' => 40, 'label' => 'Заголовок'],
+                ['k' => 'services.title', 'type' => 'text', 'max' => 60, 'label' => 'Заголовок'],
                 ['k' => 'services.items', 'type' => 'list', 'fixed' => true, 'row' => 'title', 'label' => 'Услуги (4 штуки)', 'item' => [
                     ['k' => 'title', 'type' => 'text', 'label' => 'Название', 'max' => 80, 'req' => true],
+                    ['k' => 'text', 'type' => 'text', 'label' => 'Описание', 'max' => 100],
                 ]],
             ]],
             ['title' => 'Блок «Наши работы»', 'hint' => 'Сами объекты редактируются на странице «Наши работы».', 'fields' => [
                 ['k' => 'works.title', 'type' => 'text', 'max' => 40, 'label' => 'Заголовок'],
                 ['k' => 'works.text', 'type' => 'textarea', 'max' => 170, 'rows' => 2, 'label' => 'Описание'],
+            ]],
+            ['title' => 'Блок «Заявка»', 'fields' => [
+                ['k' => 'lead.title', 'type' => 'text', 'max' => 60, 'label' => 'Заголовок'],
+                ['k' => 'lead.text', 'type' => 'textarea', 'max' => 170, 'rows' => 2, 'label' => 'Текст'],
             ]],
             ['title' => 'Вопросы и ответы', 'hint' => 'Блок «Частые вопросы» перед формой заявки.', 'fields' => [
                 ['k' => 'faq', 'type' => 'list', 'max' => 12, 'row' => 'q', 'sub' => 'a', 'label' => 'Вопросы', 'add' => 'Добавить вопрос', 'item' => [
@@ -289,18 +295,56 @@ function render_list(array $f, $items, string $path): string
     return $o . '</div>';
 }
 
+// Краткий вид секции в свёрнутом состоянии: миниатюры карточек, названия или первые тексты.
+function group_preview(array $g, array $data): string
+{
+    foreach ($g['fields'] as $f) {
+        if ($f['type'] !== 'list') continue;
+        $items = path_get($data, $f['k']);
+        $items = is_array($items) ? array_values($items) : [];
+        $tk = $f['thumb'] ?? '';
+        $rk = $f['row'] ?? 'title';
+        $o = '';
+        foreach (array_slice($items, 0, $tk !== '' ? 10 : 5) as $it) {
+            if (!is_array($it)) continue;
+            $name = trim((string)($it[$rk] ?? ''));
+            if ($tk !== '') {
+                $tv = $it[$tk] ?? '';
+                $src = is_array($tv) ? (string)($tv[0] ?? '') : (string)$tv;
+                $o .= '<i class="fold__thumb" title="' . h($name) . '">' . ($src !== '' ? '<img src="' . h($src) . '" alt="" loading="lazy">' : '') . '</i>';
+            } elseif ($name !== '') {
+                $o .= '<i class="fold__tag">' . h(mb_strimwidth($name, 0, 34, '…')) . '</i>';
+            }
+        }
+        if ($o !== '') {
+            $more = count($items) - ($tk !== '' ? 10 : 5);
+            return $o . ($more > 0 ? '<span class="fold__more">+' . $more . '</span>' : '') . '<span class="fold__n">' . count($items) . '</span>';
+        }
+    }
+    $txt = [];
+    foreach ($g['fields'] as $f) {
+        if (!in_array($f['type'], ['text', 'textarea', 'lines'], true)) continue;
+        $v = path_get($data, $f['k']);
+        if (is_array($v)) $v = implode(' · ', array_filter(array_map('strval', $v), 'strlen'));
+        $v = trim((string)$v);
+        if ($v !== '') $txt[] = $v;
+        if (count($txt) >= 2) break;
+    }
+    return $txt ? '<span class="fold__txt">' . h(mb_strimwidth(implode(' · ', $txt), 0, 150, '…')) . '</span>' : '';
+}
+
 function render_page_form(array $schema, array $data): string
 {
     $o = '';
-    foreach ($schema['groups'] as $g) {
-        $o .= '<section class="panel"><h2>' . h($g['title']) . '</h2>';
+    foreach ($schema['groups'] as $n => $g) {
+        $o .= '<details class="panel fold" id="g' . $n . '"><summary><div class="fold__head"><h2>' . h($g['title']) . '</h2><div class="fold__prev">' . group_preview($g, $data) . '</div></div><span class="fold__btn"><b>Изменить</b><b>Свернуть</b></span></summary>';
         if (!empty($g['hint'])) $o .= '<p class="hint">' . h($g['hint']) . '</p>';
         $o .= '<div class="panel__body">';
         foreach ($g['fields'] as $f) {
             $val = path_get($data, $f['k']);
             $o .= $f['type'] === 'list' ? render_list($f, $val, $f['k']) : render_field($f, $val ?? '', fname($f['k']));
         }
-        $o .= '</div></section>';
+        $o .= '</div></details>';
     }
     return $o;
 }

@@ -28,7 +28,7 @@ const isActive = (item) => {
                 <div class="container nav__cols">
                   {item.groups.map((g) => (
                     <div class="nav__col">
-                      <a class="nav__head" href={g.href}>{g.title}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" /></svg></a>
+                      {g.href ? <a class="nav__head" href={g.href}>{g.title}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" /></svg></a> : <span class="nav__head">{g.title}<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7" /></svg></span>}
                       <ul>{g.links.map(([t, h]) => <li><a href={h}>{t}</a></li>)}</ul>
                     </div>
                   ))}
@@ -63,7 +63,7 @@ const isActive = (item) => {
                 <div class="mmenu__sub">
                   {item.groups.map((g) => (
                     <>
-                      <a class="mmenu__all" href={g.href}>{g.title} →</a>
+                      {g.href ? <a class="mmenu__all" href={g.href}>{g.title} →</a> : <span class="mmenu__all">{g.title}</span>}
                       <ul>{g.links.map(([t, h]) => <li><a href={h}>{t}</a></li>)}</ul>
                     </>
                   ))}

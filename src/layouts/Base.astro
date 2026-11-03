@@ -13,6 +13,10 @@ import { site, siteUrl } from '../config/site.config.mjs';
 const { title, description, noindex = false, image = '/og-default.jpg', jsonLd = [] } = Astro.props;
 const fullTitle = title.includes(site.name) ? title : `${title} — ${site.name}`;
 const canonical = siteUrl + Astro.url.pathname;
+const ogImage = siteUrl + image; // og-default.jpg: 1200×630, абсолютный URL
+// SEO-лимиты: title до 60, description до 160 знаков (предупреждение при сборке)
+if (fullTitle.length > 60) console.warn(`[seo] title ${fullTitle.length} > 60: ${Astro.url.pathname}`);
+if ((description ?? '').length > 160) console.warn(`[seo] description ${description.length} > 160: ${Astro.url.pathname}`);
 const robots = noindex || site.noindex ? 'noindex, nofollow' : 'index, follow';
 const ym = site.ymId;
 ---
@@ -33,8 +37,15 @@ const ym = site.ymId;
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={siteUrl + image} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={fullTitle} />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
     {jsonLd.map((d) => <script type="application/ld+json" set:html={JSON.stringify(d)} />)}
     {ym && (
       <script is:inline set:html={`window.__YM_ID__=${Number(ym)};(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})(window,document,'script','https://mc.yandex.ru/metrika/tag.js','ym');ym(${Number(ym)},'init',{clickmap:true,trackLinks:true,accurateTrackBounce:true,webvisor:false});`} />

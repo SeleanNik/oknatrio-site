@@ -1,14 +1,14 @@
 ---
-import Img from '../Img.astro';
 import Button from '../Button.astro';
 import { pagesData } from '../../config/pages.mjs';
 const hero = pagesData.home.hero;
+const heroStats = pagesData.home.heroStats ?? [];
 
 // Главный экран (референс клиента: фото дома на весь экран, стеклянная карточка справа внизу).
 // Заголовок строго в 2 строки. TODO: итоговое фото дома с окнами от клиента (сейчас сток).
 ---
 <section class="hero">
-  <Img class="hero__bg" photo="houseGlass" alt="Загородный дом с панорамными окнами" ratio={0.6} widths={[900, 1400, 2000, 2600]} sizes="100vw" eager />
+  <img class="hero__bg" src="/img/hero-home-1600.webp" srcset="/img/hero-home-900.webp 900w, /img/hero-home-1600.webp 1600w, /img/hero-home-2400.webp 2400w" sizes="100vw" width="2400" height="1372" alt="Современный дом с панорамным остеклением" fetchpriority="high" decoding="async" />
   <div class="hero__shade"></div>
 
   <div class="container hero__inner">
@@ -18,26 +18,41 @@ const hero = pagesData.home.hero;
         <Button href="/#zayavka" size="lg">Оставить заявку</Button>
         <Button href="#produkciya" variant="ghost-light" size="lg">Узнать больше</Button>
       </div>
+      <ul class="hero__stats" aria-label="О компании">
+        {heroStats.map((s, n) => { const [num, ...rest] = s.split(' '); return <li data-stat={n}><b>{num}</b><span>{rest.join(' ')}</span></li>; })}
+      </ul>
     </div>
-
   </div>
 </section>
 
 <style>
   .hero { position: relative; isolation: isolate; color: #fff; background: #0b1522; overflow: hidden;
     height: calc(100svh - var(--header-h)); min-height: 520px; display: flex; align-items: center; }
-  .hero :global(.hero__bg) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 55%; z-index: -3; }
+  .hero__bg { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 30%; z-index: -3; }
   .hero__shade { position: absolute; inset: 0; z-index: -2;
     background:
-      linear-gradient(90deg, rgb(8 16 26 / .72) 0%, rgb(8 16 26 / .35) 45%, rgb(8 16 26 / 0) 75%),
+      linear-gradient(0deg, rgb(8 16 26 / .85) 0%, rgb(8 16 26 / .55) 35%, rgb(8 16 26 / 0) 70%),
+      linear-gradient(90deg, rgb(8 16 26 / .6) 0%, rgb(8 16 26 / .25) 45%, rgb(8 16 26 / 0) 75%),
       linear-gradient(180deg, rgb(8 16 26 / .35) 0%, rgb(8 16 26 / 0) 25%, rgb(8 16 26 / 0) 60%, rgb(8 16 26 / .7) 88%, #0b1522 100%); }
   /* блок текста стоит чуть выше геометрического центра */
-  .hero__inner { width: 100%; padding-block: 0 calc(var(--mobilebar-h) + 4svh); margin-top: -4svh; }
+  .hero__inner { width: 100%; padding-block: 0 calc(var(--mobilebar-h) + 5svh); }
   .hero h1 { color: #fff; font-weight: 700; letter-spacing: -.035em; line-height: 1.02; margin: 0 0 clamp(1.25rem, 2.5vw, 2.25rem);
     font-size: clamp(1.7rem, 6.3vw, 5rem); text-shadow: 0 2px 40px rgb(0 0 0 / .4); }
   .hero h1 span { display: block; white-space: nowrap; }
   .hero h1 span + span { color: rgb(255 255 255 / .82); font-weight: 500; }
+  .hero__stats { list-style: none; margin: clamp(1.25rem, 3svh, 2rem) 0 0; padding: .4rem; display: grid; grid-template-columns: repeat(3, 1fr); gap: .25rem; width: 100%; max-width: 26rem; border-radius: 20px; background: rgb(255 255 255 / .1); border: 1px solid rgb(255 255 255 / .22); backdrop-filter: blur(18px) saturate(150%); -webkit-backdrop-filter: blur(18px) saturate(150%); text-align: center; }
+  .hero__stats li { padding: .6rem .3rem; border-radius: 14px; display: flex; flex-direction: column; align-items: center; gap: .2rem; }
+  .hero__stats b { font: 700 1.2rem/1 var(--font-head); letter-spacing: -.02em; color: #fff; }
+  .hero__stats span { font: 500 .6875rem/1.25 var(--font-body, inherit); color: rgb(255 255 255 / .75); }
+  .hero__stats li:last-child b { color: var(--c-star, #f5b83d); }
   .hero__cta { display: flex; flex-wrap: wrap; gap: var(--sp-3); }
 
-  @media (min-width: 900px) { .hero__inner { padding-bottom: 0; margin-top: -6svh; } }
+  @media (min-width: 900px) {
+    .hero__inner { padding-bottom: 0; margin-bottom: 0; }
+    .hero h1 { font-size: clamp(2rem, 4.2vw, 3.75rem); }
+    .hero__stats { position: absolute; right: max(var(--gutter), calc((100% - var(--container)) / 2)); bottom: clamp(2rem, 7svh, 4.5rem); margin: 0; padding: .5rem; width: fit-content; max-width: none; display: flex; gap: .35rem; }
+    .hero__stats li { padding: .85rem 1.5rem; min-width: 8.5rem; }
+    .hero__stats b { font-size: 1.75rem; }
+    .hero__stats span { font-size: .8125rem; }
+  }
 </style>
