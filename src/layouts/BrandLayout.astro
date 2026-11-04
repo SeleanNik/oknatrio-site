@@ -161,16 +161,26 @@ const ld = {
     window.addEventListener('hashchange', fromHash);
   }
 
-  // Подсветка текущего раздела в липкой навигации.
+  // Подсветка текущего раздела в липкой навигации. Прокручиваем только саму смужку (scrollLeft), страницу не трогаем.
   const links = [...document.querySelectorAll('[data-anchor]')];
+  const bar = document.querySelector('.anchors__in');
   const secs = links.map((l) => document.getElementById(l.dataset.anchor)).filter(Boolean);
-  if (links.length && 'IntersectionObserver' in window) {
-    const mark = (id) => links.forEach((l) => {
-      const on = l.dataset.anchor === id;
-      l.classList.toggle('is-on', on);
-      if (on) l.scrollIntoView({ block: 'nearest', inline: 'center' });
-    });
+  if (links.length && bar && 'IntersectionObserver' in window) {
+    let lock = 0;
+    let cur = '';
+    const mark = (id) => {
+      if (id === cur) return;
+      cur = id;
+      links.forEach((l) => {
+        const on = l.dataset.anchor === id;
+        l.classList.toggle('is-on', on);
+        if (on) bar.scrollTo({ left: l.offsetLeft - (bar.clientWidth - l.offsetWidth) / 2, behavior: 'auto' });
+      });
+    };
+    // При клике подсвечиваем цель сразу и не реагируем на разделы, которые пролетаем по пути.
+    links.forEach((l) => l.addEventListener('click', () => { mark(l.dataset.anchor); lock = Date.now() + 1000; }));
     const io = new IntersectionObserver((es) => {
+      if (Date.now() < lock) return;
       const v = es.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
       if (v) mark(v.target.id);
     }, { rootMargin: '-120px 0px -55% 0px' });
@@ -202,7 +212,7 @@ const ld = {
   .anchors__a:focus-visible { outline: 2px solid var(--c-amber-500); outline-offset: 2px; }
 
   .type, .type > div { min-width: 0; }
-  .type { scroll-margin-top: calc(var(--header-h) + 4rem); }
+  .type { scroll-margin-top: 3.5rem; }
   .type__h { margin: 0 0 var(--sp-3); font-size: clamp(1.4rem, 1.1rem + 1.2vw, 2rem); letter-spacing: -.02em; }
   .spanel__media img.spanel__photo { object-fit: cover; padding: 0; background: none; }
 
