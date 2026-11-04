@@ -10,7 +10,7 @@ export const GET = async () => {
   const entries = (await getCollection('pages')).filter((e) => !e.data.noindex);
   const paths = [
     ...staticPaths,
-    ...Object.values(razdely).map((r) => r.path),
+    ...Object.values(razdely).filter((r) => !r.noPage).map((r) => r.path),
     ...brandList.map((b) => b.path),
     ...entries.map((e) => `/${e.id}/`),
   ];

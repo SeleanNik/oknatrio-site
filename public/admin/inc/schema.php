@@ -8,7 +8,7 @@ const TAG_OPTIONS = ['apartment' => 'Квартира', 'cottage' => 'Котте
 
 const PAGE_URLS = [
     'home' => '/',
-    'alyuminievye' => '/okna/alyuminievye/',
+    'alyuminievye' => '/okna/alyuminievye/schuco/',
     'pvh' => '/okna/pvh/',
     'works' => '/nashi-raboty/',
     'tech' => '/tehnicheskaya-informaciya/',

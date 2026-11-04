@@ -27,7 +27,7 @@ const ld = {
 ---
 <Base title={b.seoTitle} description={b.description} jsonLd={[ld]}>
   <section class="bh">
-    <Breadcrumbs items={[{ title: 'Окна', href: '' }, { title: parent.title, href: parent.path }, { title: b.name }]} />
+    <Breadcrumbs items={[{ title: 'Окна', href: '' }, ...(parent.noPage ? [] : [{ title: parent.title, href: parent.path }]), { title: b.name }]} />
     <div class="container bh__in">
       <div class="bh__text">
         <h1>{b.h1}</h1>

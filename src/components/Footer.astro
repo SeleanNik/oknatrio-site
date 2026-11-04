@@ -2,9 +2,13 @@
 import Logo from './Logo.astro';
 import { footerExtra } from '../config/nav.mjs';
 import { razdely, typeLinks } from '../config/razdely.mjs';
+import { brandsOf } from '../config/brands.mjs';
 import { site } from '../config/site.config.mjs';
 
-const cols = Object.values(razdely).map((r) => ({ title: r.title, href: r.path, links: typeLinks(r) }));
+// У разделов с noPage (алюминий) своей страницы нет: заголовок без ссылки, внутри ссылки на страницы брендов.
+const cols = Object.values(razdely).map((r) => r.noPage
+  ? { title: r.title, href: '', links: brandsOf(r.key).map((b) => [`Окна ${b.name}`, b.path]) }
+  : { title: r.title, href: r.path, links: typeLinks(r) });
 ---
 <footer class="footer">
   <div class="container footer__grid">
@@ -19,7 +23,7 @@ const cols = Object.values(razdely).map((r) => ({ title: r.title, href: r.path, 
     </div>
     {cols.map((c) => (
       <nav class="footer__col" aria-label={c.title}>
-        <p class="footer__title"><a href={c.href}>{c.title}</a></p>
+        <p class="footer__title">{c.href ? <a href={c.href}>{c.title}</a> : c.title}</p>
         <ul>{c.links.map(([t, h]) => <li><a href={h}>{t}</a></li>)}</ul>
       </nav>
     ))}

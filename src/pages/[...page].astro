@@ -1,6 +1,7 @@
 ---
 // Один маршрут для двух источников:
-//  • страницы-разделы из config/razdely.mjs (/okna/alyuminievye/, /okna/pvh/)
+//  • страницы-разделы из config/razdely.mjs (/okna/pvh/); у разделов с noPage страницы нет
+//  • страницы брендов из config/brands.mjs (/okna/alyuminievye/schuco/ и др.)
 //  • информационные страницы из коллекции pages (/politika-konfidencialnosti/)
 import { getCollection, render } from 'astro:content';
 import InfoLayout from '../layouts/InfoLayout.astro';
@@ -10,7 +11,7 @@ import { razdely } from '../config/razdely.mjs';
 import { brandList } from '../config/brands.mjs';
 
 export async function getStaticPaths() {
-  const razdel = Object.values(razdely).map((r) => ({ params: { page: r.path.slice(1, -1) }, props: { r } }));
+  const razdel = Object.values(razdely).filter((r) => !r.noPage).map((r) => ({ params: { page: r.path.slice(1, -1) }, props: { r } }));
   const brand = brandList.map((b) => ({ params: { page: b.path.slice(1, -1) }, props: { b } }));
   const entries = await getCollection('pages');
   const info = entries.map((entry) => ({ params: { page: entry.id }, props: { entry } }));

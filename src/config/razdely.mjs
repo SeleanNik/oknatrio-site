@@ -8,6 +8,7 @@ import { pagesData } from './pages.mjs';
 export const razdely = {
   alyuminievye: {
     path: '/okna/alyuminievye/',
+    noPage: true, // отдельной страницы нет (301 на Schuco): данные нужны страницам брендов и админке
     title: 'Алюминиевые окна',
     seoTitle: 'Алюминиевые окна и фасады в Москве',
     description: 'Алюминиевые окна, двери, фасады, раздвижные системы и зимние сады Alutech и Schuco в Москве. Бесплатный замер, монтаж, гарантия.',

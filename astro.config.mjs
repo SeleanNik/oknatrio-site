@@ -31,4 +31,5 @@ export default defineConfig({
   trailingSlash: 'always',
   build: { format: 'directory' },
   integrations: [stripComments()],
+  redirects: { '/okna/alyuminievye/': '/okna/alyuminievye/schuco/' }, // страницы раздела больше нет; на сервере то же правило в .htaccess
 });
