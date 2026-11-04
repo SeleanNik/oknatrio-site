@@ -106,7 +106,7 @@ if (document.querySelector(EDITABLE)) {
       });
     }
 
-    // главная: «Наши работы» (первые 5 работ в готовой раскладке)
+    // главная: «Наши работы» (первые 3 работы в карточках)
     document.querySelectorAll('[data-ed-work]').forEach((fig) => {
       const w = works[Number(fig.dataset.edWork)];
       fig.hidden = !w;
