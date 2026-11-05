@@ -48,7 +48,7 @@ function build() {
 
   // указатели: один палец/мышь двигает приближенное фото или листает, два пальца приближают
   const ptr = new Map();
-  let start = null; let pinch = null;
+  let start = null; let pinch = null; let lastTap = null;
   stage.addEventListener('pointerdown', (e) => {
     if (e.target.closest('.lb__btn')) return;
     ptr.set(e.pointerId, { x: e.clientX, y: e.clientY });
@@ -78,6 +78,11 @@ function build() {
     dlg.classList.remove('lb--drag');
     if (ptr.size < 2) pinch = null;
     if (wasSingle && start && Z.s <= 1.001 && Math.abs(e.clientX - start.x) > 50 && Math.abs(e.clientX - start.x) > Math.abs(e.clientY - start.y)) go(state.i + (e.clientX < start.x ? 1 : -1));
+    if (wasSingle && start && e.pointerType === 'touch' && Math.hypot(e.clientX - start.x, e.clientY - start.y) < 12) { // двойное касание: приблизить / вернуть
+      const now = performance.now();
+      if (lastTap && now - lastTap.t < 320 && Math.hypot(e.clientX - lastTap.x, e.clientY - lastTap.y) < 40) { zoomAt(Z.s > 1.05 ? 1 : 2.5, e.clientX, e.clientY); lastTap = null; }
+      else lastTap = { t: now, x: e.clientX, y: e.clientY };
+    }
     if (ptr.size === 0) start = null;
   };
   stage.addEventListener('pointerup', up);

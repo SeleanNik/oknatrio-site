@@ -5,7 +5,7 @@ const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 const TARGETS = [
   '.prod__head', '.tile', '.uslugi h2', '.uc', '.works .intro', '.works .w', '.rev h2', '.rcard',
-  '.lead-block__left', '.lead-block__card', '.types h2', '.bhead', '.tcard', '.fgrid .fcard', '.faq h2', '.faq details', '.section details',
+  '.lead-block__left', '.lead-block__card', '.types h2', '.bhead', '.tcard', '.fgrid .fcard', '.faq h2', '.section details:not([data-faq-item])',
   '.breadcrumbs', '.sec-head > *', '.head h1', '.head .lead', '.head .chips', '.info > h1', '.rh__text > *', '.khead > *', '.filters', '.works li', '.ogrid li', '.objects .head', '.catband__card', '.brands__in', '.cta', '.cta__in', '.prose > *', '.info > .lead', '.container > .eyebrow', '.khead', '.kc', '.kform', '.kmap', '.vcard', '.file', '.banner', '.brands__row li', '.footer__col', '.footer__brand',
 ].join(',');
 

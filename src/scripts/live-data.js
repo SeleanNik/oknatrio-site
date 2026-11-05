@@ -55,7 +55,7 @@ const revTpl = revList && revList.querySelector('.rcard');
 if (revTpl) {
   load('/data/reviews.json').then((items) => {
     if (!Array.isArray(items)) return;
-    const shown = items.filter((r) => r && r.home !== false && r.text);
+    const shown = items.filter((r) => r && r.home !== false && r.text).slice(0, 3); // в один ряд — три отзыва
     if (!shown.length) return;
     rebuild(revList, '.rcard', shown, (li, r) => {
       li.querySelector('[data-rev="text"]').textContent = r.text;
@@ -176,6 +176,8 @@ if (document.querySelector(EDITABLE)) {
       if (section) section.hidden = items.length === 0;
       rebuild(box, 'details', items, (n, f) => {
         n.open = false;
+        n.classList.remove('is-open');
+        n.removeAttribute('style');
         n.querySelector('summary').textContent = f.q;
         n.querySelector('p').textContent = f.a;
       });

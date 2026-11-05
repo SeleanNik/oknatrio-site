@@ -16,6 +16,8 @@ export const brands = {
     h1: 'Алюминиевые окна Schuco',
     lead: 'Тонкие тёплые профили немецкой системы Schuco: окна, двери, раздвижные конструкции и фасады с большой площадью остекления.',
     tag: 'aluminum',
+    heroImage: '/img/hero-aluminium.jpg', // фото от клиента (Pinterest) — TODO: подтвердить права / заменить
+    photoAlt: 'Панорамные алюминиевые окна с чёрными рамами',
     worksMatch: 'Schuco',
     techHref: '/tehnicheskaya-informaciya/#schuco',
     systemsTitle: 'Профильные системы Schuco',
@@ -47,6 +49,8 @@ export const brands = {
     h1: 'Алюминиевые окна Alutech',
     lead: 'Профильные системы Alutech для окон, дверей, раздвижных конструкций и фасадов: от холодных систем для лоджий до тёплых для жилья.',
     tag: 'aluminum',
+    heroImage: '/img/hero-aluminium.jpg', // то же фото, что у Schuco — TODO: отдельное фото
+    photoAlt: 'Панорамные алюминиевые окна с чёрными рамами',
     worksMatch: 'Alutech',
     techHref: '/tehnicheskaya-informaciya/#alutech',
     systemsTitle: 'Профильные системы Alutech',
@@ -79,6 +83,8 @@ export const brands = {
     h1: 'Пластиковые окна VEKA',
     lead: 'Немецкий профиль VEKA для квартир и коттеджей: три системы от базовой до максимально тёплой.',
     tag: 'pvc',
+    photo: 'whiteWindowPlants', // ключ из src/config/img.mjs
+    photoAlt: 'Белое пластиковое окно с цветами',
     worksMatch: 'Veka',
     techHref: '/tehnicheskaya-informaciya/#plastik',
     systemsTitle: 'Профильные системы VEKA',

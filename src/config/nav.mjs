@@ -12,6 +12,15 @@ export const nav = [
   { title: 'Контакты', href: '/kontakty/' },
 ];
 
+// Правовые документы (src/content/pages/*.md): ссылки в подвале, чекбоксах форм и cookie-баннере
+export const legalDocs = [
+  ['Политика конфиденциальности', '/politika-konfidencialnosti/'],
+  ['Обработка персональных данных', '/politika-obrabotki-personalnyh-dannyh/'],
+  ['Согласие на обработку данных', '/soglasie-na-obrabotku-personalnyh-dannyh/'],
+  ['Пользовательское соглашение', '/polzovatelskoe-soglashenie/'],
+  ['Файлы cookie', '/soglasie-cookie/'],
+];
+
 export const footerExtra = [
   ['О компании', '/o-kompanii/'],
   ['Техническая информация', '/tehnicheskaya-informaciya/'],

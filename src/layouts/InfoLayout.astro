@@ -4,15 +4,25 @@ import Base from './Base.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import Button from '../components/Button.astro';
 
-const { data } = Astro.props;
+const { data, headings = [] } = Astro.props;
+// Оглавление по заголовкам h2 (поле toc во frontmatter)
+const toc = data.toc ? headings.filter((h) => h.depth === 2) : [];
 ---
 <Base title={data.seoTitle} description={data.description} noindex={data.noindex}>
   <Breadcrumbs items={[...data.breadcrumbs, { title: data.title }]} />
   <section class="section" style="padding-top:var(--sp-3)">
-    <div class="container info">
+    <div class:list={['container info', toc.length > 0 && 'info--toc']}>
       <h1>{data.h1}</h1>
       {data.lead && <p class="lead">{data.lead}</p>}
-      <article class="prose"><slot /></article>
+      <div class="info__body">
+        {toc.length > 0 && (
+          <details class="toc" id="toc">
+            <summary>Содержание</summary>
+            <ol>{toc.map((h) => <li><a href={`#${h.slug}`}>{h.text.replace(/^\d+\.\s*/, '')}</a></li>)}</ol>
+          </details>
+        )}
+        <article class="prose"><slot /></article>
+      </div>
     </div>
   </section>
   {data.cta && (
@@ -28,8 +38,52 @@ const { data } = Astro.props;
   )}
 </Base>
 
+{toc.length > 0 && (
+  <script is:inline>
+    (function () {
+      var box = document.getElementById('toc');
+      if (!box) return;
+      var wide = window.matchMedia('(min-width: 1024px)');
+      var sync = function () { box.open = wide.matches; };
+      sync();
+      if (wide.addEventListener) wide.addEventListener('change', sync);
+      var links = [].slice.call(box.querySelectorAll('a'));
+      var map = {};
+      links.forEach(function (a) { map[decodeURIComponent(a.hash.slice(1))] = a; });
+      var heads = Object.keys(map).map(function (id) { return document.getElementById(id); }).filter(Boolean);
+      if (!('IntersectionObserver' in window) || !heads.length) return;
+      var io = new IntersectionObserver(function (es) {
+        es.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          links.forEach(function (a) { a.removeAttribute('aria-current'); });
+          map[e.target.id].setAttribute('aria-current', 'true');
+        });
+      }, { rootMargin: '-70px 0px -70% 0px' });
+      heads.forEach(function (h) { io.observe(h); });
+    })();
+  </script>
+)}
+
 <style>
   .info { max-width: 900px; }
+  .info--toc { max-width: 1120px; }
+  .toc { margin-top: var(--sp-5); border: 1px solid var(--c-line); border-radius: var(--r-md); background: #fff; font-size: var(--fs-sm); }
+  .toc summary { cursor: pointer; padding: .8rem 1rem; font: 700 var(--fs-sm)/1.2 var(--font-head); color: var(--c-navy-800); list-style: none; display: flex; justify-content: space-between; align-items: center; }
+  .toc summary::-webkit-details-marker { display: none; }
+  .toc summary::after { content: "\203A"; transform: rotate(90deg); transition: transform .2s; font-size: 1.2rem; line-height: 1; }
+  .toc[open] summary::after { transform: rotate(-90deg); }
+  .toc ol { margin: 0; padding: 0 1rem 1rem 2.1rem; display: grid; gap: .1rem; }
+  .toc li::marker { color: var(--c-text-muted); font-size: var(--fs-xs); }
+  .toc a { display: block; padding: .3rem 0; color: var(--c-text-muted); text-decoration: none; line-height: 1.35; overflow-wrap: anywhere; }
+  .toc a:hover, .toc a[aria-current] { color: var(--c-blue-600); }
+  .toc a[aria-current] { font-weight: 600; }
+  @media (min-width: 1024px) {
+    .info--toc .info__body { display: grid; grid-template-columns: 250px minmax(0, 1fr); gap: var(--sp-7); align-items: start; }
+    .info--toc :global(.prose) { margin-top: var(--sp-5); max-width: 78ch; }
+    .toc { position: sticky; top: calc(var(--header-h) + 1rem); max-height: calc(100svh - var(--header-h) - 2rem); overflow: auto; }
+    .toc summary { pointer-events: none; }
+    .toc summary::after { display: none; }
+  }
   .info :global(.prose) { margin-top: var(--sp-5); max-width: none; }
   .info :global(.prose h2) { scroll-margin-top: calc(var(--header-h) + 1rem); font-size: var(--fs-h3); margin-top: 1.8em; }
   .cta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--sp-4); }

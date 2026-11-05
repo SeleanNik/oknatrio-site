@@ -11,11 +11,11 @@ const ld = {
   <section class="section section--white" aria-labelledby="faq-title">
     <div class="container faq">
       <h2 id="faq-title">{title}</h2>
-      <div class="faq__list" data-ed-faq={edPath || undefined}>
+      <div class="faq__list" data-ed-faq={edPath || undefined} data-faq>
         {items.map((i) => (
-          <details>
+          <details data-faq-item>
             <summary>{i.q}</summary>
-            <p>{i.a}</p>
+            <div class="faq__a"><p>{i.a}</p></div>
           </details>
         ))}
       </div>
@@ -24,13 +24,85 @@ const ld = {
   </section>
 )}
 
+<script>
+  // Аккордеон: открытие и закрытие плавно меняют высоту; открывая новый вопрос, предыдущий так же спокойно закрывается.
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const EASE = 'cubic-bezier(.25, .8, .25, 1)';
+  const running = new WeakMap<HTMLDetailsElement, Animation[]>();
+
+  const frame = (d: HTMLDetailsElement) => d.offsetHeight - d.clientHeight; // рамка карточки
+
+  function toggle(d: HTMLDetailsElement, open: boolean) {
+    const body = d.querySelector<HTMLElement>('.faq__a');
+    const from = d.getBoundingClientRect().height;
+    running.get(d)?.forEach((a) => a.cancel());
+    d.classList.toggle('is-open', open);
+    if (reduce || !body) { d.open = open; return; }
+    d.style.overflow = 'hidden';
+    d.style.height = '';
+    if (open) d.open = true;
+    const closedH = (d.querySelector('summary') as HTMLElement).offsetHeight + frame(d);
+    const to = open ? d.getBoundingClientRect().height : closedH;
+    const dur = open ? 640 : 520;
+    const h = d.animate({ height: [`${from}px`, `${to}px`] }, { duration: dur, easing: EASE });
+    const b = open
+      ? body.animate({ opacity: [0, 1], transform: ['translateY(-8px)', 'none'] }, { duration: dur - 160, delay: 140, easing: EASE, fill: 'backwards' })
+      : body.animate({ opacity: [1, 0] }, { duration: dur * 0.6, easing: 'ease-out', fill: 'forwards' });
+    running.set(d, [h, b]);
+    h.onfinish = () => {
+      if (!open) d.open = false;
+      d.style.overflow = '';
+      b.cancel();
+      running.delete(d);
+    };
+  }
+
+  document.addEventListener('click', (e) => {
+    const s = (e.target as Element).closest?.('[data-faq] > details > summary');
+    if (!s) return;
+    e.preventDefault();
+    const d = s.parentElement as HTMLDetailsElement;
+    const willOpen = !d.classList.contains('is-open');
+    if (willOpen) {
+      d.closest('[data-faq]')?.querySelectorAll<HTMLDetailsElement>('details.is-open').forEach((o) => { if (o !== d) toggle(o, false); });
+    }
+    toggle(d, willOpen);
+  });
+
+  // Появление списка: карточки по очереди «собираются» из размытия, когда блок попадает в экран
+  document.querySelectorAll<HTMLElement>('[data-faq]').forEach((list) => {
+    if (reduce || !('IntersectionObserver' in window)) return;
+    list.classList.add('js');
+    const io = new IntersectionObserver((es) => {
+      if (!es.some((x) => x.isIntersecting)) return;
+      io.disconnect();
+      [...list.children].forEach((el, i) => (el as HTMLElement).style.setProperty('--i', String(Math.min(i, 8))));
+      list.classList.add('is-in');
+      setTimeout(() => list.classList.add('is-done'), 1500);
+    }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+    io.observe(list);
+  });
+</script>
+
 <style>
   .faq { max-width: 860px; }
   .faq__list { display: grid; gap: var(--sp-3); }
-  details { background: var(--c-bg); border: 1px solid var(--c-line); border-radius: var(--r-md); padding: 0 var(--sp-5); }
+  details { background: var(--c-bg); border: 1px solid var(--c-line); border-radius: var(--r-md); padding: 0 var(--sp-5); transition: background-color .45s var(--ease), border-color .45s var(--ease); }
+  details:hover { border-color: #c4d3f5; }
+  details.is-open { background: #fff; border-color: #b9ccf8; }
   summary { display: flex; justify-content: space-between; align-items: center; gap: var(--sp-4); min-height: 64px; cursor: pointer; list-style: none; font: 700 var(--fs-md)/1.35 var(--font-head); color: var(--c-navy-800); }
   summary::-webkit-details-marker { display: none; }
-  summary::after { content: '+'; flex: none; font-size: 1.6rem; color: var(--c-blue-600); }
-  details[open] summary::after { content: '\2212'; }
-  details p { margin: 0; padding-bottom: var(--sp-5); color: var(--c-text-muted); }
+  summary:focus-visible { outline: 2px solid var(--c-blue-500); outline-offset: 4px; border-radius: 8px; }
+  summary::after {
+    content: ''; flex: none; width: 32px; height: 32px; border-radius: 50%; color: var(--c-blue-600);
+    background: linear-gradient(currentColor, currentColor) center / 12px 2px no-repeat, linear-gradient(currentColor, currentColor) center / 2px 12px no-repeat, var(--c-blue-100);
+    transition: transform .6s var(--ease), background-color .45s var(--ease), color .45s var(--ease);
+  }
+  details.is-open summary::after { transform: rotate(135deg); background-color: var(--c-blue-500); color: #fff; }
+  .faq__a p { margin: 0; padding-bottom: var(--sp-5); color: var(--c-text-muted); }
+
+  /* появление списка */
+  .faq__list.js details { opacity: 0; transform: translateY(22px) scale(.985); filter: blur(5px); }
+  .faq__list.js.is-in details { opacity: 1; transform: none; filter: none; transition: opacity .8s var(--ease) calc(var(--i, 0) * 80ms), transform .9s var(--ease) calc(var(--i, 0) * 80ms), filter .8s var(--ease) calc(var(--i, 0) * 80ms), background-color .45s var(--ease), border-color .45s var(--ease); }
+  .faq__list.js.is-done details { transition: background-color .45s var(--ease), border-color .45s var(--ease); }
 </style>

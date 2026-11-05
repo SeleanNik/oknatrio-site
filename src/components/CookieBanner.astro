@@ -1,0 +1,34 @@
+---
+// Уведомление о cookie: согласие даётся продолжением работы на сайте (текст — /soglasie-cookie/).
+// Выбор запоминается в localStorage['cookie-ok'].
+---
+<aside class="cookie" id="cookie" role="region" aria-label="Файлы cookie" hidden>
+  <p>Мы используем файлы cookie, чтобы сайт работал корректно, а мы понимали, что вам интересно. Продолжая пользоваться сайтом, вы соглашаетесь с <a href="/soglasie-cookie/">обработкой cookie</a>.</p>
+  <button class="btn btn--sm btn--dark" type="button" data-cookie-ok>Хорошо</button>
+</aside>
+
+<script is:inline>
+  (function () {
+    var box = document.getElementById('cookie');
+    if (!box) return;
+    var seen = false;
+    try { seen = localStorage.getItem('cookie-ok') === '1'; } catch (e) {}
+    if (seen) return;
+    setTimeout(function () { box.hidden = false; }, 800);
+    box.querySelector('[data-cookie-ok]').addEventListener('click', function () {
+      try { localStorage.setItem('cookie-ok', '1'); } catch (e) {}
+      box.hidden = true;
+    });
+  })();
+</script>
+
+<style>
+  .cookie { position: fixed; z-index: 95; left: var(--gutter); right: var(--gutter); bottom: calc(var(--mobilebar-h) + 1.5rem + env(safe-area-inset-bottom)); display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1rem; padding: .9rem 1rem; background: #fff; border: 1px solid var(--c-line); border-radius: var(--r-md); font-size: var(--fs-xs); line-height: 1.45; color: var(--c-text); }
+  .cookie[hidden] { display: none; }
+  .cookie p { margin: 0; flex: 1 1 16rem; }
+  .cookie a { color: var(--c-blue-600); text-decoration: underline; text-underline-offset: 2px; }
+  .cookie .btn { flex: none; }
+  @media (min-width: 1024px) {
+    .cookie { right: auto; bottom: var(--gutter); max-width: 28rem; }
+  }
+</style>

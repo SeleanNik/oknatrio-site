@@ -1,6 +1,6 @@
 ---
 import Logo from './Logo.astro';
-import { footerExtra } from '../config/nav.mjs';
+import { footerExtra, legalDocs } from '../config/nav.mjs';
 import { razdely, typeLinks } from '../config/razdely.mjs';
 import { brandsOf } from '../config/brands.mjs';
 import { site } from '../config/site.config.mjs';
@@ -32,6 +32,9 @@ const cols = Object.values(razdely).map((r) => r.noPage
       <ul>{footerExtra.map(([t, h]) => <li><a href={h}>{t}</a></li>)}</ul>
     </nav>
   </div>
+  <nav class="container footer__legal" aria-label="Документы">
+    {legalDocs.map(([t, h]) => <a href={h}>{t}</a>)}
+  </nav>
   <div class="container footer__bottom">
     <span>© {new Date().getFullYear()} {site.name}{site.legalName && `. ${site.legalName}`}</span>
     {site.requisites && <span>{site.requisites}</span>}
@@ -54,6 +57,9 @@ const cols = Object.values(razdely).map((r) => r.noPage
   .footer__contacts dt { font: 600 .6875rem/1 var(--font-head); letter-spacing: .08em; text-transform: uppercase; color: rgb(255 255 255 / .45); margin-bottom: .3rem; }
   .footer__contacts dd { margin: 0; color: #fff; }
   .footer__contacts dd a { color: #fff; }
+  .footer__legal { display: flex; flex-wrap: wrap; gap: .2rem var(--sp-5); padding-block: var(--sp-4) var(--sp-3); border-top: 1px solid rgb(255 255 255 / .12); font-size: var(--fs-xs); }
+  .footer__legal + .footer__bottom { border-top: 0; padding-top: 0; }
+  .footer__legal a { padding: .25rem 0; color: rgb(255 255 255 / .7); }
   .footer__bottom { display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--sp-2) var(--sp-5); padding-block: var(--sp-4); border-top: 1px solid rgb(255 255 255 / .12); font-size: var(--fs-xs); color: rgb(255 255 255 / .5); }
   @media (min-width: 700px) { .footer__grid { grid-template-columns: repeat(3, 1fr); } .footer__brand { grid-column: 1 / -1; } .footer__contacts { grid-template-columns: repeat(3, auto); justify-content: start; gap: var(--sp-6); } }
   @media (min-width: 960px) {

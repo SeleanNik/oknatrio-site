@@ -31,20 +31,33 @@ const hw = pagesData.home.works;
   .head { margin-bottom: var(--sp-5); }
   .head h2 { margin-bottom: .35em; font-weight: 500; letter-spacing: -.02em; font-size: clamp(1.75rem, 1.3rem + 1.8vw, 2.5rem); }
   .head p { margin: 0; color: var(--c-text-muted); font-size: var(--fs-sm); max-width: 52ch; }
-  .grid { display: grid; gap: var(--sp-3); grid-template-columns: 1fr; }
-  .w { position: relative; margin: 0; border-radius: 22px; overflow: hidden; background: var(--c-navy-800); aspect-ratio: 4 / 3; }
+  /* телефон: первая карточка во всю ширину, две следующие рядом */
+  .grid { display: grid; gap: var(--sp-2); grid-template-columns: 1fr 1fr; }
+  .w { position: relative; margin: 0; border-radius: 18px; overflow: hidden; background: var(--c-navy-800); aspect-ratio: 4 / 5; }
+  .w:first-child { grid-column: 1 / -1; aspect-ratio: 16 / 11; border-radius: 22px; }
   .w[hidden] { display: none; }
   .w :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform .8s var(--ease); }
   .w:hover :global(img) { transform: scale(1.04); }
-  .w figcaption { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; display: grid; gap: .2rem; padding: 4rem 1.25rem 1.6rem; background: linear-gradient(180deg, transparent, rgb(8 16 26 / .72)); color: #fff; pointer-events: none; }
-  .w figcaption strong { font: 600 var(--fs-md, 1.0625rem)/1.25 var(--font-head); }
-  .w figcaption span { font-size: var(--fs-sm); color: rgb(255 255 255 / .8); }
+  .w figcaption { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; display: grid; gap: .15rem; padding: 3rem .85rem .9rem; background: linear-gradient(180deg, transparent, rgb(8 16 26 / .72)); color: #fff; pointer-events: none; }
+  .w figcaption strong { font: 600 .9375rem/1.2 var(--font-head); }
+  .w figcaption span { font-size: .75rem; line-height: 1.3; color: rgb(255 255 255 / .8); }
+  .w:first-child figcaption { padding: 4rem 1.1rem 1.1rem; }
+  .w:first-child figcaption strong { font-size: 1.125rem; }
+  .w:first-child figcaption span { font-size: var(--fs-sm); }
+  /* на телефоне листают свайпом: стрелки не нужны, точки уходят в угол, чтобы не лежать на подписи */
+  .w :global(.slider__nav) { display: none; }
+  .w :global(.slider__dots) { top: .65rem; bottom: auto; left: auto; right: .65rem; transform: none; }
   .more { display: flex; justify-content: center; margin-top: var(--sp-5); }
   .more__btn { display: inline-flex; align-items: center; gap: .5rem; min-height: 48px; padding: .7rem 1.6rem; border-radius: var(--r-pill); background: #0b0f14; color: #fff; text-decoration: none; font: 700 var(--fs-sm)/1 var(--font-head); transition: background .2s, gap .2s var(--ease); }
   .more__btn:hover { background: var(--c-amber-500); color: #fff; gap: .8rem; }
 
   @media (min-width: 800px) {
     .grid { grid-template-columns: repeat(3, 1fr); gap: var(--sp-4); }
-    .w { aspect-ratio: 4 / 5; }
+    .w, .w:first-child { grid-column: auto; aspect-ratio: 4 / 5; border-radius: 22px; }
+    .w figcaption, .w:first-child figcaption { padding: 4rem 1.25rem 1.6rem; gap: .2rem; }
+    .w figcaption strong, .w:first-child figcaption strong { font: 600 var(--fs-md, 1.0625rem)/1.25 var(--font-head); }
+    .w figcaption span, .w:first-child figcaption span { font-size: var(--fs-sm); }
+    .w :global(.slider__nav) { display: grid; }
+    .w :global(.slider__dots) { top: auto; bottom: 10px; left: 50%; right: auto; transform: translateX(-50%); }
   }
 </style>

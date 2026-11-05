@@ -8,6 +8,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import MobileBar from '../components/MobileBar.astro';
 import Modals from '../components/Modals.astro';
+import CookieBanner from '../components/CookieBanner.astro';
 import { site, siteUrl } from '../config/site.config.mjs';
 
 const { title, description, noindex = false, image = '/og-default.jpg', jsonLd = [] } = Astro.props;
@@ -58,6 +59,7 @@ const ym = site.ymId;
     <Footer />
     <MobileBar />
     <Modals />
+    <CookieBanner />
     <script src="../scripts/ui.js"></script>
     <script src="../scripts/live-data.js"></script>
     <script src="../scripts/stat.js"></script>

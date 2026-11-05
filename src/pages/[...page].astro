@@ -19,8 +19,9 @@ export async function getStaticPaths() {
 }
 
 const { r, b, entry } = Astro.props;
-const Content = entry ? (await render(entry)).Content : null;
+const rendered = entry ? await render(entry) : null;
+const Content = rendered?.Content ?? null;
 ---
 {r ? <RazdelLayout r={r} /> : b ? <BrandLayout b={b} /> : (
-  <InfoLayout data={entry.data} path={`/${entry.id}/`}><Content /></InfoLayout>
+  <InfoLayout data={entry.data} headings={rendered.headings} path={`/${entry.id}/`}><Content /></InfoLayout>
 )}

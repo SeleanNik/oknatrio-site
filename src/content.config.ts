@@ -12,7 +12,8 @@ const info = z.object({
   h1: z.string(),
   lead: z.string().optional(),
   breadcrumbs: z.array(z.object({ title: z.string(), href: z.string().optional() })).default([]),
-  cta: z.boolean().default(true),         // показывать блок «Оставить заявку» внизу
+  toc: z.boolean().default(false),        // боковое оглавление по заголовкам h2 (длинные документы)
+  cta: z.boolean().default(true),        // показывать блок «Оставить заявку» внизу
   noindex: z.boolean().default(false),
 });
 
