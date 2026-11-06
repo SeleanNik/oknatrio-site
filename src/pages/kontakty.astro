@@ -102,5 +102,6 @@ const mapSrc = `https://yandex.ru/map-widget/v1/?ll=${lng}%2C${lat}&z=16&pt=${ln
 
   .kmap { border-radius: 20px; overflow: hidden; border: 1px solid rgb(255 255 255 / .14); min-height: 280px; background: #1a2638; display: flex; }
   .kmap iframe { width: 100%; flex: 1; min-height: 280px; border: 0; display: block; }
+  @media (max-width: 559.98px) { .kinfo { grid-template-columns: 1fr; grid-template-rows: none; } }
   @media (min-width: 900px) { .kgrid { grid-template-columns: 1fr 1fr; gap: var(--sp-5); align-items: stretch; } .kform { padding: var(--sp-5); } }
 </style>
