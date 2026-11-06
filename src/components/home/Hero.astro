@@ -16,7 +16,7 @@ const heroStats = pagesData.home.heroStats ?? [];
       <h1><span data-ed="home.hero.0">{hero[0]}</span> <span data-ed="home.hero.1">{hero[1]}</span></h1>
       <div class="hero__cta">
         <Button href="/#zayavka" size="lg">Оставить заявку</Button>
-        <Button href="#produkciya" variant="ghost-light" size="lg">Узнать больше</Button>
+        <span class="hero__more"><Button href="#produkciya" variant="ghost-light" size="lg">Узнать больше</Button></span>
       </div>
       <ul class="hero__stats" aria-label="О компании">
         {heroStats.map((s, n) => { const [num, ...rest] = s.split(' '); return <li data-stat={n}><b>{num}</b><span>{rest.join(' ')}</span></li>; })}
@@ -46,6 +46,17 @@ const heroStats = pagesData.home.heroStats ?? [];
   .hero__stats span { font: 500 .6875rem/1.25 var(--font-body, inherit); color: rgb(255 255 255 / .75); }
   .hero__stats li:last-child b { color: var(--c-star, #f5b83d); }
   .hero__cta { display: flex; flex-wrap: wrap; gap: var(--sp-3); }
+
+  /* Телефон: текст внизу на тёмном градиенте (читаемо на любом фото), одна кнопка (дубль «Позвонить / Заявка» есть в нижней панели) */
+  @media (max-width: 899.98px) {
+    .hero { align-items: flex-end; }
+    .hero__inner { padding-bottom: calc(var(--mobilebar-h) + 1.25rem); }
+    .hero__shade { background:
+      linear-gradient(0deg, #0b1522 0%, rgb(8 16 26 / .92) 30%, rgb(8 16 26 / .55) 58%, rgb(8 16 26 / 0) 85%),
+      linear-gradient(180deg, rgb(8 16 26 / .3) 0%, rgb(8 16 26 / 0) 22%); }
+    .hero__more { display: none; }
+    .hero__cta :global(.btn) { width: 100%; max-width: 24rem; justify-content: center; min-height: 44px; padding: .55rem 1.25rem; font-size: var(--fs-sm); }
+  }
 
   @media (min-width: 900px) {
     .hero__inner { padding-bottom: 0; margin-bottom: 0; }
