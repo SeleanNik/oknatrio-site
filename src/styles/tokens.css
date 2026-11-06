@@ -46,7 +46,7 @@
   --shadow-sm: none; --shadow-md: none; --shadow-lg: none; /* тени отключены по просьбе клиента */
 
   --header-h: 54px;
-  --mobilebar-h: 56px;
+  --mobilebar-h: 42px;
   --ease: cubic-bezier(.2, .7, .2, 1);
 }
 @media (min-width: 1024px) { :root { --header-h: 60px; } }
