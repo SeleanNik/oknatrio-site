@@ -9,6 +9,8 @@ import RazdelLayout from '../layouts/RazdelLayout.astro';
 import BrandLayout from '../layouts/BrandLayout.astro';
 import { razdely } from '../config/razdely.mjs';
 import { brandList } from '../config/brands.mjs';
+import { pagesData } from '../config/pages.mjs';
+import { mdToHtml, docSig } from '../scripts/mini-md.js';
 
 export async function getStaticPaths() {
   const razdel = Object.values(razdely).filter((r) => !r.noPage).map((r) => ({ params: { page: r.path.slice(1, -1) }, props: { r } }));
@@ -21,7 +23,13 @@ export async function getStaticPaths() {
 const { r, b, entry } = Astro.props;
 const rendered = entry ? await render(entry) : null;
 const Content = rendered?.Content ?? null;
+// документ могли отредактировать в админке (Документы и правила): тогда берём его текст из pages.json
+const doc = entry ? (pagesData.docs?.items || []).find((d) => d.id === entry.id) : null;
+const md = doc ? mdToHtml(doc.body) : null;
+const data = entry ? { ...entry.data, ...(doc?.title ? { h1: doc.title } : {}), ...(doc ? { lead: doc.lead || '' } : {}) } : null;
 ---
-{r ? <RazdelLayout r={r} /> : b ? <BrandLayout b={b} /> : (
+{r ? <RazdelLayout r={r} /> : b ? <BrandLayout b={b} /> : doc ? (
+  <InfoLayout data={data} headings={md.headings} path={`/${entry.id}/`} docId={entry.id} docSig={docSig(doc.body)}><Fragment set:html={md.html} /></InfoLayout>
+) : (
   <InfoLayout data={entry.data} headings={rendered.headings} path={`/${entry.id}/`}><Content /></InfoLayout>
 )}

@@ -5,6 +5,7 @@
 import { applyGallery, initGalleries } from './slider.js';
 import './lightbox.js';
 import { reveal } from './reveal.js';
+import { mdToHtml, docSig } from './mini-md.js';
 
 const get = (obj, path) => String(path).split('.').reduce((a, k) => (a == null ? a : a[k]), obj);
 const load = (url) => fetch(url, { cache: 'no-cache' }).then((r) => (r.ok ? r.json() : null)).catch(() => null);
@@ -67,12 +68,35 @@ if (revTpl) {
 }
 
 // ---------- контент страниц ----------
-const EDITABLE = '[data-ed], [data-ed-types], [data-ed-specs], [data-ed-faq], [data-ed-works-tag], [data-ed-files], [data-ed-profile], [data-ed-work], [data-works]';
+const EDITABLE = '[data-doc], [data-ed-cards], [data-plain], [data-ed], [data-ed-types], [data-ed-specs], [data-ed-faq], [data-ed-works-tag], [data-ed-files], [data-ed-profile], [data-ed-work], [data-works]';
 if (document.querySelector(EDITABLE)) {
   load('/data/pages.json').then((d) => {
     if (!d) return;
     const works = d.works && Array.isArray(d.works.items) ? d.works.items : [];
-    const tagLabel = { apartment: 'Квартира', cottage: 'Коттедж', balcony: 'Балкон', aluminum: 'Алюминий', pvc: 'ПВХ' };
+    const tagLabel = { cottage: 'Коттедж', aluminum: 'Алюминий', pvc: 'ПВХ' };
+    // где показывать работу задаёт админка (поле where); у старых записей без него действует прежнее правило
+    const worksAt = (place, fallback) => {
+      const picks = d[place] && d[place].worksPick;
+      const list = Array.isArray(picks) ? picks.map((id) => works.find((w) => w.id === id)).filter(Boolean) : fallback;
+      return list.slice(0, place === 'home' ? 3 : 4);
+    };
+
+    // документы и правила (политика, согласия, соглашение)
+    document.querySelectorAll('[data-doc]').forEach((art) => {
+      const doc = (d.docs && d.docs.items || []).find((x) => x.id === art.dataset.doc);
+      if (!doc) return;
+      const { html, headings } = mdToHtml(doc.body);
+      if (docSig(doc.body) !== art.dataset.sig) art.innerHTML = html;
+      const h1 = document.querySelector('[data-doc-h1]');
+      if (h1 && doc.title) h1.textContent = doc.title;
+      const lead = document.querySelector('[data-doc-lead]');
+      if (lead) { lead.textContent = doc.lead || ''; lead.hidden = !doc.lead; }
+      const ol = document.querySelector('#toc ol');
+      if (ol && art.dataset.docToc) {
+        const h2 = headings.filter((h) => h.depth === 2);
+        rebuild(ol, 'li', h2, (li, h) => { const a = li.querySelector('a'); a.href = '#' + h.slug; a.textContent = h.text.replace(/^\d+\.\s*/, ''); });
+      }
+    });
 
     // простые тексты
     document.querySelectorAll('[data-ed]').forEach((el) => {
@@ -85,7 +109,11 @@ if (document.querySelector(EDITABLE)) {
     if (Array.isArray(hs)) {
       document.querySelectorAll('.hero__stats li[data-stat]').forEach((li) => {
         const [num, ...rest] = String(hs[li.dataset.stat] || '').split(' ');
-        li.querySelector('b').textContent = num;
+        const b = li.querySelector('b');
+        if (b.dataset.val !== num) { // значение отличается от того, что в HTML: обновляем и запускаем счёт заново
+          b.dataset.val = num; b.textContent = num;
+          document.dispatchEvent(new CustomEvent('hero:stat', { detail: Number(li.dataset.stat) }));
+        }
         li.querySelector('span').textContent = rest.join(' ');
       });
     }
@@ -108,7 +136,7 @@ if (document.querySelector(EDITABLE)) {
 
     // главная: «Наши работы» (первые 3 работы в карточках)
     document.querySelectorAll('[data-ed-work]').forEach((fig) => {
-      const w = works[Number(fig.dataset.edWork)];
+      const w = worksAt('home', works)[Number(fig.dataset.edWork)];
       fig.hidden = !w;
       if (!w) return;
       applyGallery(fig, w.images, w.title);
@@ -130,6 +158,14 @@ if (document.querySelector(EDITABLE)) {
       });
       document.querySelector('[data-filter][aria-pressed="true"]')?.click(); // применить текущий фильтр
     }
+
+    // страницы брендов: «Наши работы» (до 4, выбранных в админке)
+    document.querySelectorAll('[data-ed-where]').forEach((ul) => {
+      const id = ul.dataset.edWhere;
+      const list = worksAt(id, works.filter((w) => `${w.title} ${w.place}`.toLowerCase().includes(id)));
+      if (!list.length) return;
+      rebuild(ul, 'li', list, (li, w) => applyGallery(li.querySelector('figure'), w.images, w.title));
+    });
 
     // раздел: «Наши работы» (до 4 по тегу)
     document.querySelectorAll('[data-ed-works-tag]').forEach((ul) => {
@@ -155,6 +191,56 @@ if (document.querySelector(EDITABLE)) {
         const points = String(t.points || '').split('\n').map((x) => x.trim()).filter(Boolean);
         if (ul) rebuild(ul, 'li', points, (li, p) => lastText(li, p));
       });
+    });
+
+    // страницы брендов: карточки систем (вкладка + панель)
+    const lines = (v) => String(v || '').split('\n').map((x) => x.trim()).filter(Boolean);
+    document.querySelectorAll('[data-ed-cards]').forEach((g) => {
+      const list = get(d, g.dataset.edCards);
+      if (!Array.isArray(list) || !list.length) return;
+      const brand = g.dataset.brandName || '';
+      const tabs = g.querySelector('.sys__tabs');
+      const panels = g.querySelector('[data-panels]');
+      const hint = g.querySelector('.sys__hint');
+      if (!tabs || !panels) return;
+      tabs.hidden = list.length < 2;
+      if (hint) hint.hidden = list.length < 2;
+      rebuild(tabs, '.stab', list, (t, c, i) => {
+        t.style.setProperty('--k', i);
+        t.id = `tab-${c.id}`; t.setAttribute('aria-controls', `panel-${c.id}`); t.dataset.sys = c.id;
+        t.setAttribute('aria-selected', i === 0 ? 'true' : 'false');
+        const img = t.querySelector('.stab__thumb img'), b = t.querySelector('.stab__thumb b');
+        if (img) { img.hidden = !c.image; if (c.image) img.src = c.image; else img.removeAttribute('src'); }
+        if (b) { b.hidden = !!c.image; b.textContent = c.name; }
+        t.querySelector('.stab__name').textContent = c.name;
+        t.querySelector('.stab__tag').textContent = c.tag || '';
+      });
+      rebuild(panels, '[data-spanel]', list, (p, c) => {
+        p.id = `panel-${c.id}`; p.setAttribute('aria-labelledby', `tab-${c.id}`); p.dataset.spanel = c.id;
+        const img = p.querySelector('.spanel__media img'), ph = p.querySelector('.spanel__ph');
+        if (img) { img.hidden = !c.image; if (c.image) { img.src = c.image; img.alt = `Профиль ${brand} ${c.name} в разрезе`; } else img.removeAttribute('src'); }
+        if (ph) { ph.hidden = !!c.image; ph.querySelector('b').textContent = c.name; }
+        p.querySelector('.spanel__tag').textContent = c.tag || '';
+        p.querySelector('h4').textContent = `${brand} ${c.name}`;
+        p.querySelector('.spanel__body > p').textContent = c.text || '';
+        const ul = p.querySelector('.spanel__specs');
+        if (ul) rebuild(ul, 'li', lines(c.specs), (li, t) => lastText(li, t));
+      });
+      g.dispatchEvent(new Event('systems:refresh'));
+    });
+
+    // страницы брендов: виды из одной карточки (количество фиксировано)
+    document.querySelectorAll('[data-plain]').forEach((art) => {
+      const [bid, tid] = art.dataset.plain.split(':');
+      const c = ((d[bid] && d[bid].plain) || []).find((x) => x.id === tid);
+      if (!c) return;
+      const img = art.querySelector('.spanel__media img');
+      if (img && c.image) { img.removeAttribute('srcset'); img.src = c.image; }
+      const p = art.querySelector('.spanel__body > p');
+      if (p && c.text) p.textContent = c.text;
+      const ul = art.querySelector('.spanel__specs');
+      const sp = lines(c.specs);
+      if (ul && sp.length) rebuild(ul, 'li', sp, (li, t) => lastText(li, t));
     });
 
     // раздел: характеристики

@@ -8,7 +8,12 @@ require __DIR__ . '/inc/stats.php';
 require __DIR__ . '/inc/schema.php';
 require __DIR__ . '/inc/pages.php';
 
+ini_set('display_errors', '0'); // ошибки пишутся в журнал сервера, а не на экран
 header('X-Frame-Options: DENY');
+header("Content-Security-Policy: frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'");
+header('Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=()');
+header('Cross-Origin-Opener-Policy: same-origin');
+header('Cross-Origin-Resource-Policy: same-origin');
 header('X-Content-Type-Options: nosniff');
 header('Referrer-Policy: same-origin');
 header('Cache-Control: no-store');
@@ -27,7 +32,8 @@ try {
     db();
 } catch (Throwable $e) {
     http_response_code(500);
-    auth_box('База данных недоступна', '<p>Не удалось открыть базу. Проверьте, что у папки <code>admin/_data</code> есть права на запись (или настройки MySQL в <code>db.json</code>).</p><p class="hint">' . h($e->getMessage()) . '</p>');
+    error_log('admin db: ' . $e->getMessage());
+    auth_box('База данных недоступна', '<p>Не удалось открыть базу. Проверьте, что у папки <code>admin/_data</code> есть права на запись (или настройки MySQL в <code>db.json</code>).</p><p class="hint">Подробности записаны в журнал ошибок сервера.</p>');
 }
 
 $action = (string)($_POST['action'] ?? '');
@@ -89,61 +95,33 @@ if (!$user) {
             <button class="btn" name="action" value="setup">Создать и войти</button></form>', $err);
     }
 
-    // --- второй шаг (код 2FA) ---
-    if (!empty($_SESSION['pre'])) {
-        $pu = user_by_id((int)$_SESSION['pre']['uid']);
-        $err = '';
-        if (!$pu || time() - (int)$_SESSION['pre']['t'] > 300) {
-            unset($_SESSION['pre']);
-            header('Location: ./');
-            exit;
-        }
-        if ($action === 'verify_2fa') {
-            csrf_check();
-            if (login_throttled()) {
-                audit('login_blocked', 'код 2FA', $pu);
-                $err = 'Слишком много попыток. Подождите 15 минут.';
-            } elseif (totp_check((string)$pu['totp_secret'], (string)($_POST['code'] ?? ''))) {
-                login_clear();
-                finish_login($pu);
-                go();
-            } else {
-                login_fail();
-                audit('2fa_fail', '', $pu);
-                $err = 'Неверный код.';
-            }
-        }
-        auth_box('Код подтверждения', '<p>Введите 6-значный код из приложения-аутентификатора.</p>
-            <form method="post" class="form">' . csrf_field() . '
-            <label>Код<input name="code" inputmode="numeric" autocomplete="one-time-code" maxlength="7" required autofocus></label>
-            <button class="btn" name="action" value="verify_2fa">Войти</button></form>', $err);
-    }
-
     // --- вход по e-mail и паролю ---
     $err = '';
     if ($action === 'login') {
         csrf_check();
-        if (login_throttled()) {
+        if (login_throttled(post_str('email', 190))) {
             audit('login_blocked', post_str('email', 190));
             $err = 'Слишком много попыток. Подождите 15 минут.';
         } else {
             $lu = user_by_email(post_str('email', 190));
-            $ok = $lu && (int)$lu['active'] === 1 && $lu['password_hash'] && password_verify((string)($_POST['password'] ?? ''), $lu['password_hash']);
+            // для несуществующего аккаунта тоже проверяем пароль: по времени ответа нельзя понять, есть ли такой e-mail
+            $hash = ($lu && $lu['password_hash']) ? $lu['password_hash'] : '$2y$10$usesomesillystringforsaltuT3dQ7y7m0m8m1m2m3m4m5m6m7m8m9m';
+            $pwOk = password_verify((string)($_POST['password'] ?? ''), $hash);
+            $ok = $lu && (int)$lu['active'] === 1 && $lu['password_hash'] && $pwOk;
             if (!$ok) {
-                login_fail();
+                login_fail(post_str('email', 190));
                 usleep(400000);
                 audit('login_fail', post_str('email', 190));
                 $err = 'Неверный e-mail или пароль.';
-            } elseif ((int)$lu['totp_on'] === 1) {
-                $_SESSION['pre'] = ['uid' => (int)$lu['id'], 't' => time()];
-                header('Location: ./');
-                exit;
             } else {
-                login_clear();
+                login_clear(post_str('email', 190));
                 finish_login($lu);
                 go();
             }
         }
+    }
+    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+        audit_guest('login_visit', (string)($_SERVER['REQUEST_URI'] ?? '') . ' · ' . mb_substr((string)($_SERVER['HTTP_USER_AGENT'] ?? ''), 0, 120));
     }
     auth_box('Вход в админку', '<form method="post" class="form">' . csrf_field() . '
         <label>E-mail<input type="email" name="email" value="' . h(post_str('email', 190)) . '" autocomplete="username" required autofocus></label>
@@ -191,7 +169,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $ok = content_set('page_' . $key, $new, $user);
             // удаляем загруженные ранее файлы, которые больше нигде не используются
             foreach (array_diff(managed_files($old), managed_files($new)) as $gone) delete_managed_file($gone);
-            audit('page_save', $key, $user);
+            audit('page_save', changes_detail($key, page_changes($schemas[$key], $old, $new)), $user);
             if (!$ok) audit('error', 'Не удалось записать файл сайта (data): нет прав на запись. Страница: ' . $key, $user);
             elseif ($errors) audit('save_warn', $key . ': ' . implode(' ', array_unique($errors)), $user);
             if (!$ok) flash('err', 'Сохранено в базе, но не удалось обновить файл сайта: нет прав на запись в папку data.');
@@ -206,15 +184,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $digits = preg_replace('/\D/', '', $display) ?? '';
             if (strlen($digits) === 11 && $digits[0] === '8') $digits = '7' . substr($digits, 1);
             $email = post_str('email', 120);
-            $wa = post_str('whatsapp', 200);
-            $tg = post_str('telegram', 200);
             $full = post_str('address_full', 200);
-            $okUrl = function (string $u): bool { return $u === '' || (filter_var($u, FILTER_VALIDATE_URL) && strpos($u, 'https://') === 0); };
             $errs = [];
             if (strlen($digits) < 10 || strlen($digits) > 15) $errs[] = 'Телефон: укажите номер полностью, например +7 (495) 225-44-03.';
             if (!filter_var($email, FILTER_VALIDATE_EMAIL)) $errs[] = 'E-mail указан неверно.';
-            if (!$okUrl($wa)) $errs[] = 'Ссылка WhatsApp должна начинаться с https://';
-            if (!$okUrl($tg)) $errs[] = 'Ссылка Telegram должна начинаться с https://';
             if ($full === '') $errs[] = 'Адрес не может быть пустым.';
             if ($errs) {
                 audit('save_warn', 'contacts: ' . implode(' ', $errs), $user);
@@ -226,11 +199,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'email' => $email,
                 'address' => ['full' => $full, 'city' => post_str('city', 80), 'street' => post_str('street', 120), 'postalCode' => post_str('postal', 10)],
                 'hours' => post_str('hours', 100),
-                'whatsapp' => $wa,
-                'telegram' => $tg,
             ]);
+            unset($data['whatsapp'], $data['telegram']);
             $ok = content_set('site', $data, $user);
-            audit('page_save', 'contacts', $user);
+            $chg = [];
+            foreach ([['phone.display', 'Телефон'], ['email', 'E-mail'], ['hours', 'График работы'], ['address.full', 'Адрес'], ['address.city', 'Город'], ['address.street', 'Улица'], ['address.postalCode', 'Индекс']] as [$p, $lb]) {
+                $a = path_get($old, $p); $b = path_get($data, $p);
+                if ((string)$a !== (string)$b) $chg[] = [$lb, chg_short($a), chg_short($b)];
+            }
+            audit('page_save', changes_detail('contacts', $chg), $user);
             if (!$ok) audit('error', 'Не удалось записать файл сайта (data): нет прав на запись. Страница: contacts', $user);
             flash($ok ? 'ok' : 'err', $ok ? 'Контакты сохранены. На сайте изменения уже видны.' : 'Сохранено в базе, но не удалось обновить файл сайта: нет прав на запись в папку data.');
             go('contacts');
@@ -281,7 +258,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             go('users');
 
         case 'user_toggle':
-        case 'user_reset_2fa':
         case 'user_delete':
             need('owner');
             $t = user_by_id((int)($_POST['id'] ?? 0));
@@ -293,10 +269,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 dbq('UPDATE users SET active = ? WHERE id = ?', [$to, $t['id']]);
                 audit($to ? 'user_enable' : 'user_disable', $t['email'], $user);
                 flash('ok', $to ? 'Вход включён.' : 'Вход отключён: сотрудник больше не сможет войти.');
-            } elseif ($action === 'user_reset_2fa') {
-                dbq('UPDATE users SET totp_on = 0, totp_secret = NULL WHERE id = ?', [$t['id']]);
-                audit('user_reset_2fa', $t['email'], $user);
-                flash('ok', 'Двухфакторная защита сброшена.');
             } else {
                 if ((int)$t['id'] === (int)$user['id']) { flash('err', 'Себя удалить нельзя.'); go('users'); }
                 if ($t['role'] === 'owner' && (int)$t['active'] === 1 && owners_active_count() <= 1) { flash('err', 'Нельзя удалить последнего владельца.'); go('users'); }
@@ -305,33 +277,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 flash('ok', 'Аккаунт удалён.');
             }
             go('users');
-
-        // --- профиль: только 2FA ---
-        case 'totp_start':
-            $_SESSION['totp_new'] = totp_secret();
-            go('profile');
-
-        case 'totp_confirm':
-            $secret = (string)($_SESSION['totp_new'] ?? '');
-            if ($secret !== '' && totp_check($secret, (string)($_POST['code'] ?? ''))) {
-                dbq('UPDATE users SET totp_secret = ?, totp_on = 1 WHERE id = ?', [$secret, $user['id']]);
-                unset($_SESSION['totp_new']);
-                audit('2fa_on', '', $user);
-                flash('ok', 'Двухфакторная защита включена.');
-            } else {
-                flash('err', 'Код не подошёл. Проверьте ключ и время на телефоне.');
-            }
-            go('profile');
-
-        case 'totp_disable':
-            if (password_verify((string)($_POST['current'] ?? ''), (string)$user['password_hash'])) {
-                dbq('UPDATE users SET totp_on = 0, totp_secret = NULL WHERE id = ?', [$user['id']]);
-                audit('2fa_off', '', $user);
-                flash('ok', 'Двухфакторная защита отключена.');
-            } else {
-                flash('err', 'Пароль неверный.');
-            }
-            go('profile');
     }
     go();
 }
@@ -351,6 +296,9 @@ if ($perm !== null) need($perm);
 
 $schemas = page_schemas();
 $actions = '';
+if (isset($schemas[$s]) || $s === 'contacts') {
+    $actions = '<a class="roundbtn" href="' . h(PAGE_URLS[$s] ?? '/') . '" target="_blank" rel="noopener" title="Открыть страницу на сайте" aria-label="Открыть страницу на сайте">' . icon('ext') . '</a>';
+}
 if (isset($schemas[$s])) {
     $body = page_editor($s);
 } else {

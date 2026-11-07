@@ -198,3 +198,6 @@ textarea.input { min-height: 96px; resize: vertical; }
 
 /* фото «Уютный лофт» (Alutech): показываем верхнюю часть кадра */
 img[src*="v1793384722"] { object-position: 50% 0%; }
+
+/* пока открыто модальное окно, страница под ним не прокручивается */
+html:has(dialog[open]) { overflow: hidden; }

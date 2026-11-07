@@ -334,3 +334,139 @@
     });
   });
 })();
+
+
+// Оформление: цифры «набегают», линия графика рисуется
+(() => {
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  document.querySelectorAll('.stat strong:not(.stat__small)').forEach((el) => {
+    const txt = el.textContent.trim();
+    const n = parseInt(txt.replace(/s/g, ''), 10);
+    if (!/^[ds]+$/.test(txt) || !(n > 0)) return;
+    const t0 = performance.now(), dur = 900;
+    const tick = (t) => {
+      const p = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(n * e).toLocaleString('ru-RU').replace(/ /g, ' ');
+      if (p < 1) requestAnimationFrame(tick); else el.textContent = txt;
+    };
+    requestAnimationFrame(tick);
+  });
+  document.querySelectorAll('.chart__line').forEach((l) => {
+    try { l.style.setProperty('--len', Math.ceil(l.getTotalLength?.() || 2000)); } catch (e) {}
+  });
+})();
+
+// Оформление v5.1: свои выпадающие списки и подсветка текущего раздела в оглавлении
+(() => {
+  // ---------- выпадающие списки ----------
+  const closeAll = (except) => document.querySelectorAll('.sel.is-open').forEach((w) => {
+    if (w === except) return;
+    w.classList.remove('is-open');
+    w.querySelector('.sel__btn').setAttribute('aria-expanded', 'false');
+  });
+  document.addEventListener('click', (e) => { if (!e.target.closest('.sel')) closeAll(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeAll(); });
+
+  document.querySelectorAll('select:not([multiple])').forEach((sel) => {
+    const wrap = document.createElement('div');
+    wrap.className = 'sel' + (sel.closest('label') ? ' sel--field' : '');
+    sel.parentNode.insertBefore(wrap, sel);
+    wrap.appendChild(sel);
+    sel.tabIndex = -1;
+    sel.setAttribute('aria-hidden', 'true');
+
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'sel__btn';
+    btn.setAttribute('aria-haspopup', 'listbox');
+    btn.setAttribute('aria-expanded', 'false');
+    const lbl = sel.getAttribute('aria-label');
+    if (lbl) btn.setAttribute('aria-label', lbl);
+    btn.innerHTML = '<span class="sel__txt"></span><span class="sel__chev" aria-hidden="true"></span>';
+    const list = document.createElement('ul');
+    list.className = 'sel__list';
+    list.setAttribute('role', 'listbox');
+    wrap.append(btn, list);
+
+    const txt = btn.querySelector('.sel__txt');
+    let hl = -1;
+    const opts = [...sel.options].map((o, i) => {
+      const li = document.createElement('li');
+      li.className = 'sel__opt';
+      li.setAttribute('role', 'option');
+      li.textContent = o.textContent;
+      li.addEventListener('click', () => choose(i));
+      list.appendChild(li);
+      return li;
+    });
+    const sync = () => {
+      txt.textContent = sel.options[sel.selectedIndex]?.textContent ?? '';
+      opts.forEach((li, i) => li.setAttribute('aria-selected', String(i === sel.selectedIndex)));
+    };
+    const mark = (i) => {
+      hl = Math.max(0, Math.min(opts.length - 1, i));
+      opts.forEach((li, k) => li.classList.toggle('is-hl', k === hl));
+      opts[hl]?.scrollIntoView({ block: 'nearest' });
+    };
+    const open = () => {
+      closeAll(wrap);
+      wrap.classList.add('is-open');
+      btn.setAttribute('aria-expanded', 'true');
+      const r = btn.getBoundingClientRect();
+      list.classList.toggle('is-up', window.innerHeight - r.bottom < 300 && r.top > window.innerHeight - r.bottom);
+      mark(sel.selectedIndex);
+    };
+    const choose = (i) => {
+      const changed = sel.selectedIndex !== i;
+      sel.selectedIndex = i;
+      sync();
+      closeAll();
+      btn.focus();
+      if (changed) sel.dispatchEvent(new Event('change', { bubbles: true }));
+    };
+    btn.addEventListener('click', () => (wrap.classList.contains('is-open') ? closeAll() : open()));
+    btn.addEventListener('keydown', (e) => {
+      const isOpen = wrap.classList.contains('is-open');
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (!isOpen) open(); else mark(hl + (e.key === 'ArrowDown' ? 1 : -1));
+      } else if ((e.key === 'Enter' || e.key === ' ') && isOpen) {
+        e.preventDefault();
+        choose(hl);
+      }
+    });
+    sel.addEventListener('change', sync);
+    sync();
+  });
+
+  // ---------- оглавление: подсветка раздела, который сейчас на экране ----------
+  const links = [...document.querySelectorAll('[data-toc]')];
+  if (links.length && 'IntersectionObserver' in window) {
+    const byId = new Map(links.map((a) => [a.getAttribute('href').slice(1), a]));
+    const cur = (id) => links.forEach((a) => a.classList.toggle('is-cur', a === byId.get(id)));
+    links.forEach((a) => a.addEventListener('click', () => cur(a.getAttribute('href').slice(1))));
+    const io = new IntersectionObserver((es) => {
+      const v = es.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+      if (v) cur(v.target.id);
+    }, { rootMargin: '-10% 0px -70% 0px' });
+    byId.forEach((_, id) => { const el = document.getElementById(id); if (el) io.observe(el); });
+    cur(links[0].getAttribute('href').slice(1));
+  }
+})();
+
+// Выбор работ внутри раздела страницы: отмечать можно не больше положенного числа
+(() => {
+  document.querySelectorAll('[data-worksel]').forEach((box) => {
+    const max = Number(box.dataset.max || 4);
+    const cnt = box.querySelector('[data-wcount]');
+    const boxes = [...box.querySelectorAll('input[type=checkbox]')];
+    const sync = () => {
+      const n = boxes.filter((c) => c.checked).length;
+      if (cnt) cnt.textContent = 'выбрано ' + n + ' из ' + max;
+      box.classList.toggle('is-full', n >= max);
+      boxes.forEach((c) => { c.disabled = !c.checked && n >= max; });
+    };
+    box.addEventListener('change', sync);
+    sync();
+  });
+})();

@@ -4,7 +4,7 @@ import Base from './Base.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
 import Button from '../components/Button.astro';
 
-const { data, headings = [] } = Astro.props;
+const { data, headings = [], docId = '', docSig = '' } = Astro.props;
 // Оглавление по заголовкам h2 (поле toc во frontmatter)
 const toc = data.toc ? headings.filter((h) => h.depth === 2) : [];
 ---
@@ -12,8 +12,8 @@ const toc = data.toc ? headings.filter((h) => h.depth === 2) : [];
   <Breadcrumbs items={[...data.breadcrumbs, { title: data.title }]} />
   <section class="section" style="padding-top:var(--sp-3)">
     <div class:list={['container info', toc.length > 0 && 'info--toc']}>
-      <h1>{data.h1}</h1>
-      {data.lead && <p class="lead">{data.lead}</p>}
+      <h1 data-doc-h1={docId || undefined}>{data.h1}</h1>
+      {(data.lead || docId) && <p class="lead" data-doc-lead={docId || undefined} hidden={!data.lead}>{data.lead}</p>}
       <div class="info__body">
         {toc.length > 0 && (
           <details class="toc" id="toc">
@@ -21,7 +21,7 @@ const toc = data.toc ? headings.filter((h) => h.depth === 2) : [];
             <ol>{toc.map((h) => <li><a href={`#${h.slug}`}>{h.text.replace(/^\d+\.\s*/, '')}</a></li>)}</ol>
           </details>
         )}
-        <article class="prose"><slot /></article>
+        <article class="prose" data-doc={docId || undefined} data-sig={docSig || undefined}data-doc-toc={toc.length > 0 ? '1' : undefined}><slot /></article>
       </div>
     </div>
   </section>

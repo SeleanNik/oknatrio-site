@@ -26,7 +26,7 @@ npm run build            # сборка в dist/
 | Отзывы | **админка `/admin/`** (`public/data/reviews.json`) |
 | Работы | `src/config/works.mjs` (в админку — следующий этап) |
 | Фото (пока Unsplash) | `src/config/img.mjs` |
-| E-mail для заявок | админка `/admin/` → «Заявки» (или `form-config.php` на сервере) |
+| E-mail для заявок | `form-config.php` на сервере; если файла нет, берётся e-mail из «Контакты» в админке. Каждая заявка дополнительно пишется в `admin/_data/leads.jsonl` (закрыто от браузера), чтобы не потеряться, если почта не дошла |
 
 ## Как добавить страницу
 
@@ -86,3 +86,21 @@ PHP-админка с базой данных (по умолчанию SQLite, �
 3. Без флагов **не трогает** `data/` (тексты и работы, которые правят в админке), `uploads/`, `admin/_data/` (база и аккаунты), `form-config.php`, `docs/files/`.
 4. Флаги (после `--`): `npm run deploy -- -Dry` показать, что будет залито; `-WithData` залить ещё и `data/*.json` с компьютера (перезапишет правки из админки); `-First` первый запуск, заливает всё.
 5. После первого запуска создать на сервере `form-config.php` из `form-config.example.php`.
+
+## SEO для России (Яндекс в приоритете)
+
+Перед боевой сборкой:
+1. В `.env`: `PUBLIC_NOINDEX=false`, `PUBLIC_SITE_URL=https://oknatrio.ru`, `PUBLIC_YM_ID=<счётчик Метрики>`, коды `PUBLIC_YANDEX_VERIFICATION` / `PUBLIC_GOOGLE_VERIFICATION` / `PUBLIC_BING_VERIFICATION`.
+2. Яндекс.Вебмастер: добавить сайт, подтвердить, загрузить `sitemap.xml`, указать регион «Москва», включить «Быстрые ссылки». Затем Google Search Console и Bing Webmaster.
+3. IndexNow (Яндекс/Bing): ключ лежит в `public/<ключ>.txt`; после деплоя отправить в `https://yandex.com/indexnow?url=https://oknatrio.ru/&key=<ключ>`.
+4. Яндекс Бизнес, 2ГИС, Google Business Profile: те же название, адрес и телефон, что на сайте (NAP). Просить клиентов оставлять отзывы на Яндекс Картах.
+5. Домен окнатрио.рф → 301 на oknatrio.ru.
+
+ИИ-поиск (Алиса/YandexGPT, ChatGPT Search, Perplexity): `robots.txt` открывает сайт их ботам, `/llms.txt` даёт краткое описание, разметка schema.org (WebSite, LocalBusiness, Service, FAQ, BreadcrumbList). Гарантировать попадание в ответы нельзя: помогают отзывы, упоминания на сторонних площадках и живой контент.
+
+## Безопасность
+
+- Админка: CSRF, bcrypt, блокировка входа (5 попыток с IP / 12 на e-mail за 15 минут), одинаковое время ответа для несуществующих аккаунтов, строгие cookie, журнал действий, `display_errors` выключен.
+- Apache (`public/.htaccess`): HTTPS, HSTS, nosniff, защита от встраивания в iframe, Referrer-Policy, Permissions-Policy, запрет листинга и служебных файлов (`.git`, `.sql`, `.bak`, `.log`, `.env`, `.jsonl`, базы). В `data/` и `docs/files/` скрипты не исполняются.
+- Первый вход: владельца создаёт тот, кто первым откроет `/admin/` на пустой базе. Сразу после выкладки откройте `/admin/` сами и создайте владельца.
+- Проверьте на хостинге, что `mod_headers` включён, а `admin/_data/` не открывается по прямой ссылке (должен быть 403).

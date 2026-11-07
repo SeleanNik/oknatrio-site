@@ -9,12 +9,12 @@ import Reviews from '../components/home/Reviews.astro';
 import LeadBlock from '../components/home/LeadBlock.astro';
 import Faq from '../components/Faq.astro';
 import { pagesData } from '../config/pages.mjs';
-import { localBusiness } from '../config/schema.mjs';
+import { localBusiness, webSite } from '../config/schema.mjs';
 ---
 <Base
   title="Пластиковые и алюминиевые окна в Москве"
   description="Трио: алюминиевые окна и окна ПВХ, двери, фасады, остекление балконов и лоджий в Москве. Бесплатный замер, цена в договоре, монтаж по ГОСТ, гарантия."
-  jsonLd={[localBusiness]}
+  jsonLd={[webSite, localBusiness]}
 >
   <Hero />
   <Brands />

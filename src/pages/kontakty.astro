@@ -11,7 +11,7 @@ const mapSrc = `https://yandex.ru/map-widget/v1/?ll=${lng}%2C${lat}&z=16&pt=${ln
 ---
 <Base
   title="Контакты — адрес, телефон, карта"
-  description="Контакты компании «Трио»: Москва, пр-кт Солнцевский, д. 15. Телефон, e-mail, режим работы, карта проезда, WhatsApp и Telegram."
+  description="Контакты компании «Трио»: Москва, пр-кт Солнцевский, д. 15. Телефон, e-mail, режим работы и карта проезда."
   jsonLd={[localBusiness]}
 >
   <div class="kpage">
@@ -44,10 +44,6 @@ const mapSrc = `https://yandex.ru/map-widget/v1/?ll=${lng}%2C${lat}&z=16&pt=${ln
               <span class="kc__ico"><Icon name="clock" size={18} /></span>
               <span class="kc__lbl">Режим работы</span>
               <strong data-bind="hours">{site.hours}</strong>
-            </div>
-            <div class="kmsgs kc--wide">
-              <a class="msg" href={site.messengers.whatsapp} data-bind-href="whatsapp" target="_blank" rel="noopener">WhatsApp</a>
-              <a class="msg" href={site.messengers.telegram} data-bind-href="telegram" target="_blank" rel="noopener">Telegram</a>
             </div>
             {(site.legalName || site.requisites) && <p class="req kc--wide">{site.legalName}<br />{site.requisites}</p>}
             <div class="kmap kc--wide">
@@ -91,9 +87,6 @@ const mapSrc = `https://yandex.ru/map-widget/v1/?ll=${lng}%2C${lat}&z=16&pt=${ln
   .kc--phone strong { font-size: clamp(1.25rem, 1.05rem + .8vw, 1.6rem); letter-spacing: -.01em; }
   a.kc--phone:hover { background: linear-gradient(135deg, #4a82ff, #2149b8); }
   .kc--wide { grid-column: 1 / -1; }
-  .kmsgs { display: flex; gap: var(--sp-3); flex-wrap: wrap; }
-  .msg { flex: 1; display: inline-flex; align-items: center; justify-content: center; min-height: 44px; padding: .4rem 1.1rem; border-radius: var(--r-pill); border: 1px solid rgb(255 255 255 / .22); color: #fff !important; text-decoration: none; font: 700 var(--fs-sm)/1 var(--font-head); transition: background .2s, border-color .2s; }
-  .msg:hover { background: #fff; border-color: #fff; color: #0b1522 !important; }
   .req { margin: 0; color: rgb(255 255 255 / .5); font-size: var(--fs-sm); }
 
   .kform { background: #fff; color: var(--c-text); border-radius: 26px; padding: var(--sp-5); }

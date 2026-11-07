@@ -4,3 +4,7 @@ DirectoryIndex index.php
 <IfModule mod_headers.c>
   Header set X-Robots-Tag "noindex, nofollow"
 </IfModule>
+# Файлы данных и копии наружу не отдаём (дополнительно к закрытой папке _data)
+<FilesMatch "\.(sqlite|sqlite3|db|jsonl|log|bak|sql)$">
+  Require all denied
+</FilesMatch>

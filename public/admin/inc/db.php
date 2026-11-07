@@ -15,11 +15,13 @@ const ROLES = [
 const PERMS = [
     'analytics.view' => 'Аналитика сайта',
     'page.home' => 'Страница «Главная»',
-    'page.alyuminievye' => 'Страница «Алюминиевые окна»',
-    'page.pvh' => 'Страница «Окна ПВХ»',
+    'page.schuco' => 'Страница «Schuco»',
+    'page.alutech' => 'Страница «Alutech»',
+    'page.veka' => 'Страница «VEKA»',
     'page.works' => 'Страница «Наши работы»',
     'page.tech' => 'Страница «Техническая информация»',
     'page.contacts' => 'Страница «Контакты»',
+    'page.docs' => 'Документы и правила сайта',
 ];
 
 function db_driver(): string
@@ -124,15 +126,74 @@ function audit(string $action, string $detail = '', ?array $user = null): void
 {
     try {
         dbq('INSERT INTO audit (at, user_email, action, detail, ip) VALUES (?,?,?,?,?)',
-            [now(), $user['email'] ?? null, $action, mb_substr($detail, 0, 1000), client_ip()]);
+            [now(), $user['email'] ?? null, $action, mb_substr($detail, 0, 8000), client_ip()]);
     } catch (Throwable $e) {
         // журнал не должен ломать работу
     }
 }
 
+// Событие от неизвестного посетителя (например, открыл страницу входа): не чаще раза в 30 минут с одного IP
+function audit_guest(string $action, string $detail = ''): void
+{
+    try {
+        $ip = client_ip();
+        $since = date('Y-m-d H:i:s', time() - 1800);
+        if (dbrow('SELECT id FROM audit WHERE action = ? AND ip = ? AND at > ? LIMIT 1', [$action, $ip, $since])) return;
+        audit($action, $detail, null);
+    } catch (Throwable $e) {
+    }
+}
+
+// Имя сотрудника по e-mail (для журнала и истории версий); если аккаунта нет, показываем e-mail
+function user_label(?string $email, string $fallback = ''): string
+{
+    static $cache = [];
+    if ($email === null || $email === '') return $fallback;
+    if (!array_key_exists($email, $cache)) {
+        try {
+            $row = dbrow('SELECT name FROM users WHERE email = ?', [$email]);
+            $cache[$email] = $row && trim((string)$row['name']) !== '' ? trim((string)$row['name']) : $email;
+        } catch (Throwable $e) {
+            $cache[$email] = $email;
+        }
+    }
+    return $cache[$email];
+}
+
 // ---------- контент (с версиями и публикацией в /data/*.json) ----------
 // Ключи: site (контакты) и page_<имя> (страницы). Страницы публикуются одним файлом /data/pages.json.
+// У работ есть постоянный id (по нему страницы выбирают, какие работы показывать). Старым записям выдаём его так же, как при начальной загрузке.
+function works_ids(array $d): array
+{
+    if (!is_array($d['items'] ?? null)) return $d;
+    $seen = [];
+    foreach ($d['items'] as $i => $w) {
+        if (!is_array($w)) continue;
+        $id = (string)($w['id'] ?? '');
+        if (!preg_match('/^[a-z0-9-]{1,40}$/', $id) || isset($seen[$id])) {
+            $base = 'w' . substr(md5(($w['title'] ?? '') . '|' . ($w['place'] ?? '')), 0, 6);
+            $id = $base;
+            for ($n = 2; isset($seen[$id]); $n++) $id = $base . '-' . $n;
+        }
+        $seen[$id] = 1;
+        $d['items'][$i]['id'] = $id;
+    }
+    return $d;
+}
+
+function works_list(): array
+{
+    $d = works_ids((array)content_get('page_works', []));
+    return array_values(array_filter((array)($d['items'] ?? []), 'is_array'));
+}
+
 function content_get(string $k, $default = null)
+{
+    $v = content_get_raw($k, $default);
+    return ($k === 'page_works' && is_array($v)) ? works_ids($v) : $v;
+}
+
+function content_get_raw(string $k, $default = null)
 {
     $row = dbrow('SELECT value FROM content WHERE k = ?', [$k]);
     if ($row) {
@@ -213,19 +274,30 @@ function owners_active_count(): int
 }
 
 // ---------- попытки входа ----------
-function login_throttled(): bool
+// Ограничение попыток входа: с одного IP (5 за 15 минут) и на один e-mail со всех адресов (12 за 15 минут)
+function login_keys(string $email): array
+{
+    return [hash('sha256', client_ip()), hash('sha256', 'email:' . mb_strtolower(trim($email)) . ':' . A_ROOT)];
+}
+
+function login_throttled(string $email = ''): bool
 {
     dbq('DELETE FROM attempts WHERE at < ?', [time() - FAIL_WINDOW]);
-    $n = (int)dbq('SELECT COUNT(*) FROM attempts WHERE ip_hash = ? AND at >= ?', [hash('sha256', client_ip()), time() - FAIL_WINDOW])->fetchColumn();
-    return $n >= MAX_FAILS;
+    [$ipKey, $mailKey] = login_keys($email);
+    $q = fn(string $k) => (int)dbq('SELECT COUNT(*) FROM attempts WHERE ip_hash = ? AND at >= ?', [$k, time() - FAIL_WINDOW])->fetchColumn();
+    return $q($ipKey) >= MAX_FAILS || ($email !== '' && $q($mailKey) >= 12);
 }
 
-function login_fail(): void
+function login_fail(string $email = ''): void
 {
-    dbq('INSERT INTO attempts (ip_hash, at) VALUES (?,?)', [hash('sha256', client_ip()), time()]);
+    [$ipKey, $mailKey] = login_keys($email);
+    dbq('INSERT INTO attempts (ip_hash, at) VALUES (?,?)', [$ipKey, time()]);
+    if ($email !== '') dbq('INSERT INTO attempts (ip_hash, at) VALUES (?,?)', [$mailKey, time()]);
 }
 
-function login_clear(): void
+function login_clear(string $email = ''): void
 {
-    dbq('DELETE FROM attempts WHERE ip_hash = ?', [hash('sha256', client_ip())]);
+    [$ipKey, $mailKey] = login_keys($email);
+    dbq('DELETE FROM attempts WHERE ip_hash = ?', [$ipKey]);
+    if ($email !== '') dbq('DELETE FROM attempts WHERE ip_hash = ?', [$mailKey]);
 }

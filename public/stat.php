@@ -3,6 +3,7 @@
 // Всегда отвечает 204 и ничего не ломает на сайте, даже если база недоступна.
 declare(strict_types=1);
 
+ini_set('display_errors', '0');
 header('Cache-Control: no-store');
 http_response_code(204);
 

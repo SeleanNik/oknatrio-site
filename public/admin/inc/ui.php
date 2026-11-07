@@ -6,11 +6,13 @@ declare(strict_types=1);
 const SECTIONS = [
     'dashboard' => ['Обзор', 'analytics.view', 'chart', ''],
     'home' => ['Главная', 'page.home', 'home', 'pages'],
-    'alyuminievye' => ['Алюминиевые окна', 'page.alyuminievye', 'window', 'pages'],
-    'pvh' => ['Окна ПВХ', 'page.pvh', 'layers', 'pages'],
+    'schuco' => ['Schuco', 'page.schuco', 'window', 'pages'],
+    'alutech' => ['Alutech', 'page.alutech', 'window', 'pages'],
+    'veka' => ['VEKA', 'page.veka', 'layers', 'pages'],
     'works' => ['Наши работы', 'page.works', 'image', 'pages'],
     'tech' => ['Тех. информация', 'page.tech', 'doc', 'pages'],
     'contacts' => ['Контакты', 'page.contacts', 'phone', 'pages'],
+    'docs' => ['Документы и правила', 'page.docs', 'shield', 'pages'],
     'users' => ['Сотрудники', 'owner', 'users', 'admin'],
     'audit' => ['Журнал', 'owner', 'clock', 'admin'],
     'profile' => ['Мой профиль', null, 'user', 'me'],
@@ -37,6 +39,7 @@ function icon(string $name): string
         'eye' => '<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
         'form' => '<path d="M4 4h16v13H8l-4 4z"/><path d="M8 9h8M8 13h5"/>',
         'pages' => '<rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/>',
+        'shield' => '<path d="M12 3l8 3v6c0 4.5-3.2 8.3-8 9-4.8-.7-8-4.5-8-9V6z"/><path d="M9 12l2 2 4-4"/>',
     ][$name] ?? '';
     return '<svg class="ico" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' . $p . '</svg>';
 }
@@ -92,12 +95,13 @@ function shell(string $title, string $body, string $active = '', ?array $user = 
 <title><?= h($title) ?> — Админка «Трио»</title>
 <link rel="icon" href="/favicon.svg">
 <link rel="stylesheet" href="assets/admin.css?v=<?= (int)@filemtime(__DIR__ . '/../assets/admin.css') ?>">
+<link rel="stylesheet" href="assets/admin-v5.css?v=<?= (int)@filemtime(__DIR__ . '/../assets/admin-v5.css') ?>">
 </head>
 <body class="<?= $user ? 'app' : 'plain' ?>">
 <?php if ($user): ?>
 <div class="frame">
 <aside class="side">
-  <a class="side__brand" href="./">Tri<span>o</span></a>
+  <a class="side__brand" href="./"><span class="side__word">ТРИО<small>Инжиниринг</small></span></a>
   <nav class="side__nav" aria-label="Разделы">
     <?php
     $lastGroup = null;
@@ -122,7 +126,6 @@ function shell(string $title, string $body, string $active = '', ?array $user = 
     <h1 class="topbar__title"><?= h($title) ?></h1>
     <div class="topbar__right">
       <?= $actions ?>
-      <a class="btn btn--sm" href="/" target="_blank" rel="noopener"><?= icon('ext') ?> Открыть сайт</a>
       <span class="chip-user"><i><?= h(initials($user)) ?></i><span><?= h($user['name'] ?: $user['email']) ?></span></span>
     </div>
   </header>
@@ -149,7 +152,7 @@ function auth_box(string $title, string $inner, string $err = ''): void
 {
     ob_start(); ?>
     <div class="auth">
-      <div class="auth__brand">Tri<span>o</span></div>
+      <div class="auth__brand"><span class="side__word">ТРИО<small>Инжиниринг</small></span></div>
       <h1><?= h($title) ?></h1>
       <?php if ($err): ?><div class="flash flash--err"><?= h($err) ?></div><?php endif; ?>
       <?= $inner ?>
@@ -163,7 +166,7 @@ function versions_box(string $k): string
     if (!$list) return '';
     $o = '';
     foreach ($list as $v) {
-        $o .= '<option value="' . (int)$v['id'] . '">' . h(fmt_dt($v['created_at']) . ($v['user_email'] ? ' · ' . $v['user_email'] : '')) . '</option>';
+        $o .= '<option value="' . (int)$v['id'] . '">' . h(fmt_dt($v['created_at']) . ($v['user_email'] ? ' · ' . user_label($v['user_email']) : '')) . '</option>';
     }
     return '<form method="post" class="panel panel--quiet backups" onsubmit="return confirm(\'Вернуть выбранную версию? Текущая будет сохранена в истории.\')">'
         . csrf_field() . '<input type="hidden" name="key" value="' . h($k) . '">'
@@ -171,7 +174,7 @@ function versions_box(string $k): string
         . '<div class="row"><select name="version">' . $o . '</select><button name="action" value="restore" class="btn btn--ghost">Вернуть версию</button></div></form>';
 }
 
-const PERM_LABEL_SHORT = ['analytics.view' => 'Аналитика', 'page.home' => 'Главная', 'page.alyuminievye' => 'Алюминий', 'page.pvh' => 'ПВХ', 'page.works' => 'Работы', 'page.tech' => 'Тех. инфо', 'page.contacts' => 'Контакты'];
+const PERM_LABEL_SHORT = ['analytics.view' => 'Аналитика', 'page.home' => 'Главная', 'page.schuco' => 'Schuco', 'page.alutech' => 'Alutech', 'page.veka' => 'VEKA', 'page.works' => 'Работы', 'page.tech' => 'Тех. инфо', 'page.contacts' => 'Контакты', 'page.docs' => 'Документы'];
 
 const PERM_INFO = [
     'Аналитика' => [
@@ -179,11 +182,13 @@ const PERM_INFO = [
     ],
     'Страницы сайта' => [
         'page.home' => ['Главная', 'Меняет заголовок, блоки и фото на главной странице', 'home'],
-        'page.alyuminievye' => ['Алюминиевые окна', 'Меняет виды Alutech и Schuco, характеристики и вопросы', 'window'],
-        'page.pvh' => ['Окна ПВХ', 'Меняет виды окон VEKA, характеристики и вопросы', 'layers'],
+        'page.schuco' => ['Schuco', 'Меняет карточки систем Schuco (окна, двери, фасады…), заголовок и вопросы', 'window'],
+        'page.alutech' => ['Alutech', 'Меняет карточки видов Alutech, заголовок и вопросы', 'window'],
+        'page.veka' => ['VEKA', 'Меняет карточки систем и видов VEKA, заголовок и вопросы', 'layers'],
         'page.works' => ['Наши работы', 'Добавляет и меняет объекты и их фото', 'image'],
         'page.tech' => ['Тех. информация', 'Загружает PDF-каталоги, меняет карточки профилей', 'doc'],
-        'page.contacts' => ['Контакты', 'Меняет телефон, адрес, график и ссылки на мессенджеры', 'phone'],
+        'page.contacts' => ['Контакты', 'Меняет телефон, e-mail, адрес и график работы', 'phone'],
+        'page.docs' => ['Документы и правила', 'Правит тексты политики конфиденциальности, согласий, cookie и пользовательского соглашения', 'shield'],
     ],
 ];
 

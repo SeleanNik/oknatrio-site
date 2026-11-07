@@ -2,6 +2,7 @@
 // Обработчик заявок: проверка, honeypot, отправка на e-mail. Ответ — JSON.
 // Адрес получателя и настройки: form-config.php (создать из form-config.example.php).
 
+ini_set('display_errors', '0');
 header('Content-Type: application/json; charset=utf-8');
 header('X-Content-Type-Options: nosniff');
 
@@ -13,10 +14,18 @@ function respond(int $code, array $data): void {
 
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') respond(405, ['ok' => false, 'error' => 'method']);
 
+// Заявки приходят на info@oknatrio.ru. form-config.php может задать другой адрес, но шаблонные значения (example.com) игнорируются.
+$cfg = [];
 $configFile = __DIR__ . '/form-config.php';
-if (!is_file($configFile)) respond(500, ['ok' => false, 'error' => 'config']);
-$cfg = require $configFile;
-
+if (is_file($configFile)) $cfg = (array)(require $configFile);
+$real = static fn($v): bool => is_string($v) && filter_var($v, FILTER_VALIDATE_EMAIL) && stripos($v, 'example.') === false;
+$host = preg_replace('/:d+$/', '', preg_replace('/^www./', '', (string)($_SERVER['HTTP_HOST'] ?? '')));
+if ($host === '' || $host === 'localhost' || str_ends_with($host, '.test') || filter_var($host, FILTER_VALIDATE_IP)) $host = 'oknatrio.ru';
+$cfg = [
+    'to'        => $real($cfg['to'] ?? null) ? $cfg['to'] : 'info@oknatrio.ru',
+    'from'      => $real($cfg['from'] ?? null) ? $cfg['from'] : 'no-reply@' . $host,
+    'site_name' => (string)($cfg['site_name'] ?? $host),
+];
 
 // Honeypot: боты заполняют скрытое поле. Отвечаем «успехом», чтобы не подсказывать.
 if (!empty($_POST['website'])) respond(200, ['ok' => true]);
@@ -104,9 +113,25 @@ if ($attachments) {
     $headers = ['MIME-Version: 1.0', 'Content-Type: text/plain; charset=utf-8', 'From: ' . $cfg['from']];
 }
 
-$sent = !empty($cfg['to']) && @mail($cfg['to'], $subject, $body, implode("
-", $headers));
-if (!$sent) respond(500, ['ok' => false, 'error' => 'mail']);
+if ($email !== '' && filter_var($email, FILTER_VALIDATE_EMAIL)) $headers[] = 'Reply-To: ' . $email;
+
+// Копия заявки на сервере: даже если почта не дойдёт, заявка не потеряется (папка закрыта .htaccess)
+$saved = false;
+$dir = __DIR__ . '/admin/_data';
+if (is_dir($dir) || @mkdir($dir, 0775, true)) {
+    $row = json_encode(['at' => date('c'), 'type' => $type, 'name' => $name, 'phone' => $phone, 'email' => $email, 'service' => $service,
+        'date' => $date, 'comment' => $comment, 'product' => $product, 'page' => $page, 'ip' => $ip, 'files' => count($attachments)], JSON_UNESCAPED_UNICODE);
+    $saved = @file_put_contents($dir . '/leads.jsonl', $row . "\n", FILE_APPEND | LOCK_EX) !== false;
+}
+
+$sent = false;
+if (!empty($cfg['to'])) {
+    $envelope = filter_var($cfg['from'], FILTER_VALIDATE_EMAIL) ? '-f' . $cfg['from'] : '';
+    $head = implode("\r\n", $headers);
+    $sent = @mail($cfg['to'], $subject, $body, $head, $envelope) || @mail($cfg['to'], $subject, $body, $head);
+}
+if (!$sent && !$saved) respond(500, ['ok' => false, 'error' => 'mail']);
+if (!$sent) error_log('form-handler: mail() не отправил заявку, она сохранена в admin/_data/leads.jsonl');
 
 @touch($lockFile);
 respond(200, ['ok' => true]);

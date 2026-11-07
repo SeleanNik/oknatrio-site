@@ -2,8 +2,8 @@
 // «Наши работы»: заголовок, три больших карточки с подписью и кнопка «Все работы».
 import { pagesData } from '../../config/pages.mjs';
 import Icon from '../Icon.astro';
-import { works } from '../../config/works.mjs'; // TODO: реальные объекты
-const items = works.slice(0, 3);
+import { works, worksFor } from '../../config/works.mjs'; // TODO: реальные объекты
+const items = worksFor('home', () => works);
 const hw = pagesData.home.works;
 ---
 <section class="works" id="raboty" aria-labelledby="works-title">

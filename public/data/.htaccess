@@ -1,0 +1,5 @@
+# Публичные JSON сайта: отдаются как данные, исполнять здесь ничего нельзя
+Options -Indexes
+<FilesMatch "\.(php|phtml|php[0-9]|phar|pl|py|cgi)$">
+  Require all denied
+</FilesMatch>

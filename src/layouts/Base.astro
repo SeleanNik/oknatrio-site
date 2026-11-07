@@ -31,6 +31,14 @@ const ym = site.ymId;
     <meta name="robots" content={robots} />
     <meta name="theme-color" content="#ffffff" />
     <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="ru" href={canonical} />
+    <link rel="alternate" hreflang="x-default" href={canonical} />
+    {site.verification.yandex && <meta name="yandex-verification" content={site.verification.yandex} />}
+    {site.verification.google && <meta name="google-site-verification" content={site.verification.google} />}
+    {site.verification.bing && <meta name="msvalidate.01" content={site.verification.bing} />}
+    <meta name="geo.region" content="RU-MOW" />
+    <meta name="geo.placename" content="Москва" />
+    <meta name="format-detection" content="telephone=no" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta property="og:type" content="website" />
     <meta property="og:locale" content="ru_RU" />

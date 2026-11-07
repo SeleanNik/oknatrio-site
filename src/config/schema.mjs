@@ -20,5 +20,21 @@ export const localBusiness = {
   },
   geo: { '@type': 'GeoCoordinates', latitude: site.geo.lat, longitude: site.geo.lng },
   openingHours: 'Mo-Su 09:00-20:00', // TODO: синхронизировать с site.hours
-  areaServed: 'Москва и Московская область',
+  areaServed: [{ '@type': 'City', name: 'Москва' }, { '@type': 'AdministrativeArea', name: 'Московская область' }],
+  logo: `${siteUrl}/favicon.svg`,
+  alternateName: ['Трио', 'Окна Трио', 'Трио Инжиниринг Москва'],
+  knowsAbout: ['алюминиевые окна', 'пластиковые окна ПВХ', 'Schuco', 'Alutech', 'VEKA', 'остекление балконов и лоджий', 'фасадное остекление', 'зимние сады'],
+  hasMap: `https://yandex.ru/maps/?text=${encodeURIComponent(`${site.address.city}, ${site.address.street}`)}`,
+  contactPoint: { '@type': 'ContactPoint', telephone: site.phone.href, contactType: 'customer service', areaServed: 'RU', availableLanguage: 'Russian' },
+};
+
+// Название сайта для поисковиков (Яндекс показывает его в выдаче)
+export const webSite = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: site.name,
+  alternateName: ['Трио', 'oknatrio.ru'],
+  url: siteUrl,
+  inLanguage: 'ru-RU',
+  publisher: { '@type': 'Organization', name: site.name, url: siteUrl },
 };

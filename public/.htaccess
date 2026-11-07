@@ -34,6 +34,25 @@ RewriteRule ^okna/alyuminievye/?$ /okna/alyuminievye/schuco/ [L,R=301]
 # 301 со старых URL: переносить строки из файла "redirects", например:
 # Redirect 301 /plastikovye-okna/ /okna/pvh/
 
+# ===== Безопасность =====
+Options -Indexes
+# служебные файлы, резервные копии и дампы наружу не отдаём
+<FilesMatch "(^\.|\.(sql|bak|old|orig|swp|log|ini|env|sqlite|sqlite3|db|jsonl|md|lock)$|^(composer|package)(-lock)?\.json$)">
+  Require all denied
+</FilesMatch>
+RedirectMatch 404 /\.git
+<IfModule mod_headers.c>
+  Header always set X-Content-Type-Options "nosniff"
+  Header always set X-Frame-Options "SAMEORIGIN"
+  Header always set Referrer-Policy "strict-origin-when-cross-origin"
+  Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+  Header always set Cross-Origin-Opener-Policy "same-origin-allow-popups"
+  # HTTPS уже включён принудительно выше; год запоминания для браузеров
+  Header always set Strict-Transport-Security "max-age=31536000"
+  # CSP без ограничения скриптов: так не ломается Яндекс.Метрика и карта; закрыто встраивание сайта, чужие base/form и плагины
+  Header always set Content-Security-Policy "frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'"
+</IfModule>
+
 # Заявки обрабатывает form-handler.php; конфиг с e-mail закрыт от прямого доступа
 <Files "form-config.php">
   Require all denied

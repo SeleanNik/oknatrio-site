@@ -13,6 +13,9 @@ export const site = {
   tagline: 'Алюминиевые окна и окна ПВХ в Москве',
   url: siteUrl,
   noindex: read('PUBLIC_NOINDEX', 'true') === 'true',
+  indexNowKey: '27234ee19a8934a90be576e130843edb',
+  // коды подтверждения сайта в Яндекс.Вебмастере, Google Search Console, Bing (из .env; пусто = метатег не выводится)
+  verification: { yandex: read('PUBLIC_YANDEX_VERIFICATION', ''), google: read('PUBLIC_GOOGLE_VERIFICATION', ''), bing: read('PUBLIC_BING_VERIFICATION', '') },
   ymId: read('PUBLIC_YM_ID', ''), // Яндекс.Метрика: пусто = счётчик не подключается
   phone: contacts.phone,
   email: contacts.email,
@@ -24,6 +27,5 @@ export const site = {
     alu: '', // TODO: например '/catalog-aluminium.pdf'
     pvc: '', // TODO: например '/catalog-pvc.pdf'
   },
-  messengers: { whatsapp: contacts.whatsapp, telegram: contacts.telegram },
   // Адрес получателя заявок задаётся в public/form-config.php (на сервере)
 };

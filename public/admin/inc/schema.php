@@ -4,12 +4,14 @@
 // Списки показываются компактными карточками; редактирование открывается в окне.
 declare(strict_types=1);
 
-const TAG_OPTIONS = ['apartment' => 'Квартира', 'cottage' => 'Коттедж', 'balcony' => 'Балкон', 'aluminum' => 'Алюминий', 'pvc' => 'ПВХ'];
+const TAG_OPTIONS = ['cottage' => 'Коттедж', 'aluminum' => 'Алюминий', 'pvc' => 'ПВХ'];
 
 const PAGE_URLS = [
     'home' => '/',
-    'alyuminievye' => '/okna/alyuminievye/schuco/',
-    'pvh' => '/okna/pvh/',
+    'schuco' => '/okna/alyuminievye/schuco/',
+    'alutech' => '/okna/alyuminievye/alutech/',
+    'veka' => '/okna/pvh/veka/',
+    'docs' => '/politika-konfidencialnosti/',
     'works' => '/nashi-raboty/',
     'tech' => '/tehnicheskaya-informaciya/',
     'contacts' => '/kontakty/',
@@ -21,8 +23,21 @@ function f_type_item(): array
         ['k' => 'id', 'type' => 'id'],
         ['k' => 'title', 'type' => 'text', 'label' => 'Название', 'max' => 80, 'req' => true],
         ['k' => 'text', 'type' => 'textarea', 'label' => 'Описание', 'max' => 200, 'rows' => 2],
-        ['k' => 'images', 'type' => 'gallery', 'max' => 8, 'label' => 'Фото (несколько: на сайте они листаются. Перетащите фото, чтобы изменить порядок; первое фото — обложка)'],
+        ['k' => 'images', 'type' => 'gallery', 'max' => 40, 'label' => 'Фото (несколько: на сайте они листаются. Перетащите фото, чтобы изменить порядок; первое фото — обложка)'],
         ['k' => 'points', 'type' => 'textarea', 'label' => 'Особенности (по одной в строке, лучше 2)', 'max' => 120, 'rows' => 2],
+    ];
+}
+
+// Карточка системы / вида на странице бренда
+function f_card_item(): array
+{
+    return [
+        ['k' => 'id', 'type' => 'id'],
+        ['k' => 'name', 'type' => 'text', 'label' => 'Название (например: AWS 75.SI+)', 'max' => 40, 'req' => true],
+        ['k' => 'tag', 'type' => 'text', 'label' => 'Короткая метка (1–2 слова: Тёплая, Премиум)', 'max' => 24],
+        ['k' => 'text', 'type' => 'textarea', 'label' => 'Описание', 'max' => 420, 'rows' => 3],
+        ['k' => 'image', 'type' => 'image', 'label' => 'Фото'],
+        ['k' => 'specs', 'type' => 'textarea', 'label' => 'Особенности (по одной в строке, лучше 3)', 'max' => 200, 'rows' => 3],
     ];
 }
 
@@ -64,11 +79,45 @@ function page_schemas(): array
         ];
     };
 
+    // страница бренда: заголовок, карточки по видам, вопросы
+    $brand = function (string $label, array $typeGroups): array {
+        return [
+            'label' => $label,
+            'groups' => array_merge(
+                [['title' => 'Заголовок страницы', 'fields' => [
+                    ['k' => 'h1', 'type' => 'text', 'max' => 70, 'label' => 'Заголовок'],
+                    ['k' => 'lead', 'type' => 'textarea', 'max' => 260, 'rows' => 3, 'label' => 'Подзаголовок'],
+                ]]],
+                $typeGroups,
+                [['title' => 'Наши работы на странице', 'hint' => 'Отметьте до 4 работ из общего списка (раздел «Наши работы»). Они покажутся на этой странице.', 'fields' => [
+                    ['k' => 'worksPick', 'type' => 'worksel', 'max' => 4, 'brand' => $label, 'label' => 'Какие работы показывать'],
+                ]]],
+                [['title' => 'Вопросы и ответы', 'fields' => [
+                    ['k' => 'faq', 'type' => 'list', 'max' => 12, 'row' => 'q', 'sub' => 'a', 'label' => 'Вопросы', 'add' => 'Добавить вопрос', 'item' => [
+                        ['k' => 'q', 'type' => 'text', 'label' => 'Вопрос', 'max' => 150, 'req' => true],
+                        ['k' => 'a', 'type' => 'textarea', 'label' => 'Ответ', 'max' => 600, 'rows' => 4],
+                    ]],
+                ]]]
+            ),
+        ];
+    };
+    // вид с несколькими системами (переключатель карточек на странице)
+    $cards = fn(string $id, string $title, string $label, bool $one = false): array => ['title' => $title, 'hint' => $one ? 'Карточка вида. Можно добавить ещё систему: тогда на странице появится переключатель.' : 'Каждая карточка — одна система. Порядок меняется перетаскиванием; если систем больше одной, на странице появится переключатель.', 'fields' => [
+        ['k' => 'cards.' . $id, 'type' => 'list', 'max' => 10, 'row' => 'name', 'sub' => 'tag', 'thumb' => 'image', 'label' => $label, 'add' => 'Добавить систему', 'item' => f_card_item()],
+    ]];
+    // виды из одной карточки
+    $plain = fn(string $title, string $hint): array => ['title' => $title, 'hint' => $hint, 'fields' => [
+        ['k' => 'plain', 'type' => 'list', 'fixed' => true, 'row' => 'name', 'sub' => 'tag', 'thumb' => 'image', 'label' => 'Карточки', 'item' => f_card_item()],
+    ]];
+
     return [
         'home' => ['label' => 'Главная', 'groups' => [
             ['title' => 'Главный экран', 'fields' => [
                 ['k' => 'hero', 'type' => 'lines', 'n' => 2, 'max' => 50, 'label' => 'Заголовок (2 строки)'],
                 ['k' => 'heroStats', 'type' => 'lines', 'n' => 3, 'max' => 30, 'label' => 'Карточка справа внизу (3 пункта: лет на рынке, объектов, оценка отзывов)'],
+            ]],
+            ['title' => 'Наши работы на главной', 'hint' => 'Отметьте до 3 работ из общего списка (раздел «Наши работы»). Они покажутся на главной.', 'fields' => [
+                ['k' => 'worksPick', 'type' => 'worksel', 'max' => 3, 'brand' => '', 'label' => 'Какие работы показывать'],
             ]],
             ['title' => 'Блок «Продукция»', 'fields' => [
                 ['k' => 'prod.title', 'type' => 'text', 'max' => 40, 'label' => 'Заголовок'],
@@ -103,31 +152,47 @@ function page_schemas(): array
             ]],
         ]],
 
-        'alyuminievye' => $razdel('Алюминиевые окна', [
-            ['title' => 'Виды: Alutech', 'fields' => [
-                ['k' => 'typesByBrand.Alutech', 'type' => 'list', 'max' => 12, 'row' => 'title', 'sub' => 'text', 'thumb' => 'images', 'label' => 'Карточки видов', 'add' => 'Создать вид', 'item' => f_type_item()],
-            ]],
-            ['title' => 'Виды: Schuco', 'fields' => [
-                ['k' => 'typesByBrand.Schuco', 'type' => 'list', 'max' => 12, 'row' => 'title', 'sub' => 'text', 'thumb' => 'images', 'label' => 'Карточки видов', 'add' => 'Создать вид', 'item' => f_type_item()],
-            ]],
+        'schuco' => $brand('Schuco', [
+            $cards('okna', 'Окна', 'Системы окон'),
+            $cards('dveri', 'Двери', 'Системы дверей'),
+            $cards('fasady', 'Фасады', 'Фасадные системы'),
+            $cards('razdvizhnye', 'Раздвижные конструкции', 'Раздвижные порталы'),
+            $cards('garmoshka', 'Складные двери', 'Складные двери', true),
+            $cards('zimnie-sady', 'Зимние сады', 'Системы зимних садов', true),
+            $plain('Остальные виды', 'Зенитные фонари, козырьки и навесы: по одной карточке на вид (количество не меняется).'),
         ]),
 
-        'pvh' => $razdel('Окна ПВХ', [
-            ['title' => 'Виды', 'fields' => [
-                ['k' => 'types', 'type' => 'list', 'max' => 12, 'row' => 'title', 'sub' => 'text', 'thumb' => 'images', 'label' => 'Карточки видов', 'add' => 'Создать вид', 'item' => f_type_item()],
-            ]],
+        'alutech' => $brand('Alutech', [
+            $plain('Виды конструкций', 'По одной карточке на каждый вид (количество не меняется).'),
         ]),
+
+        'veka' => $brand('VEKA', [
+            $cards('okna', 'Окна: профильные системы', 'Профильные системы окон'),
+            $plain('Остальные виды', 'Двери, раздвижные конструкции, балконы: по одной карточке на вид (количество не меняется).'),
+        ]),
+
+        'docs' => ['label' => 'Документы и правила', 'groups' => [
+            ['title' => 'Документы сайта', 'hint' => 'Политика конфиденциальности, согласия и соглашение. Правки публикуются сразу после сохранения, в подвале сайта и в формах ссылки остаются прежними. Разметка простая: ## Заголовок раздела, ### подзаголовок, - пункт списка, 1. нумерованный пункт, **жирный**, [текст ссылки](адрес).', 'fields' => [
+                ['k' => 'items', 'type' => 'list', 'fixed' => true, 'row' => 'title', 'sub' => 'id', 'label' => 'Документы (количество не меняется)', 'item' => [
+                    ['k' => 'id', 'type' => 'id'],
+                    ['k' => 'title', 'type' => 'text', 'label' => 'Название документа', 'max' => 120, 'req' => true],
+                    ['k' => 'lead', 'type' => 'textarea', 'label' => 'Краткая подпись под названием (например, дата редакции)', 'max' => 400, 'rows' => 2],
+                    ['k' => 'body', 'type' => 'textarea', 'label' => 'Текст документа', 'max' => 90000, 'rows' => 16],
+                ]],
+            ]],
+        ]],
 
         'works' => ['label' => 'Наши работы', 'groups' => [
             ['title' => 'Страница', 'fields' => [
                 ['k' => 'lead', 'type' => 'text', 'max' => 200, 'label' => 'Подзаголовок'],
             ]],
-            ['title' => 'Объекты', 'hint' => 'Нажмите на работу, чтобы изменить её. На главной показываются первые 5 работ, в разделах первые 4 по метке (Алюминий или ПВХ). Порядок меняется перетаскиванием карточек мышкой.', 'fields' => [
+            ['title' => 'Объекты', 'hint' => 'Нажмите на работу, чтобы изменить её. Здесь общий список работ. Какие из них показывать на главной и на страницах Schuco, Alutech и VEKA, выбирается в самих этих разделах. Порядок меняется перетаскиванием.', 'fields' => [
                 ['k' => 'items', 'type' => 'list', 'max' => 60, 'row' => 'title', 'sub' => 'place', 'thumb' => 'images', 'label' => 'Список работ', 'add' => 'Создать работу', 'item' => [
+                    ['k' => 'id', 'type' => 'id'],
                     ['k' => 'title', 'type' => 'text', 'label' => 'Название (коротко, до 36 знаков)', 'max' => 36, 'req' => true],
                     ['k' => 'place', 'type' => 'text', 'label' => 'Где и система (например: Домодедово · VEKA)', 'max' => 40],
-                    ['k' => 'images', 'type' => 'gallery', 'max' => 8, 'label' => 'Фото (несколько: на сайте они листаются. Перетащите фото, чтобы изменить порядок; первое фото — обложка)'],
-                    ['k' => 'tags', 'type' => 'tags', 'label' => 'Метки (для фильтра)'],
+                    ['k' => 'images', 'type' => 'gallery', 'max' => 40, 'label' => 'Фото (несколько: на сайте они листаются. Перетащите фото, чтобы изменить порядок; первое фото — обложка)'],
+                    ['k' => 'tags', 'type' => 'tags', 'label' => 'Метки для фильтра на странице «Наши работы»'],
                 ]],
             ]],
         ]],
@@ -240,10 +305,29 @@ function render_field(array $f, $value, string $name, ?string $itemName = null):
                 . '<div class="gal__add"><label class="btn btn--ghost btn--sm">+ Загрузить фото<input type="file" multiple accept="' . IMG_ACCEPT . '" data-gadd hidden></label>'
                 . '<span class="gal__url"><input type="url" placeholder="или вставьте ссылку на фото" data-gurl><button type="button" class="btn btn--ghost btn--sm" data-gurl-add>Добавить</button></span></div></div>';
             return $o;
+        case 'worksel':
+            $mx = (int)($f['max'] ?? 4);
+            if (is_array($value)) {
+                $sel = array_map('strval', $value);
+            } else { // выбор ещё не сохранялся: показываем то, что сайт и так показывает по умолчанию
+                $sel = [];
+                foreach (works_list() as $w) {
+                    if ((string)($f['brand'] ?? '') === '' || mb_stripos(($w['title'] ?? '') . ' ' . ($w['place'] ?? ''), (string)$f['brand']) !== false) $sel[] = $w['id'];
+                }
+                $sel = array_slice($sel, 0, $mx);
+            }
+            $o = '<fieldset class="worksel" data-worksel data-max="' . $mx . '"><legend>' . $label . ' <span class="muted" data-wcount></span></legend><div class="worksel__grid">';
+            foreach (works_list() as $w) {
+                $img = is_array($w['images'] ?? null) ? (string)($w['images'][0] ?? '') : '';
+                $o .= '<label class="wpick"><input type="checkbox" name="' . $nm . '[]" value="' . h($w['id']) . '"' . (in_array($w['id'], $sel, true) ? ' checked' : '') . '>'
+                    . '<span class="wpick__img">' . ($img !== '' ? '<img src="' . h($img) . '" alt="" loading="lazy">' : '') . '<i class="wpick__tick"></i></span>'
+                    . '<span class="wpick__t"><b>' . h((string)($w['title'] ?? '')) . '</b><small>' . h((string)($w['place'] ?? '')) . '</small></span></label>';
+            }
+            return $o . '</div></fieldset>';
         case 'tags':
             $sel = is_array($value) ? $value : [];
             $o = '<fieldset class="tagsf"><legend>' . $label . '</legend>';
-            foreach (TAG_OPTIONS as $k => $lab) {
+            foreach (($f['options'] ?? TAG_OPTIONS) as $k => $lab) {
                 $o .= '<label class="check"><input type="checkbox" data-arr' . $df . ' name="' . $nm . '[]" value="' . h($k) . '"' . (in_array($k, $sel, true) ? ' checked' : '') . '> ' . h($lab) . '</label>';
             }
             return $o . '</fieldset>';
@@ -285,7 +369,7 @@ function render_list(array $f, $items, string $path): string
     };
 
     $o = '<div class="list ' . ($grid ? 'list--grid' : 'list--rows') . '" data-list data-name="' . h($base) . '" data-row-key="' . h($titleKey) . '" data-sub-key="' . h($subKey) . '" data-thumb-key="' . h($thumbKey) . '"'
-        . ($fixed ? ' data-fixed' : '') . ' data-max="' . (int)($f['max'] ?? 100) . '">';
+        . (!empty($f['badges']) ? ' data-badges="' . h($f['badges']) . '"' : '') . ($fixed ? ' data-fixed' : '') . ' data-max="' . (int)($f['max'] ?? 100) . '">';
     $o .= '<div class="list__head"><div><strong>' . h($f['label'] ?? '') . '</strong> <span class="muted" data-listcount>' . count($items) . '</span></div>';
     if (!$fixed) $o .= '<button type="button" class="btn btn--sm" data-add>+ ' . h($f['add'] ?? 'Создать') . '</button>';
     $o .= '</div><div class="list__rows">';
@@ -407,8 +491,13 @@ function clean_field(array $f, $in, string $path, array $files, array &$errors)
             $out = [];
             for ($i = 0; $i < (int)($f['n'] ?? 2); $i++) $out[] = clean_str(is_array($in) ? ($in[$i] ?? '') : '', $max);
             return $out;
+        case 'worksel':
+            $pick = is_array($in) ? array_map('strval', $in) : [];
+            $out = [];
+            foreach (works_list() as $w) if (in_array($w['id'], $pick, true)) $out[] = $w['id'];
+            return array_slice($out, 0, (int)($f['max'] ?? 4));
         case 'tags':
-            return is_array($in) ? array_values(array_intersect(array_map('strval', $in), array_keys(TAG_OPTIONS))) : [];
+            return is_array($in) ? array_values(array_intersect(array_map('strval', $in), array_keys($f['options'] ?? TAG_OPTIONS))) : [];
         case 'image':
         case 'pdf':
             $isPdf = $f['type'] === 'pdf';
@@ -495,4 +584,105 @@ function managed_files($data): array
     };
     $walk($data);
     return array_keys($out);
+}
+
+// ---------- что изменилось на странице (для журнала) ----------
+function chg_short($v): string
+{
+    if (is_array($v)) {
+        $flat = array_filter(array_map(fn($x) => is_array($x) ? '' : trim((string)$x), $v), fn($x) => $x !== '');
+        return $flat ? mb_strimwidth(implode(', ', $flat), 0, 70, '…') : '—';
+    }
+    $s = trim((string)$v);
+    return $s === '' ? '—' : mb_strimwidth($s, 0, 70, '…');
+}
+
+function chg_label(array $f): string
+{
+    $l = (string)($f['label'] ?? $f['k'] ?? '');
+    $l = trim(preg_replace('/\s*\(.*$/u', '', $l) ?? $l);
+    return mb_strimwidth($l, 0, 48, '…');
+}
+
+// Различия одного поля: список [что, было, стало]
+function chg_field(array $f, $o, $n, string $what = ''): array
+{
+    $type = $f['type'];
+    if ($type === 'id') return [];
+    $label = $what !== '' ? $what . ' · ' . chg_label($f) : chg_label($f);
+    if ($o === $n || json_encode($o) === json_encode($n)) return [];
+    if ($type === 'gallery') {
+        $a = is_array($o) ? $o : []; $b = is_array($n) ? $n : [];
+        $txt = count($a) === count($b) ? 'порядок или файлы фото изменены' : count($a) . ' → ' . count($b) . ' фото';
+        return [[$label, count($a) . ' фото', count($b) === count($a) ? $txt : count($b) . ' фото']];
+    }
+    if ($type === 'image' || $type === 'pdf') return [[$label, $o ? 'файл' : '—', $n ? 'заменён' : 'убран']];
+    if ($type === 'worksel') {
+        $names = [];
+        foreach (works_list() as $w) $names[$w['id']] = (string)($w['title'] ?? $w['id']);
+        $m = fn($ids) => !is_array($ids) ? 'по умолчанию' : ($ids ? implode(', ', array_map(fn($i) => '«' . ($names[$i] ?? $i) . '»', $ids)) : '—');
+        return [[$label, mb_strimwidth($m($o), 0, 90, '…'), mb_strimwidth($m($n), 0, 90, '…')]];
+    }
+    if ($type === 'textarea' && (mb_strlen((string)$o) > 70 || mb_strlen((string)$n) > 70)) {
+        return [[$label, mb_strlen((string)$o) . ' зн.', 'текст изменён, ' . mb_strlen((string)$n) . ' зн.']];
+    }
+    return [[$label, chg_short($o), chg_short($n)]];
+}
+
+function chg_list(array $f, $o, $n): array
+{
+    $o = is_array($o) ? array_values($o) : [];
+    $n = is_array($n) ? array_values($n) : [];
+    $rowK = $f['row'] ?? 'title';
+    $label = chg_label($f);
+    $title = fn($it) => '«' . (trim((string)($it[$rowK] ?? '')) ?: 'без названия') . '»';
+    $hasId = false;
+    foreach ($f['item'] as $s) if ($s['type'] === 'id') $hasId = true;
+    $out = [];
+    $pairs = [];
+    if ($hasId) {
+        $oi = []; foreach ($o as $it) if (is_array($it)) $oi[$it['id'] ?? ''] = $it;
+        $ni = []; foreach ($n as $it) if (is_array($it)) $ni[$it['id'] ?? ''] = $it;
+        foreach ($ni as $id => $it) { if (isset($oi[$id])) $pairs[] = [$oi[$id], $it]; else $out[] = [$label, '—', 'добавлено ' . $title($it)]; }
+        foreach ($oi as $id => $it) if (!isset($ni[$id])) $out[] = [$label, $title($it), 'удалено'];
+        $so = array_values(array_intersect(array_keys($oi), array_keys($ni)));
+        $sn = array_values(array_intersect(array_keys($ni), array_keys($oi)));
+        if ($so !== $sn) $out[] = [$label, '—', 'изменён порядок'];
+    } else {
+        for ($i = 0, $c = max(count($o), count($n)); $i < $c; $i++) {
+            if (!isset($o[$i])) $out[] = [$label, '—', 'добавлено ' . $title((array)$n[$i])];
+            elseif (!isset($n[$i])) $out[] = [$label, $title((array)$o[$i]), 'удалено'];
+            else $pairs[] = [(array)$o[$i], (array)$n[$i]];
+        }
+    }
+    foreach ($pairs as [$a, $b]) {
+        foreach ($f['item'] as $s) {
+            foreach (chg_field($s, $a[$s['k']] ?? null, $b[$s['k']] ?? null, $label . ' · ' . $title($b)) as $r) $out[] = $r;
+        }
+    }
+    return $out;
+}
+
+function page_changes(array $schema, $old, $new): array
+{
+    $out = [];
+    foreach ($schema['groups'] as $g) {
+        foreach ($g['fields'] as $f) {
+            $o = path_get(is_array($old) ? $old : [], $f['k']);
+            $n = path_get(is_array($new) ? $new : [], $f['k']);
+            foreach ($f['type'] === 'list' ? chg_list($f, $o, $n) : chg_field($f, $o, $n) as $r) $out[] = $r;
+        }
+    }
+    return $out;
+}
+
+// Строка для журнала: ключ страницы и список изменений в JSON
+function changes_detail(string $key, array $changes): string
+{
+    if (!$changes) return $key;
+    $total = count($changes);
+    $changes = array_slice($changes, 0, 30);
+    if ($total > 30) $changes[] = ['…', '', 'и ещё ' . ($total - 30) . ' изменений'];
+    $json = json_encode($changes, JSON_UNESCAPED_UNICODE);
+    return $key . "\n" . ($json === false ? '' : $json);
 }

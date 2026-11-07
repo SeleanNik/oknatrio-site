@@ -24,6 +24,7 @@ const AUDIT_META = [
     'setup' => ['accounts', 'ok', 'Первая настройка'],
     'login_fail' => ['security', 'warn', 'Неудачный вход'],
     'login_blocked' => ['security', 'err', 'Вход заблокирован'],
+    'login_visit' => ['security', 'info', 'Открыта страница входа'],
     '2fa_fail' => ['security', 'warn', 'Неверный код 2FA'],
     'csrf_fail' => ['security', 'warn', 'Просроченная форма'],
     'denied' => ['security', 'warn', 'Нет доступа'],
@@ -46,11 +47,29 @@ function audit_meta(string $action): array
     return AUDIT_META[$action] ?? ['content', 'info', $action];
 }
 
+// Список изменений (было → стало) у записи «изменил страницу»
+function audit_changes_html(array $r): string
+{
+    if ($r['action'] !== 'page_save') return '';
+    $parts = explode(chr(10), (string)$r['detail'], 2);
+    $list = isset($parts[1]) ? json_decode($parts[1], true) : null;
+    if (!is_array($list) || !$list) return '';
+    $o = '<ul class="chg">';
+    foreach ($list as $c) {
+        if (!is_array($c) || count($c) < 3) continue;
+        $o .= '<li><b>' . h((string)$c[0]) . '</b>';
+        $o .= (string)$c[1] === '' ? '' : '<span class="chg__from">' . h((string)$c[1]) . '</span><i class="chg__arr">→</i>';
+        $o .= '<span class="chg__to">' . h((string)$c[2]) . '</span></li>';
+    }
+    return $o . '</ul>';
+}
+
 // Человеческое описание действия из журнала
 function audit_text(array $r): string
 {
     $labels = array_map(fn($s) => $s['label'], page_schemas()) + ['contacts' => 'Контакты'];
     $d = (string)$r['detail'];
+    if ($r['action'] === 'page_save') $d = explode(chr(10), $d, 2)[0];
     switch ($r['action']) {
         case 'page_save': return 'изменил(а) страницу «' . ($labels[$d] ?? $d) . '»';
         case 'page_restore': return 'вернул(а) прежнюю версию: ' . ($labels[preg_replace('/^page_/', '', $d)] ?? $d);
@@ -63,6 +82,7 @@ function audit_text(array $r): string
         case 'login': return 'вошёл(а) в админку';
         case 'logout': return 'вышел(а) из админки';
         case 'login_fail': return 'неверный пароль' . ($d !== '' ? ' для ' . $d : '');
+        case 'login_visit': return 'кто-то открыл страницу входа в админку' . ($d !== '' ? ' (' . $d . ')' : '');
         case 'login_blocked': return 'слишком много попыток' . ($d !== '' ? ' (' . $d . ')' : '') . ': вход закрыт на 15 минут';
         case '2fa_fail': return 'неверный код из приложения-аутентификатора';
         case 'csrf_fail': return 'форма устарела или отправлена не с сайта: ' . $d;
@@ -139,7 +159,7 @@ function page_dashboard(array $user): string
         <div class="panel__head"><h2>Последние действия</h2><?php if (user_can($user, 'owner')): ?><a href="./?s=audit" class="muted">весь журнал →</a><?php endif; ?></div>
         <ul class="feed">
           <?php foreach ($recent as $r): ?>
-            <li><i class="feed__ava"><?= h(mb_strtoupper(mb_substr((string)($r['user_email'] ?: '?'), 0, 1))) ?></i><span><b><?= h($r['user_email'] ?: 'Система') ?></b> <?= h(audit_text($r)) ?><small><?= h(ago($r['at'])) ?></small></span></li>
+            <li><i class="feed__ava"><?= h(mb_strtoupper(mb_substr(user_label($r['user_email'], '?'), 0, 1))) ?></i><span><b><?= h(user_label($r['user_email'], $r['action'] === 'login_visit' ? 'Гость' : 'Система')) ?></b> <?= h(audit_text($r)) ?><small><?= h(ago($r['at'])) ?></small></span></li>
           <?php endforeach; ?>
           <?php if (!$recent): ?><li class="muted">Здесь появятся изменения страниц и действия сотрудников.</li><?php endif; ?>
         </ul>
@@ -162,11 +182,16 @@ function page_editor(string $key): string
         <div class="sidebox">
           <button class="btn btn--block" name="action" value="save_page">Сохранить страницу</button>
           <span class="savebar__msg" data-savemsg>Изменения видны на сайте сразу после сохранения.</span>
-          <a class="btn btn--ghost btn--sm btn--block" href="<?= h(PAGE_URLS[$key]) ?>" target="_blank" rel="noopener">Открыть страницу на сайте</a>
         </div>
         <nav class="sidebox toc" aria-label="Разделы страницы">
-          <div class="toc__head"><strong>Разделы</strong><span><button type="button" class="linkbtn" data-fold="open">развернуть</button> · <button type="button" class="linkbtn" data-fold="close">свернуть</button></span></div>
-          <?php foreach ($schema['groups'] as $n => $g): ?><a href="#g<?= $n ?>" data-toc><?= h($g['title']) ?></a><?php endforeach; ?>
+          <div class="toc__head"><strong>Разделы</strong>
+            <span class="toc__tools">
+              <button type="button" class="roundbtn roundbtn--sm" data-fold="open" title="Развернуть все" aria-label="Развернуть все разделы"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 8l5 5 5-5M7 14l5 5 5-5"/></svg></button>
+              <button type="button" class="roundbtn roundbtn--sm" data-fold="close" title="Свернуть все" aria-label="Свернуть все разделы"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 10l5-5 5 5M7 16l5-5 5 5"/></svg></button>
+            </span></div>
+          <ol class="toc__list">
+          <?php foreach ($schema['groups'] as $n => $g): ?><li><a href="#g<?= $n ?>" data-toc><i class="toc__dot" aria-hidden="true"></i><span><?= h($g['title']) ?></span></a></li><?php endforeach; ?>
+          </ol>
         </nav>
         <p class="hint">Фото: jpg, png, webp до 4 МБ. PDF до 100 МБ (не больше лимита хостинга).</p>
       </aside>
@@ -189,10 +214,6 @@ function page_contacts(): string
           <label>E-mail (публичный, на сайте)<input type="email" name="email" value="<?= h($d['email'] ?? '') ?>" required></label>
         </div>
         <label>График работы<input name="hours" value="<?= h($d['hours'] ?? '') ?>" placeholder="Пн–Вс 09:00–20:00"></label>
-        <div class="grid2">
-          <label>Ссылка WhatsApp<input type="url" name="whatsapp" value="<?= h($d['whatsapp'] ?? '') ?>" placeholder="https://wa.me/74952254403"></label>
-          <label>Ссылка Telegram<input type="url" name="telegram" value="<?= h($d['telegram'] ?? '') ?>" placeholder="https://t.me/имя"></label>
-        </div>
       </div></section>
       <section class="panel"><h2>Адрес</h2><div class="panel__body">
         <label>Адрес (так показывается на сайте)<input name="address_full" value="<?= h($a['full'] ?? '') ?>" required></label>
@@ -258,7 +279,6 @@ function page_users(array $me): string
           <div class="row">
             <form method="post" class="inline"><?= csrf_field() ?><input type="hidden" name="id" value="<?= (int)$u['id'] ?>">
               <?php if (!$self): ?><button class="btn btn--ghost" name="action" value="user_toggle"><?= $u['active'] ? 'Отключить вход' : 'Включить вход' ?></button><?php endif; ?>
-              <?php if ($u['totp_on']): ?><button class="btn btn--ghost" name="action" value="user_reset_2fa">Сбросить 2FA</button><?php endif; ?>
             </form>
             <?php if (!$self): ?>
             <form method="post" class="inline" onsubmit="return confirm('Удалить аккаунт «<?= h(addslashes($u['name'] ?: $u['email'])) ?>» навсегда? Действие необратимо.')">
@@ -281,7 +301,7 @@ function page_users(array $me): string
         <a class="person<?= $u['active'] ? '' : ' is-off' ?>" href="./?s=users&amp;id=<?= (int)$u['id'] ?>">
           <i class="person__ava"><?= h(initials($u)) ?></i>
           <span class="person__who"><strong><?= h($u['name'] ?: '—') ?></strong><small><?= h($u['email']) ?></small></span>
-          <span class="person__role"><?= $u['role'] === 'owner' ? '<span class="badge badge--new">Владелец</span>' : '<span class="badge">Сотрудник</span>' ?><?= $u['active'] ? '' : ' <span class="badge badge--spam">отключён</span>' ?><?= $u['totp_on'] ? ' <span class="badge badge--done">2FA</span>' : '' ?></span>
+          <span class="person__role"><?= $u['role'] === 'owner' ? '<span class="badge badge--new">Владелец</span>' : '<span class="badge">Сотрудник</span>' ?><?= $u['active'] ? '' : ' <span class="badge badge--spam">отключён</span>' ?></span>
           <span class="person__perms">
             <?php if ($u['role'] === 'owner'): ?><span class="pchip pchip--all">Полный доступ</span>
             <?php elseif (!$p): ?><span class="pchip pchip--none">Нет прав</span>
@@ -344,7 +364,7 @@ function page_audit(): string
       <label class="logbar__search"><?= icon('eye') ?><input type="search" name="q" value="<?= h($q) ?>" placeholder="Поиск: e-mail, IP, подробности…" autocomplete="off"></label>
       <select name="cat" aria-label="Категория"><option value="">Все категории</option><?php foreach (AUDIT_CATS as $k => $v): ?><option value="<?= h($k) ?>"<?= $cat === $k ? ' selected' : '' ?>><?= h($v) ?></option><?php endforeach; ?></select>
       <select name="lvl" aria-label="Уровень"><option value="">Любой уровень</option><?php foreach (AUDIT_LEVELS as $k => $v): ?><option value="<?= h($k) ?>"<?= $lvl === $k ? ' selected' : '' ?>><?= h($v) ?></option><?php endforeach; ?></select>
-      <select name="who" aria-label="Кто"><option value="">Все аккаунты</option><?php foreach ($users as $u): ?><option value="<?= h($u) ?>"<?= $who === $u ? ' selected' : '' ?>><?= h($u) ?></option><?php endforeach; ?></select>
+      <select name="who" aria-label="Кто"><option value="">Все аккаунты</option><?php foreach ($users as $u): ?><option value="<?= h($u) ?>"<?= $who === $u ? ' selected' : '' ?>><?= h(user_label($u)) ?></option><?php endforeach; ?></select>
       <select name="per" aria-label="Период"><?php foreach ($perDays as $k => $v): ?><option value="<?= h((string)$k) ?>"<?= $per === (string)$k ? ' selected' : '' ?>><?= h($v) ?></option><?php endforeach; ?></select>
       <button class="btn">Найти</button>
       <?php if ($filtered): ?><a class="btn btn--ghost" href="./?s=audit">Сбросить</a><?php endif; ?>
@@ -372,7 +392,7 @@ function page_audit(): string
           <i class="logrow__ico"><?= icon($ico[$c] ?? 'clock') ?></i>
           <div class="logrow__main">
             <div class="logrow__top"><b><?= h($title) ?></b><span class="lvl lvl--<?= h($l) ?>"><?= h(AUDIT_LEVELS[$l]) ?></span><span class="cat"><?= h(AUDIT_CATS[$c]) ?></span></div>
-            <p><?php if ($r['user_email']): ?><a href="<?= h(audit_url(['who' => $r['user_email'], 'p' => null])) ?>" class="logrow__who"><?= h($r['user_email']) ?></a> <?php endif; ?><?= h(audit_text($r)) ?></p>
+            <p><?php if ($r['user_email']): ?><a href="<?= h(audit_url(['who' => $r['user_email'], 'p' => null])) ?>" class="logrow__who"><?= h(user_label($r['user_email'])) ?></a> <?php endif; ?><?= h(audit_text($r)) ?></p><?= audit_changes_html($r) ?>
           </div>
           <div class="logrow__meta"><time><?= h(substr((string)$r['at'], 11, 5)) ?></time><?php if ($r['ip']): ?><a href="<?= h(audit_url(['q' => $r['ip'], 'p' => null])) ?>" class="ip" title="Показать всё с этого IP"><?= h($r['ip']) ?></a><?php endif; ?></div>
         </li>
@@ -390,7 +410,6 @@ function page_audit(): string
 
 function page_profile(array $user): string
 {
-    $new = $_SESSION['totp_new'] ?? null;
     $perms = user_perms($user);
     ob_start(); ?>
     <p class="lead">Данные аккаунта и пароль меняет только владелец.</p>
@@ -401,27 +420,6 @@ function page_profile(array $user): string
           if ($user['role'] === 'owner') echo 'Все разделы и управление сотрудниками';
           else echo $perms ? h(implode(', ', array_map(fn($p) => PERMS[$p], $perms))) : 'Нет выданных прав: обратитесь к владельцу';
         ?></dd></dl>
-    </div></section>
-    <section class="panel"><h2>Вход в два шага (2FA)</h2><div class="panel__body">
-    <?php if ($user['totp_on']): ?>
-      <form method="post" class="form form--narrow"><?= csrf_field() ?>
-        <p>Двухфакторная защита <strong>включена</strong>: при входе нужен код из приложения-аутентификатора.</p>
-        <label>Пароль для отключения<input type="password" name="current" autocomplete="current-password" required></label>
-        <div class="actions"><button class="btn btn--ghost" name="action" value="totp_disable">Отключить 2FA</button></div>
-      </form>
-    <?php elseif ($new): ?>
-      <form method="post" class="form form--narrow"><?= csrf_field() ?>
-        <p>1. В приложении-аутентификаторе (Google Authenticator, Яндекс Ключ, Aegis и т.п.) добавьте аккаунт вручную и введите этот ключ:</p>
-        <input readonly value="<?= h($new) ?>" onclick="this.select()">
-        <label>2. Введите 6-значный код из приложения<input name="code" inputmode="numeric" autocomplete="one-time-code" maxlength="7" required></label>
-        <div class="actions"><button class="btn" name="action" value="totp_confirm">Включить</button></div>
-      </form>
-    <?php else: ?>
-      <form method="post" class="form form--narrow"><?= csrf_field() ?>
-        <p>Дополнительная защита аккаунта: после пароля потребуется код из телефона.</p>
-        <div class="actions"><button class="btn btn--ghost" name="action" value="totp_start">Настроить 2FA</button></div>
-      </form>
-    <?php endif; ?>
     </div></section>
     <?php return (string)ob_get_clean();
 }
