@@ -113,6 +113,8 @@ function page_dashboard(array $user): string
           <option value="<?= $dd ?>" <?= $dd === $days ? 'selected' : '' ?>><?= h($l) ?></option>
         <?php endforeach; ?></select></form>
       <span class="muted">Статистика без cookie и персональных данных: посетитель обезличен и меняется каждый день.</span>
+      <span class="muted">Визиты с устройств, где вы входили в админку, не считаются.</span>
+      <?php if (($user['role'] ?? '') === 'owner'): ?><form method="post" class="inline" onsubmit="return confirm('Удалить всю накопленную статистику? Действие нельзя отменить.')"><?= csrf_field() ?><button class="btn btn--ghost btn--sm" name="action" value="reset_stats">Сбросить статистику</button></form><?php endif; ?>
     </div>
 
     <div class="stats">
@@ -193,7 +195,7 @@ function page_editor(string $key): string
           <?php foreach ($schema['groups'] as $n => $g): ?><li><a href="#g<?= $n ?>" data-toc><i class="toc__dot" aria-hidden="true"></i><span><?= h($g['title']) ?></span></a></li><?php endforeach; ?>
           </ol>
         </nav>
-        <p class="hint">Фото: jpg, png, webp до 4 МБ. PDF до 100 МБ (не больше лимита хостинга).</p>
+        <p class="hint">Фото: jpg, png, webp до 20 МБ, на сервере они автоматически сжимаются в WebP. PDF до 100 МБ (не больше лимита хостинга).</p>
       </aside>
     </form>
     <?= versions_box('page_' . $key) ?>
@@ -206,25 +208,51 @@ function page_contacts(): string
     $a = $d['address'] ?? [];
     ob_start(); ?>
     <p class="lead">Телефон, адрес и график показываются в шапке, футере, блоках с формой и на странице «Контакты».</p>
-    <form method="post" class="pageform" autocomplete="off">
+    <form method="post" class="pageform editor cform-wrap" autocomplete="off">
       <?= csrf_field() ?>
-      <section class="panel"><h2>Связь</h2><div class="panel__body">
-        <div class="grid2">
-          <label>Телефон<input name="phone" value="<?= h($d['phone']['display'] ?? '') ?>" placeholder="+7 (495) 225-44-03" required></label>
-          <label>E-mail (публичный, на сайте)<input type="email" name="email" value="<?= h($d['email'] ?? '') ?>" required></label>
+      <div class="editor__main cform">
+        <section class="panel"><h2>Как с вами связаться</h2><div class="panel__body">
+          <label class="cfield"><span class="cfield__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg></span>
+            <span class="cfield__lbl">Телефон</span>
+            <input name="phone" data-follow="phone" value="<?= h($d['phone']['display'] ?? '') ?>" placeholder="+7 (495) 225-44-03" required>
+            <span class="cfield__hint">Показывается в шапке сайта и на кнопке «Позвонить» на телефоне.</span></label>
+          <label class="cfield"><span class="cfield__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg></span>
+            <span class="cfield__lbl">E-mail для клиентов</span>
+            <input type="email" name="email" data-follow="email" value="<?= h($d['email'] ?? '') ?>" required>
+            <span class="cfield__hint">Публичный адрес на сайте. Заявки приходят на почту, указанную в настройках формы, это другое.</span></label>
+          <label class="cfield"><span class="cfield__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+            <span class="cfield__lbl">График работы</span>
+            <input name="hours" data-follow="hours" value="<?= h($d['hours'] ?? '') ?>" placeholder="Пн–Вс 09:00–20:00">
+            <span class="cfield__hint">Например: Пн–Вс 09:00–20:00.</span></label>
+        </div></section>
+        <section class="panel"><h2>Где вас найти</h2><div class="panel__body">
+          <label class="cfield"><span class="cfield__ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+            <span class="cfield__lbl">Адрес</span>
+            <input name="address_full" data-follow="address" value="<?= h($a['full'] ?? '') ?>" required>
+            <span class="cfield__hint">Так адрес показывается на сайте.</span></label>
+          <details class="adv"><summary>Адрес для поисковиков (микроразметка)</summary>
+            <div class="grid3">
+              <label>Индекс<input name="postal" value="<?= h($a['postalCode'] ?? '') ?>"></label>
+              <label>Город<input name="city" value="<?= h($a['city'] ?? '') ?>"></label>
+              <label>Улица, дом<input name="street" value="<?= h($a['street'] ?? '') ?>"></label>
+            </div></details>
+        </div></section>
+      </div>
+      <aside class="editor__side">
+        <div class="sidebox">
+          <button class="btn btn--block" name="action" value="save_contacts">Сохранить контакты</button>
+          <span class="savebar__msg" data-savemsg>Изменения видны на сайте сразу после сохранения.</span>
         </div>
-        <label>График работы<input name="hours" value="<?= h($d['hours'] ?? '') ?>" placeholder="Пн–Вс 09:00–20:00"></label>
-      </div></section>
-      <section class="panel"><h2>Адрес</h2><div class="panel__body">
-        <label>Адрес (так показывается на сайте)<input name="address_full" value="<?= h($a['full'] ?? '') ?>" required></label>
-        <details class="adv"><summary>Адрес для поисковиков (микроразметка)</summary>
-          <div class="grid3">
-            <label>Индекс<input name="postal" value="<?= h($a['postalCode'] ?? '') ?>"></label>
-            <label>Город<input name="city" value="<?= h($a['city'] ?? '') ?>"></label>
-            <label>Улица, дом<input name="street" value="<?= h($a['street'] ?? '') ?>"></label>
-          </div></details>
-      </div></section>
-      <div class="savebar"><span class="savebar__msg" data-savemsg></span><button class="btn" name="action" value="save_contacts">Сохранить контакты</button></div>
+        <div class="sidebox cpreview">
+          <strong>Так это увидят на сайте</strong>
+          <ul class="cprev">
+            <li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg></i><span data-out="phone"><?= h($d['phone']['display'] ?? '—') ?></span></li>
+            <li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg></i><span data-out="email"><?= h($d['email'] ?? '—') ?></span></li>
+            <li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></i><span data-out="hours"><?= h($d['hours'] ?? '—') ?></span></li>
+            <li><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></i><span data-out="address"><?= h($a['full'] ?? '—') ?></span></li>
+          </ul>
+        </div>
+      </aside>
     </form>
     <?= versions_box('site') ?>
     <?php return (string)ob_get_clean();

@@ -96,11 +96,13 @@ function shell(string $title, string $body, string $active = '', ?array $user = 
 <link rel="icon" href="/favicon.svg">
 <link rel="stylesheet" href="assets/admin.css?v=<?= (int)@filemtime(__DIR__ . '/../assets/admin.css') ?>">
 <link rel="stylesheet" href="assets/admin-v5.css?v=<?= (int)@filemtime(__DIR__ . '/../assets/admin-v5.css') ?>">
+<script>try{var r=new URL(document.referrer),k=function(u){return u.pathname+"?"+(u.searchParams.get("s")||"")+"|"+(u.searchParams.get("id")||"")};if(r.origin===location.origin&&k(r)===k(location))document.documentElement.classList.add("same-page")}catch(e){}</script>
 </head>
 <body class="<?= $user ? 'app' : 'plain' ?>">
 <?php if ($user): ?>
 <div class="frame">
-<aside class="side">
+<div class="scrim" data-scrim hidden></div>
+<aside class="side" id="sidemenu">
   <a class="side__brand" href="./"><span class="side__word">ТРИО<small>Инжиниринг</small></span></a>
   <nav class="side__nav" aria-label="Разделы">
     <?php
@@ -123,10 +125,11 @@ function shell(string $title, string $body, string $active = '', ?array $user = 
 </aside>
 <div class="content">
   <header class="topbar">
+    <button type="button" class="burger" data-burger aria-controls="sidemenu" aria-expanded="false" aria-label="Меню"><span></span><span></span><span></span></button>
     <h1 class="topbar__title"><?= h($title) ?></h1>
     <div class="topbar__right">
       <?= $actions ?>
-      <span class="chip-user"><i><?= h(initials($user)) ?></i><span><?= h($user['name'] ?: $user['email']) ?></span></span>
+      <a class="chip-user" href="./?s=profile" title="Мой профиль"><i><?= h(initials($user)) ?></i><span><?= h($user['name'] ?: $user['email']) ?></span><em class="chip-user__go">Мой профиль</em></a>
     </div>
   </header>
   <main class="main">

@@ -56,7 +56,7 @@ const revTpl = revList && revList.querySelector('.rcard');
 if (revTpl) {
   load('/data/reviews.json').then((items) => {
     if (!Array.isArray(items)) return;
-    const shown = items.filter((r) => r && r.home !== false && r.text).slice(0, 3); // в один ряд — три отзыва
+    const shown = items.filter((r) => r && r.home !== false && r.text).slice(0, 6); // карусель — до шести отзывов
     if (!shown.length) return;
     rebuild(revList, '.rcard', shown, (li, r) => {
       li.querySelector('[data-rev="text"]').textContent = r.text;

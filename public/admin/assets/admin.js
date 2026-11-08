@@ -1,5 +1,32 @@
 // Админка: компактные списки с окном редактирования, галереи фото, права, генератор пароля.
 (() => {
+  // ---------- владелец: свои визиты на сайт не считаем ----------
+  if (document.body.classList.contains('app')) {
+    try { localStorage.setItem('trio_owner', '1'); } catch (e) { /* без хранилища просто считаем как обычно */ }
+  }
+
+  // ---------- контакты: предпросмотр обновляется по мере ввода ----------
+  document.querySelectorAll('[data-follow]').forEach((i) => {
+    const out = document.querySelector('[data-out="' + i.dataset.follow + '"]');
+    if (out) i.addEventListener('input', () => { out.textContent = i.value.trim() || '—'; });
+  });
+
+  // ---------- боковое меню на телефоне ----------
+  (() => {
+    const b = document.querySelector('[data-burger]'), sc = document.querySelector('[data-scrim]'), side = document.getElementById('sidemenu');
+    if (!b || !side) return;
+    const set = (open) => {
+      document.body.classList.toggle('menu-open', open);
+      b.setAttribute('aria-expanded', open ? 'true' : 'false');
+      if (sc) sc.hidden = !open;
+    };
+    b.addEventListener('click', () => set(!document.body.classList.contains('menu-open')));
+    if (sc) sc.addEventListener('click', () => set(false));
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') set(false); });
+    side.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => set(false)));
+    matchMedia('(min-width: 861px)').addEventListener('change', (m) => { if (m.matches) set(false); });
+  })();
+
   const flash = document.querySelector('.flash--ok');
   if (flash) setTimeout(() => { flash.style.transition = 'opacity .5s'; flash.style.opacity = '0'; }, 5000);
 

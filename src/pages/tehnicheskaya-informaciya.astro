@@ -18,11 +18,14 @@ import { pagesData } from '../config/pages.mjs';
     <div class="container">
       <h1>Техническая информация</h1>
       <p class="lead" data-ed="tech.lead">{pagesData.tech?.lead}</p>
-      <nav class="chips" aria-label="Каталоги">
-        {[...techCatalogs, vekaSection].map((c, i) => <a href={`#${c.id}`}><b>{i + 1}</b>{c.title}</a>)}
-      </nav>
     </div>
   </section>
+
+  <div class="techbar" data-techbar>
+    <nav class="chips container" aria-label="Каталоги">
+      {[...techCatalogs, vekaSection].map((c, i) => <a href={`#${c.id}`} data-tb={c.id}><b>{i + 1}</b>{c.title}</a>)}
+    </nav>
+  </div>
 
   {techCatalogs.map((c, i) => (
     <section class="cat" id={c.id}>
@@ -96,6 +99,21 @@ import { pagesData } from '../config/pages.mjs';
   </section>
 </Base>
 
+<script>
+  // подсветка текущего раздела в липкой навигации (телефон)
+  (() => {
+    const links = [...document.querySelectorAll('[data-tb]')];
+    const secs = links.map((l) => document.getElementById(l.dataset.tb)).filter(Boolean);
+    if (!links.length || !('IntersectionObserver' in window)) return;
+    const mark = (id) => links.forEach((l) => l.classList.toggle('is-on', l.dataset.tb === id));
+    const io = new IntersectionObserver((es) => {
+      const v = es.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+      if (v) mark(v.target.id);
+    }, { rootMargin: '-120px 0px -55% 0px' });
+    secs.forEach((x) => io.observe(x));
+  })();
+</script>
+
 <style>
   .head { padding-bottom: var(--sp-5); }
   .head h1 { margin-bottom: .3em; }
@@ -104,6 +122,16 @@ import { pagesData } from '../config/pages.mjs';
   .chips a { display: inline-flex; align-items: center; gap: .55rem; padding: .4rem 1rem .4rem .45rem; border-radius: var(--r-pill); background: var(--c-surface); border: 1px solid var(--c-line); color: var(--c-navy-800); text-decoration: none; font: 600 var(--fs-sm)/1.2 var(--font-head); }
   .chips b { display: grid; place-items: center; width: 24px; height: 24px; border-radius: 50%; background: var(--c-amber-500); color: #fff; font-size: .75rem; }
   .chips a:hover { border-color: var(--c-amber-500); }
+  .chips a.is-on { background: var(--c-navy-900); border-color: var(--c-navy-900); color: #fff; }
+  .techbar { padding-bottom: var(--sp-4); }
+  /* телефон: навигация по разделам прилипает под шапкой */
+  @media (max-width: 799px) {
+    .techbar { position: sticky; top: var(--header-h); z-index: 20; padding: .6rem 0; background: rgb(246 247 248 / .92); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--c-line); }
+    .techbar .chips { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+    .techbar .chips::-webkit-scrollbar { display: none; }
+    .chips a { flex: none; white-space: nowrap; }
+    .cat { scroll-margin-top: calc(var(--header-h) + 3.6rem); }
+  }
 
   .cat { padding-block: var(--section-y); border-top: 1px solid var(--c-line); scroll-margin-top: var(--header-h); }
   .cat:nth-of-type(odd) { background: var(--c-surface); }

@@ -36,7 +36,7 @@ const cols = Object.values(razdely).map((r) => r.noPage
     {legalDocs.map(([t, h]) => <a href={h}>{t}</a>)}
   </nav>
   <div class="container footer__bottom">
-    <span>© {new Date().getFullYear()} {site.name}{site.legalName && `. ${site.legalName}`}</span>
+    <span>© 1996–{new Date().getFullYear()}{site.name}{site.legalName && `. ${site.legalName}`}</span>
     {site.requisites && <span>{site.requisites}</span>}
   </div>
 </footer>

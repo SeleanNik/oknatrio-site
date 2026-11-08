@@ -2,53 +2,68 @@
 import Icon from '../Icon.astro';
 import { reviews as all } from '../../config/reviews.mjs'; // TODO: черновые отзывы, см. config/reviews.mjs
 // В один ряд — три отзыва (первые отмеченные для главной; порядок и отметка — в public/data/reviews.json)
-const reviews = all.filter((r) => r.home !== false).slice(0, 3);
+const reviews = all.filter((r) => r.home !== false).slice(0, 6);
 const initials = (n = '') => n.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]).join('').toUpperCase();
 ---
-<section class="section" aria-labelledby="rev-title">
+<section class="section rev-sec" aria-labelledby="rev-title">
   <div class="container">
     <div class="rev__head">
-      <h2 id="rev-title">Отзывы клиентов</h2>
+      <span class="rev__eyebrow">Отзывы</span>
+      <h2 id="rev-title">Что говорят наши клиенты</h2>
     </div>
-    <ul class="rev" data-reviews aria-label="Отзывы клиентов">
-      {reviews.map((r) => (
-        <li class="rcard">
-          <svg class="rcard__q" viewBox="0 0 48 40" width="56" height="46" aria-hidden="true"><path fill="currentColor" d="M0 40V22C0 9.5 6.5 2 19 0l2.2 6.2C14.5 8 11.5 12 11 18h10v22H0zm27 0V22C27 9.5 33.5 2 46 0l2 6.2C41.500 8 38.500 12 38 18h10v22H27z"/></svg>
-          <div class="rcard__stars" role="img" aria-label="Оценка 5 из 5">
-            {Array.from({ length: 5 }).map(() => <Icon name="star" size={18} />)}
-          </div>
-          <div class="rcard__body">
-            <blockquote data-rev="text">{r.text}</blockquote>
-            <button type="button" class="rcard__more" hidden data-rev-more>Читать полностью</button>
-          </div>
-          <div class="rcard__who">
-            <span class="rcard__ava" data-rev="ava" aria-hidden="true">{initials(r.name)}</span>
-            <span class="rcard__name"><strong data-rev="name">{r.name}</strong></span>
-          </div>
-        </li>
-      ))}
-    </ul>
   </div>
+  <ul class="rev" data-reviews aria-label="Отзывы клиентов">
+    {reviews.map((r) => (
+      <li class="rcard">
+        <div class="rcard__rate">
+          <Icon name="star" size={18} /><b>5.0</b>
+        </div>
+        <div class="rcard__body">
+          <blockquote data-rev="text">{r.text}</blockquote>
+          <button type="button" class="rcard__more" hidden data-rev-more>Читать полностью</button>
+        </div>
+        <div class="rcard__who">
+          <span class="rcard__ava" data-rev="ava" aria-hidden="true">{initials(r.name)}</span>
+          <span class="rcard__name"><strong data-rev="name">{r.name}</strong><small>Клиент</small></span>
+        </div>
+      </li>
+    ))}
+  </ul>
+  <div class="rev__dots" data-rev-dots aria-hidden="true"></div>
 </section>
 
 <style>
-  .rev__head { margin-bottom: var(--sp-5); }
-  .rev__head h2 { margin: 0; }
-  .rev { --gap: var(--sp-3); list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--gap); }
-  .rcard { position: relative; isolation: isolate; display: flex; flex-direction: column; gap: var(--sp-4); padding: var(--sp-5); background: #fff; border: 1px solid var(--c-line); border-radius: 26px; overflow: hidden; transition: transform .45s var(--ease), border-color .3s var(--ease); }
-  .rcard:hover { transform: translateY(-4px); border-color: #b9ccf8; }
-  .rcard__q { position: absolute; z-index: -1; top: 1.1rem; right: 1.4rem; color: #e6edff; }
-  .rcard__stars { display: flex; gap: 4px; color: var(--c-star); }
-  .rcard__stars :global(svg) { fill: currentColor; stroke: none; }
+  .rev__head { margin-bottom: var(--sp-5); text-align: center; display: grid; gap: .6rem; justify-items: center; }
+  .rev__eyebrow { font: 600 .75rem/1 var(--font-head); letter-spacing: .14em; text-transform: uppercase; color: var(--c-text-muted); }
+  .rev__head h2 { margin: 0; font-weight: 600; letter-spacing: -.02em; font-size: clamp(1.6rem, 1.2rem + 1.8vw, 2.4rem); }
+  /* лента-карусель: листается пальцем / колесом, карточки «прилипают» */
+  .rev { --gap: var(--sp-3); --pad: max(var(--sp-4), calc((100% - 1180px) / 2)); list-style: none; margin: 0; padding: .5rem var(--pad) 1rem; display: flex; gap: var(--gap); overflow-x: auto; scroll-snap-type: x mandatory; scroll-padding-inline: var(--pad); -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+  .rev::-webkit-scrollbar { display: none; }
+  .rcard { flex: 0 0 min(84vw, 360px); scroll-snap-align: center; display: flex; flex-direction: column; gap: var(--sp-3); padding: var(--sp-4) var(--sp-4) var(--sp-3); background: #fff; border: 1.5px solid var(--c-line); border-radius: 20px; transition: border-color .3s var(--ease); }
+  .rcard.is-active { border-color: #3672ff; }
+  .rcard__rate { display: flex; align-items: center; gap: .4rem; color: var(--c-star); }
+  .rcard__rate :global(svg) { fill: currentColor; stroke: none; }
+  .rcard__rate b { color: #3672ff; font: 700 .95rem/1 var(--font-head); }
   .rcard__body { flex: 1; display: flex; flex-direction: column; align-items: flex-start; gap: .75rem; min-width: 0; }
-  .rcard blockquote { margin: 0; font-size: 1.0625rem; line-height: 1.55; letter-spacing: -.005em; color: var(--c-navy-900); font-weight: 500; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 7; line-clamp: 7; overflow: hidden; overflow-wrap: anywhere; }
+  .rcard blockquote { margin: 0; font-size: 1rem; line-height: 1.55; color: var(--c-navy-900); font-weight: 400; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 6; line-clamp: 6; overflow: hidden; overflow-wrap: anywhere; }
   .rcard.is-open blockquote { -webkit-line-clamp: unset; line-clamp: unset; display: block; }
   .rcard__more { padding: 0; border: 0; background: none; color: var(--c-link, #2a5bd7); font: 700 var(--fs-sm)/1.3 var(--font-head); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
-  .rcard__who { display: flex; align-items: center; gap: .85rem; padding-top: var(--sp-4); border-top: 1px solid var(--c-line); }
-  .rcard__ava { flex: none; width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(135deg, #3672ff, #7aa1ff); color: #fff; font: 700 .9rem/1 var(--font-head); letter-spacing: .02em; }
+  .rcard__who { display: flex; align-items: center; gap: .75rem; padding-top: var(--sp-3); border-top: 1px solid var(--c-line); }
+  .rcard__ava { flex: none; width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: linear-gradient(135deg, #3672ff, #7aa1ff); color: #fff; font: 700 .85rem/1 var(--font-head); letter-spacing: .02em; }
   .rcard__name { display: grid; gap: .15rem; min-width: 0; }
-  .rcard__name strong { font: 700 var(--fs-md)/1.2 var(--font-head); color: var(--c-navy-900); }
+  .rcard__name strong { font: 600 .95rem/1.2 var(--font-head); color: var(--c-navy-900); }
+  .rcard__name small { font-size: .78rem; color: var(--c-text-muted); }
+  .rev__dots { display: flex; justify-content: center; gap: 6px; margin-top: .4rem; min-height: 6px; }
+  .rev__dots :global(button) { width: 28px; height: 4px; padding: 0; border: 0; border-radius: 4px; background: #d6dcea; cursor: pointer; transition: background .25s; }
+  .rev__dots :global(button.is-on) { background: #3672ff; }
 
-  @media (min-width: 900px) { .rev { grid-template-columns: repeat(3, minmax(0, 1fr)); --gap: var(--sp-4); } }
-  @media (prefers-reduced-motion: reduce) { .rcard { transition: none; } .rcard:hover { transform: none; } }
+  /* телефон и планшет: карусели нет, три карточки идут столбиком */
+  @media (max-width: 899px) {
+    .rev { flex-direction: column; overflow: visible; scroll-snap-type: none; padding: .5rem var(--sp-4) 1rem; }
+    .rcard { flex: none; width: 100%; }
+    .rcard:nth-child(n+4) { display: none; }
+    .rcard.is-active { border-color: var(--c-line); }
+    .rev__dots { display: none; }
+  }
+  @media (min-width: 900px) { .rev { --gap: var(--sp-4); } .rcard { flex-basis: calc((min(100vw, 1180px + 2 * var(--sp-4)) - 2 * var(--sp-4) - 2 * var(--gap)) / 3); } }
 </style>

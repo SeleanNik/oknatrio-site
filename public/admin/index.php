@@ -33,7 +33,7 @@ try {
 } catch (Throwable $e) {
     http_response_code(500);
     error_log('admin db: ' . $e->getMessage());
-    auth_box('База данных недоступна', '<p>Не удалось открыть базу. Проверьте, что у папки <code>admin/_data</code> есть права на запись (или настройки MySQL в <code>db.json</code>).</p><p class="hint">Подробности записаны в журнал ошибок сервера.</p>');
+    auth_box('База данных недоступна', '<p>Не удалось открыть базу. Проверьте, что у папки <code>admin/_data</code> есть права на запись (или настройки MySQL в <code>db.json</code>).</p><p class="hint">' . (db_driver() === 'mysql' ? 'Режим: MySQL (db.json найден, но подключиться не удалось: проверьте хост, имя базы, пользователя и пароль).' : 'Режим: SQLite (db.json не прочитан или не MySQL; либо нет прав на запись в admin/_data).') . ' Подробности записаны в журнал ошибок сервера.</p>');
 }
 
 $action = (string)($_POST['action'] ?? '');
@@ -177,6 +177,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             else flash('ok', 'Страница сохранена. На сайте изменения уже видны.');
             go($key);
 
+        case 'reset_stats':
+            need('owner');
+            dbq('DELETE FROM hits');
+            audit('page_save', 'Статистика посещений сброшена владельцем', $user);
+            flash('ok', 'Статистика очищена. Дальше считаются только новые визиты.');
+            go('dashboard');
+
         case 'save_contacts':
             need('page.contacts');
             $old = content_get('site', []);
@@ -297,7 +304,7 @@ if ($perm !== null) need($perm);
 $schemas = page_schemas();
 $actions = '';
 if (isset($schemas[$s]) || $s === 'contacts') {
-    $actions = '<a class="roundbtn" href="' . h(PAGE_URLS[$s] ?? '/') . '" target="_blank" rel="noopener" title="Открыть страницу на сайте" aria-label="Открыть страницу на сайте">' . icon('ext') . '</a>';
+    $actions = '<a class="roundbtn" href="' . h(PAGE_URLS[$s] ?? '/') . '" target="_blank" rel="noopener" title="Открыть страницу на сайте" aria-label="Открыть страницу на сайте">' . icon('ext') . '<span class="roundbtn__lbl">' . h(SECTIONS[$s][0]) . '</span></a>';
 }
 if (isset($schemas[$s])) {
     $body = page_editor($s);

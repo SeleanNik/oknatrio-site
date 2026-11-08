@@ -46,7 +46,7 @@ function base_url(): string
 function jread(string $file, $default = null)
 {
     if (!is_file($file)) return $default;
-    $d = json_decode((string)file_get_contents($file), true);
+    $d = json_decode(preg_replace('/^ï»¿/', '', (string)file_get_contents($file)), true); // допускаем BOM из Блокнота
     return $d === null ? $default : $d;
 }
 
@@ -169,14 +169,47 @@ function totp_check(string $secret, string $code): bool
 function save_image(array $f, string $prefix = 'img'): ?string
 {
     if (($f['error'] ?? UPLOAD_ERR_NO_FILE) !== UPLOAD_ERR_OK) return null;
-    if (($f['size'] ?? 0) <= 0 || $f['size'] > 4 * 1024 * 1024) return null;
+    if (($f['size'] ?? 0) <= 0 || $f['size'] > 20 * 1024 * 1024) return null;
     if (!is_uploaded_file($f['tmp_name'])) return null;
     $mime = (new finfo(FILEINFO_MIME_TYPE))->file($f['tmp_name']);
     $ext = ['image/jpeg' => 'jpg', 'image/png' => 'png', 'image/webp' => 'webp'][$mime] ?? null;
     if ($ext === null || @getimagesize($f['tmp_name']) === false) return null;
     if (!is_dir(UPLOADS) && !@mkdir(UPLOADS, 0755, true) && !is_dir(UPLOADS)) return null;
-    $name = preg_replace('/[^a-z0-9-]/', '', strtolower($prefix)) . '-' . bin2hex(random_bytes(5)) . '.' . $ext;
+    $base = preg_replace('/[^a-z0-9-]/', '', strtolower($prefix)) . '-' . bin2hex(random_bytes(5));
+    // Оптимизация: уменьшаем до 1600 px по длинной стороне и сохраняем как WebP (если на сервере есть GD с WebP)
+    if (optimize_image($f['tmp_name'], $mime, UPLOADS . '/' . $base . '.webp')) return '/uploads/' . $base . '.webp';
+    $name = $base . '.' . $ext;
     return move_uploaded_file($f['tmp_name'], UPLOADS . '/' . $name) ? '/uploads/' . $name : null;
+}
+
+function optimize_image(string $src, string $mime, string $dest, int $max = 1600, int $quality = 78): bool
+{
+    if (!function_exists('imagewebp') || !function_exists('imagecreatefromstring')) return false;
+    $info = @getimagesize($src);
+    if (!$info || $info[0] * $info[1] > 60000000) return false;   // слишком огромное: не рискуем памятью
+    @ini_set('memory_limit', '512M');
+    $img = @imagecreatefromstring((string)file_get_contents($src));
+    if (!$img) return false;
+    // поворот по EXIF (фото с телефона)
+    if ($mime === 'image/jpeg' && function_exists('exif_read_data')) {
+        $ex = @exif_read_data($src);
+        $angle = [3 => 180, 6 => -90, 8 => 90][(int)($ex['Orientation'] ?? 1)] ?? 0;
+        if ($angle) { $r = imagerotate($img, $angle, 0); if ($r) { imagedestroy($img); $img = $r; } }
+    }
+    $w = imagesx($img); $h = imagesy($img);
+    if (max($w, $h) > $max) {
+        $k = $max / max($w, $h);
+        $n = imagescale($img, (int)round($w * $k), (int)round($h * $k), IMG_BICUBIC);
+        if ($n) { imagedestroy($img); $img = $n; }
+    }
+    imagepalettetotruecolor($img);
+    imagealphablending($img, false);
+    imagesavealpha($img, true);
+    $ok = @imagewebp($img, $dest, $quality);
+    imagedestroy($img);
+    if ($ok && is_file($dest) && filesize($dest) > 0) { @chmod($dest, 0644); return true; }
+    @unlink($dest);
+    return false;
 }
 
 // PDF-каталоги: до 100 МБ, проверяется содержимое. Возвращает путь вида /docs/files/xxx.pdf или null.

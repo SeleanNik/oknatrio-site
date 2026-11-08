@@ -5,14 +5,16 @@ DirectoryIndex index.html
 
 RewriteEngine On
 
-# Принудительный HTTPS (не зависит от домена)
-RewriteCond %{HTTPS} off
-RewriteCond %{HTTP:X-Forwarded-Proto} !https
-RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+# ВРЕМЕННО: SSL-сертификата на хостинге пока нет, поэтому принудительный HTTPS ОТКЛЮЧЁН.
+# Когда сертификат будет установлен и https://oknatrio.ru откроется без ошибки, раскомментировать (убрать «# ») три блока ниже.
+# RewriteCond %{HTTPS} off
+# RewriteCond %{HTTP:X-Forwarded-Proto} !https
+# RewriteCond %{REQUEST_URI} !^/\.well-known/acme-challenge/
+# RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-# www -> без www
+# www -> без www (пока по http)
 RewriteCond %{HTTP_HOST} ^www\.oknatrio\.ru$ [NC]
-RewriteRule ^(.*)$ https://oknatrio.ru/$1 [L,R=301]
+RewriteRule ^(.*)$ http://oknatrio.ru/$1 [L,R=301]
 
 # ===== 301 со старого сайта (NetCat, *.php) на новые страницы. Список и пояснения: файл "redirects" =====
 RewriteRule ^index\.php$ / [L,R=301]
@@ -48,7 +50,7 @@ RedirectMatch 404 /\.git
   Header always set Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
   Header always set Cross-Origin-Opener-Policy "same-origin-allow-popups"
   # HTTPS уже включён принудительно выше; год запоминания для браузеров
-  Header always set Strict-Transport-Security "max-age=31536000"
+  # HSTS включить ТОЛЬКО после установки SSL: Header always set Strict-Transport-Security "max-age=31536000"
   # CSP без ограничения скриптов: так не ломается Яндекс.Метрика и карта; закрыто встраивание сайта, чужие base/form и плагины
   Header always set Content-Security-Policy "frame-ancestors 'self'; base-uri 'self'; form-action 'self'; object-src 'none'"
 </IfModule>

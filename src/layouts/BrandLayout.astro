@@ -178,7 +178,13 @@ const ld = {
     };
     g.addEventListener('click', (e) => {
       const t = e.target.closest('[data-sys]');
-      if (t && g.contains(t)) show(t.dataset.sys);
+      if (!(t && g.contains(t))) return;
+      show(t.dataset.sys);
+      // на телефоне после выбора системы показываем карточку сверху, чтобы не листать вручную
+      if (matchMedia('(max-width: 799px)').matches) {
+        const p = g.querySelector('.spanel:not([hidden])');
+        if (p) requestAnimationFrame(() => p.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+      }
     });
     g.addEventListener('keydown', (e) => {
       const t = e.target.closest('[data-sys]');
@@ -402,6 +408,24 @@ const ld = {
   @keyframes panelIn { from { opacity: 0; transform: translateY(20px) scale(.985); } to { opacity: 1; transform: none; } }
   @keyframes mediaIn { from { opacity: 0; transform: scale(1.14); } to { opacity: 1; transform: none; } }
   @keyframes specIn { from { opacity: 0; transform: translateX(-16px); } to { opacity: 1; transform: none; } }
+
+  /* ТЕЛЕФОН: системы — компактная липкая лента-пилюли, карточка ниже поменьше */
+  @media (max-width: 799px) {
+    .sys__hint { display: none; }
+    .sys__tabs { position: sticky; top: calc(var(--header-h) + 3.9rem); z-index: 15; margin: 0 calc(-1 * var(--sp-4)) var(--sp-3); padding: .55rem var(--sp-4); gap: .45rem; background: rgb(246 247 248 / .94); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border-bottom: 1px solid var(--c-line); scroll-snap-type: none; }
+    .stab, .sys__tabs--photo .stab { width: auto; display: flex; flex-direction: row; align-items: center; gap: .5rem; padding: .3rem .85rem .3rem .3rem; border-radius: 999px; }
+    .stab__thumb, .sys__tabs--photo .stab__thumb { flex: none; width: 36px; height: 36px; aspect-ratio: 1; border-radius: 50%; margin: 0; }
+    .sys__tabs--photo .stab__thumb img { object-fit: cover; }
+    .stab__name, .sys__tabs--photo .stab__name { min-height: 0; white-space: nowrap; font-size: .85rem; }
+    .stab__tag { display: none; }
+    .stab:hover, .stab[aria-selected='true'] { transform: none; }
+    .spanel { scroll-margin-top: calc(var(--header-h) + 3.9rem + 3.6rem); padding: var(--sp-3); border-radius: 20px; gap: var(--sp-3); }
+    .spanel__media, .spanel--cover .spanel__media { aspect-ratio: 16 / 10; border-radius: 14px; }
+    .spanel--cover .spanel__media img { max-height: 13rem; }
+    .spanel h4, .spanel h3 { font-size: 1.35rem; }
+    .spanel__specs li { padding: .5rem .75rem; font-size: .85rem; }
+    .spanel__cta { gap: var(--sp-2) var(--sp-3); }
+  }
 
   @media (min-width: 800px) {
     /* компактная карточка: небольшое фото слева, текст и параметры рядом — без пустых полей */

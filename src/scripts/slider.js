@@ -23,7 +23,14 @@ export function applyGallery(box, urls, alt) {
   if (!base) return;
   if (list.length) base.loading = 'eager'; // обложка нужна сразу, остальные фото подгружаются по мере листания
   if (list.length) {
-    base.removeAttribute('srcset'); base.removeAttribute('sizes'); base.src = list[0];
+    // обложку не трогаем, если она уже та же: иначе повторная подмена даёт мигание тёмного фона
+    if (base.getAttribute('src') !== list[0]) {
+      base.removeAttribute('srcset'); base.removeAttribute('sizes');
+      const pre = new Image();
+      pre.onload = () => { base.src = list[0]; };
+      pre.onerror = () => { base.src = list[0]; };
+      pre.src = list[0]; // новое фото подставляем, только когда оно уже загружено
+    }
     box.dataset.gallery = JSON.stringify(list); // по клику эти фото открываются в полноэкранном просмотре
   }
   if (alt != null) base.alt = alt;
