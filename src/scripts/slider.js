@@ -19,6 +19,9 @@ function teardown(box) {
 export function applyGallery(box, urls, alt) {
   if (!box) return;
   const list = (urls || []).filter(Boolean);
+  // каждый новый вызов делает прежнюю «жизнь» слайдера устаревшей: её таймеры и обработчики больше ничего не меняют
+  const gen = (box._galGen = (box._galGen || 0) + 1);
+  const live = () => box._galGen === gen;
   const base = teardown(box);
   if (!base) return;
   if (list.length) base.loading = 'eager'; // обложка нужна сразу, остальные фото подгружаются по мере листания
@@ -53,7 +56,11 @@ export function applyGallery(box, urls, alt) {
     slider.className = 'slider' + (fill ? ' slider--fill' : '') + (abs ? ' slider--abs' : '');
     const dots = document.createElement('div');
     dots.className = 'slider__dots';
-    const btns = list.map((_, i) => {
+    // фото много (объект на 20-30 снимков): вместо ряда точек показываем счётчик «3 / 24»
+    const many = list.length > 7;
+    const counter = document.createElement('span');
+    if (many) { dots.classList.add('slider__dots--count'); counter.textContent = `1 / ${list.length}`; dots.append(counter); }
+    const btns = many ? [] : list.map((_, i) => {
       const b = document.createElement('button');
       b.type = 'button'; b.className = 'slider__dot' + (i === 0 ? ' is-on' : ''); b.setAttribute('aria-label', `Фото ${i + 1}`);
       dots.append(b); return b;
@@ -74,31 +81,36 @@ export function applyGallery(box, urls, alt) {
   let cur = 0;
   let token = 0;
   const apply = (n) => {
+    if (!live()) return;
     cur = n;
     imgs.forEach((im, i) => im.classList.toggle('is-on', i === cur));
     btns.forEach((b, i) => b.classList.toggle('is-on', i === cur));
+    if (many) counter.textContent = `${cur + 1} / ${list.length}`;
+    const nx = imgs[(cur + 1) % imgs.length]; if (nx) nx.loading = 'eager'; // следующее фото грузим заранее, остальные не трогаем
   };
   // переключаемся только на уже загруженное фото, чтобы вместо него не мелькал тёмный фон
   const show = (n) => {
+    if (!live()) return;
     n = (n + imgs.length) % imgs.length;
     const im = imgs[n]; const t = ++token;
     if (im.loading === 'lazy') im.loading = 'eager';
     if (im.complete && im.naturalWidth) return apply(n);
     im.addEventListener('load', () => { if (t === token) apply(n); }, { once: true });
   };
-  const start = () => { if (!reduce && !timers.has(box)) timers.set(box, setInterval(() => show(cur + 1), 4500 + Math.random() * 800)); };
+  const start = () => { if (live() && !reduce && !timers.has(box)) timers.set(box, setInterval(() => show(cur + 1), 4500 + Math.random() * 800)); };
   prevBtn.addEventListener('click', () => { show(cur - 1); stop(box); start(); });
   nextBtn.addEventListener('click', () => { show(cur + 1); stop(box); start(); });
   dots.addEventListener('click', (e) => { const i = btns.indexOf(e.target.closest('button')); if (i >= 0) { show(i); stop(box); start(); } });
   // свайп
   let x0 = null;
-  box.addEventListener('pointerdown', (e) => { x0 = e.clientX; });
-  box.addEventListener('pointerup', (e) => { if (x0 != null && Math.abs(e.clientX - x0) > 40) { show(cur + (e.clientX < x0 ? 1 : -1)); box.dataset.swiped = '1'; setTimeout(() => delete box.dataset.swiped, 80); } x0 = null; });
-  box.addEventListener('mouseenter', () => stop(box));
+  box.addEventListener('pointerdown', (e) => { if (!live()) return; x0 = e.clientX; });
+  box.addEventListener('pointerup', (e) => { if (!live()) { x0 = null; return; } if (x0 != null && Math.abs(e.clientX - x0) > 40) { show(cur + (e.clientX < x0 ? 1 : -1)); box.dataset.swiped = '1'; setTimeout(() => delete box.dataset.swiped, 80); } x0 = null; });
+  box.addEventListener('mouseenter', () => { if (live()) stop(box); });
   box.addEventListener('mouseleave', start);
   // листаем только то, что видно на экране
   if ('IntersectionObserver' in window) {
-    new IntersectionObserver((en) => en.forEach((e) => { if (e.isIntersecting) { extra.forEach((im) => { im.loading = 'eager'; }); start(); } else stop(box); }), { threshold: 0.2 }).observe(box);
+    const io = new IntersectionObserver((en) => en.forEach((e) => { if (!live()) { io.disconnect(); return; } if (e.isIntersecting) { if (extra[0]) extra[0].loading = 'eager'; start(); } else stop(box); }), { threshold: 0.2 });
+    io.observe(box);
   } else start();
   };
   if (box.isConnected) mount(); else queueMicrotask(mount);

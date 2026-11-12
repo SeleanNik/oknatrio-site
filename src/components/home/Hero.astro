@@ -62,14 +62,24 @@ const heroStats = pagesData.home.heroStats ?? [];
     const items = [...box.querySelectorAll<HTMLElement>('li b')];
     items.forEach((b) => { b.dataset.val = b.textContent || ''; });
     let started = false;
-    const start = () => { if (started) return; started = true; items.forEach((b, i) => run(b, 750 + i * 170)); };
+    // счёт запускаем, когда пришли актуальные цифры из админки (или через 1,2 с, если сайт данных не отдал): без мелькания старых значений
+    let live = !!(window as any).__heroLive;
+    document.addEventListener('hero:live', () => { live = true; });
+    let went = false;
+    const go = () => { went = true; items.forEach((b, i) => { b.dataset.val = b.dataset.val || b.textContent || ''; run(b, 750 + i * 170); }); };
+    const start = () => {
+      if (started) return; started = true;
+      const t0 = performance.now();
+      const wait = () => (live || performance.now() - t0 > 1200 ? go() : setTimeout(wait, 60));
+      wait();
+    };
     if ('IntersectionObserver' in window && !reduce) {
       new IntersectionObserver((es, io) => { if (es.some((e) => e.isIntersecting)) { io.disconnect(); start(); } }, { threshold: 0.4 }).observe(box);
     }
     // значение пришло из админки
     document.addEventListener('hero:stat', (e) => {
       const b = items[(e as CustomEvent).detail];
-      if (b && started) run(b, 0);
+      if (b && went) run(b, 0);
     });
   }
 

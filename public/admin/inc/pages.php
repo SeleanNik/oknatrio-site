@@ -348,6 +348,80 @@ function audit_url(array $over = []): string
     return './?' . http_build_query(array_filter($q, fn($v) => $v !== '' && $v !== null));
 }
 
+// Заявки с сайта: обработчик form-handler.php пишет каждую в admin/_data/leads.jsonl, даже если письмо не дошло
+function page_leads(): string
+{
+    require_once __DIR__ . '/retention.php';
+    prune_leads(A_DATA);
+    $file = A_DATA . '/leads.jsonl';
+    $rows = [];
+    if (is_file($file)) {
+        foreach (array_reverse(file($file, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: []) as $line) {
+            $r = json_decode($line, true);
+            if (is_array($r)) $rows[] = $r;
+        }
+    }
+    $types = ['callback' => 'Звонок', 'measure' => 'Замер', 'calc' => 'Расчёт'];
+    $total = count($rows);
+    $rows = array_slice($rows, 0, 200);
+    ob_start(); ?>
+    <div class="panel">
+      <p class="muted">Все заявки с форм сайта сохраняются здесь, даже если письмо на почту не дошло. Хранятся 1 год, затем удаляются автоматически (152-ФЗ). Всего: <b><?= $total ?></b><?= $total > 200 ? ' (показаны последние 200)' : '' ?>.</p>
+      <?php if (!$rows): ?>
+        <p>Пока заявок нет. Они появляются здесь после первой отправки формы на сайте.</p>
+      <?php else: ?>
+      <div class="tablewrap"><table class="table">
+        <thead><tr><th>Когда</th><th>Тип</th><th>Имя</th><th>Телефон</th><th>Интересует / комментарий</th><th>Страница</th></tr></thead>
+        <tbody>
+        <?php foreach ($rows as $r):
+            $ts = strtotime((string)($r['at'] ?? '')) ?: 0;
+            $tel = preg_replace('/[^\d+]/', '', (string)($r['phone'] ?? ''));
+            $note = trim(implode(' · ', array_filter([(string)($r['service'] ?? ''), (string)($r['comment'] ?? ''), (string)($r['product'] ?? ''), (string)($r['date'] ?? ''), (string)($r['email'] ?? '')]))); ?>
+          <tr>
+            <td><?= $ts ? h(date('d.m.Y H:i', $ts)) : '—' ?></td>
+            <td><?= h($types[$r['type'] ?? ''] ?? 'Заявка') ?></td>
+            <td><?= h((string)($r['name'] ?? '')) ?></td>
+            <td><a href="tel:<?= h($tel) ?>"><?= h((string)($r['phone'] ?? '')) ?></a></td>
+            <td><?= h($note) ?><?= !empty($r['files']) ? ' · файлов: ' . (int)$r['files'] : '' ?></td>
+            <td><?= h((string)($r['page'] ?? '')) ?></td>
+          </tr>
+        <?php endforeach; ?>
+        </tbody>
+      </table></div>
+      <?php endif; ?>
+    </div>
+    <?php
+    $spam = [];
+    $sf = A_DATA . '/spam.jsonl';
+    if (is_file($sf)) {
+        foreach (array_slice(array_reverse(file($sf, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES) ?: []), 0, 50) as $line) {
+            $r = json_decode($line, true);
+            if (is_array($r)) $spam[] = $r;
+        }
+    } ?>
+    <details class="panel">
+      <summary><b>Отсеянный спам</b> <span class="muted">— последние <?= count($spam) ?>. Если здесь оказалась настоящая заявка, сообщите разработчику.</span></summary>
+      <?php if (!$spam): ?><p>Спама пока нет.</p><?php else: ?>
+      <div class="tablewrap"><table class="table">
+        <thead><tr><th>Когда</th><th>Причина</th><th>Имя</th><th>Телефон</th><th>Комментарий</th></tr></thead>
+        <tbody>
+        <?php foreach ($spam as $r): $ts = strtotime((string)($r['at'] ?? '')) ?: 0; ?>
+          <tr>
+            <td><?= $ts ? h(date('d.m.Y H:i', $ts)) : '—' ?></td>
+            <td><?= h((string)($r['why'] ?? '')) ?></td>
+            <td><?= h((string)($r['name'] ?? '')) ?></td>
+            <td><?= h((string)($r['phone'] ?? '')) ?></td>
+            <td><?= h((string)($r['comment'] ?? '')) ?></td>
+          </tr>
+        <?php endforeach; ?>
+        </tbody>
+      </table></div>
+      <?php endif; ?>
+    </details>
+    <?php
+    return (string)ob_get_clean();
+}
+
 function page_audit(): string
 {
     $q = trim((string)($_GET['q'] ?? ''));
@@ -448,6 +522,32 @@ function page_profile(array $user): string
           if ($user['role'] === 'owner') echo 'Все разделы и управление сотрудниками';
           else echo $perms ? h(implode(', ', array_map(fn($p) => PERMS[$p], $perms))) : 'Нет выданных прав: обратитесь к владельцу';
         ?></dd></dl>
+    </div></section>
+    <section class="panel" id="twofa"><h2>Вход по коду из приложения (2FA)</h2><div class="panel__body">
+    <?php if (!empty($user['totp_on'])): ?>
+      <p><b>Включён.</b> После пароля админка спрашивает 6-значный код из приложения на телефоне. Даже если пароль украдут, без телефона войти нельзя.</p>
+      <form method="post" class="form row"><?= csrf_field() ?>
+        <label>Код из приложения, чтобы отключить<input name="code" inputmode="numeric" maxlength="7" autocomplete="one-time-code" required></label>
+        <button class="btn btn--ghost" name="action" value="totp_off" onclick="return confirm('Отключить вход по коду? Защита станет слабее.')">Отключить</button>
+      </form>
+    <?php elseif (!empty($_SESSION['totp_new'])):
+        $sec = (string)$_SESSION['totp_new'];
+        $uri = 'otpauth://totp/' . rawurlencode('Трио:' . $user['email']) . '?secret=' . $sec . '&issuer=' . rawurlencode('Трио'); ?>
+      <ol>
+        <li>Установите на телефон <b>Яндекс Ключ</b> или <b>Google Authenticator</b>.</li>
+        <li>В приложении нажмите «+» → «Ввести ключ вручную» и введите ключ:<br><code style="font-size:1.1em;letter-spacing:.08em;user-select:all"><?= h(trim(chunk_split($sec, 4, ' '))) ?></code><br>
+          <span class="hint">Если админка открыта на этом же телефоне: <a href="<?= h($uri) ?>">добавить в приложение одной кнопкой</a>.</span></li>
+        <li>Введите 6 цифр, которые показало приложение:</li>
+      </ol>
+      <form method="post" class="form row"><?= csrf_field() ?>
+        <label>Код<input name="code" inputmode="numeric" maxlength="7" autocomplete="one-time-code" required autofocus></label>
+        <button class="btn" name="action" value="totp_confirm">Включить</button>
+      </form>
+    <?php else: ?>
+      <p>Сейчас вход защищён только паролем. С кодом из приложения украденный пароль ничего не даст. Настройка занимает 2 минуты.</p>
+      <form method="post"><?= csrf_field() ?><button class="btn" name="action" value="totp_start">Настроить вход по коду</button></form>
+    <?php endif; ?>
+      <p class="hint">Потеряли телефон — обратитесь к разработчику: он отключит вход по коду через базу.</p>
     </div></section>
     <?php return (string)ob_get_clean();
 }

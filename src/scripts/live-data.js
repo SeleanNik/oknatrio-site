@@ -117,6 +117,8 @@ if (document.querySelector(EDITABLE)) {
         li.querySelector('span').textContent = rest.join(' ');
       });
     }
+    window.__heroLive = true;
+    document.dispatchEvent(new CustomEvent('hero:live'));
 
     // главная: «Продукция» (5 фиксированных карточек)
     const cards = d.home && d.home.prod && d.home.prod.cards;
@@ -213,14 +215,14 @@ if (document.querySelector(EDITABLE)) {
         if (img) { img.hidden = !c.image; if (c.image) img.src = c.image; else img.removeAttribute('src'); }
         if (b) { b.hidden = !!c.image; b.textContent = c.name; }
         t.querySelector('.stab__name').textContent = c.name;
-        t.querySelector('.stab__tag').textContent = c.tag || '';
+        /* подписи-теги у карточек убраны */
       });
       rebuild(panels, '[data-spanel]', list, (p, c) => {
         p.id = `panel-${c.id}`; p.setAttribute('aria-labelledby', `tab-${c.id}`); p.dataset.spanel = c.id;
         const img = p.querySelector('.spanel__media img'), ph = p.querySelector('.spanel__ph');
         if (img) { img.hidden = !c.image; if (c.image) { img.src = c.image; img.alt = `Профиль ${brand} ${c.name} в разрезе`; } else img.removeAttribute('src'); }
         if (ph) { ph.hidden = !!c.image; ph.querySelector('b').textContent = c.name; }
-        p.querySelector('.spanel__tag').textContent = c.tag || '';
+        /* подписи-теги у карточек убраны */
         p.querySelector('h4').textContent = `${brand} ${c.name}`;
         p.querySelector('.spanel__body > p').textContent = c.text || '';
         const ul = p.querySelector('.spanel__specs');

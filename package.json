@@ -6,6 +6,9 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "postbuild": "node scripts/strip-docs.mjs",
+    "sync-data": "node scripts/sync-data.mjs",
+    "build:live": "node scripts/sync-data.mjs && npm run build",
     "preview": "astro preview",
     "deploy": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/deploy.ps1"
   },

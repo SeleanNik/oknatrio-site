@@ -12,32 +12,78 @@ function respond(int $code, array $data): void {
     exit;
 }
 
+// ---- Антиспам: подписанный токен, время заполнения, фильтр содержимого, лимиты ----
+// Токен выдаётся по GET ?token=1, когда посетитель начинает заполнять форму (ui.js).
+// Бот, который шлёт POST напрямую, токена не имеет.
+const A_DIR = __DIR__ . '/admin/_data';
+function form_secret(): string {
+    $f = A_DIR . '/form-secret.txt';
+    $s = is_file($f) ? trim((string)file_get_contents($f)) : '';
+    if (strlen($s) < 32) {
+        $s = bin2hex(random_bytes(32));
+        if (is_dir(A_DIR) || @mkdir(A_DIR, 0775, true)) @file_put_contents($f, $s, LOCK_EX);
+    }
+    return $s;
+}
+function make_token(int $t): string { return $t . '.' . substr(hash_hmac('sha256', (string)$t, form_secret()), 0, 32); }
+
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['token'])) {
+    header('Cache-Control: no-store');
+    respond(200, ['ok' => true, 't' => make_token(time())]);
+}
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') respond(405, ['ok' => false, 'error' => 'method']);
+
+// Отсеянное не теряется: пишем в admin/_data/spam.jsonl (виден в админке «Заявки»), боту отвечаем «успехом»
+function spam(string $why): void {
+    $row = ['at' => date('c'), 'why' => $why, 'ip' => $_SERVER['REMOTE_ADDR'] ?? '',
+        'name' => mb_substr(trim((string)($_POST['name'] ?? '')), 0, 100), 'phone' => mb_substr(trim((string)($_POST['phone'] ?? '')), 0, 30),
+        'comment' => mb_substr(trim((string)($_POST['comment'] ?? '')), 0, 300), 'page' => mb_substr((string)($_POST['page'] ?? ''), 0, 200)];
+    $f = A_DIR . '/spam.jsonl';
+    if (is_dir(A_DIR)) {
+        if (is_file($f) && filesize($f) > 1024 * 1024) @rename($f, $f . '.old'); // не даём файлу расти бесконечно
+        @file_put_contents($f, json_encode($row, JSON_UNESCAPED_UNICODE) . "\n", FILE_APPEND | LOCK_EX);
+    }
+    respond(200, ['ok' => true]);
+}
 
 // Заявки приходят на info@oknatrio.ru. form-config.php может задать другой адрес, но шаблонные значения (example.com) игнорируются.
 $cfg = [];
 $configFile = __DIR__ . '/form-config.php';
 if (is_file($configFile)) $cfg = (array)(require $configFile);
 $real = static fn($v): bool => is_string($v) && filter_var($v, FILTER_VALIDATE_EMAIL) && stripos($v, 'example.') === false;
-$host = preg_replace('/:d+$/', '', preg_replace('/^www./', '', (string)($_SERVER['HTTP_HOST'] ?? '')));
+$host = preg_replace('/:\d+$/', '', preg_replace('/^www\./', '',(string)($_SERVER['HTTP_HOST'] ?? '')));
 if ($host === '' || $host === 'localhost' || str_ends_with($host, '.test') || filter_var($host, FILTER_VALIDATE_IP)) $host = 'oknatrio.ru';
 $cfg = [
     'to'        => $real($cfg['to'] ?? null) ? $cfg['to'] : 'info@oknatrio.ru',
-    'from'      => $real($cfg['from'] ?? null) ? $cfg['from'] : 'no-reply@' . $host,
+    // Отправитель — реальный ящик домена (info@): хостинги часто отбрасывают письма от несуществующего no-reply@
+    'from'      => ($real($cfg['from'] ?? null) && stripos($cfg['from'], 'no-reply@') !== 0) ? $cfg['from'] : 'info@' . $host,
     'site_name' => (string)($cfg['site_name'] ?? $host),
 ];
 
-// Honeypot: боты заполняют скрытое поле. Отвечаем «успехом», чтобы не подсказывать.
-if (!empty($_POST['website'])) respond(200, ['ok' => true]);
+// 1. Honeypot: боты заполняют скрытое поле
+if (!empty($_POST['website'])) spam('скрытое поле');
 
-// Слишком быстрая отправка (< 2 с после загрузки страницы) — вероятно бот
-$ts = (int)($_POST['ts'] ?? 0);
-if ($ts > 0 && (time() - $ts) < 2) respond(200, ['ok' => true]);
+// 2. Токен обязателен и подписан сервером; от начала заполнения до отправки — от 3 с до 12 ч
+$tok = (string)($_POST['ts'] ?? '');
+$tt = (int)strtok($tok, '.');
+if ($tok === '' || !hash_equals(make_token($tt), $tok)) spam('нет токена');
+$age = time() - $tt;
+if ($age < 3) spam('слишком быстро');
+if ($age > 43200) respond(422, ['ok' => false, 'error' => 'expired']); // страница открыта полдня: ui.js возьмёт новый токен
 
-// Простое ограничение частоты: не чаще 1 заявки в 20 с с одного IP
+// 3. Содержимое: ссылки, нет ни одной кириллической буквы, мусор в имени
+$txt = (string)($_POST['name'] ?? '') . ' ' . (string)($_POST['comment'] ?? '');
+if (preg_match('~(https?://|www\.|\[url|<a\s|\.(com|net|org|xyz|top|online|site|info|biz|io)\b)~i', $txt)) spam('ссылка');
+if (!preg_match('/\p{Cyrillic}/u', (string)($_POST['name'] ?? ''))) spam('имя без кириллицы');
+if (mb_strlen(trim((string)($_POST['name'] ?? ''))) > 60) spam('длинное имя');
+
+// 4. Частота: не чаще 1 заявки в 20 с и не больше 5 в сутки с одного IP
 $ip = $_SERVER['REMOTE_ADDR'] ?? '0';
 $lockFile = sys_get_temp_dir() . '/okno_lead_' . md5($ip);
 if (is_file($lockFile) && (time() - filemtime($lockFile)) < 20) respond(429, ['ok' => false, 'error' => 'rate']);
+$dayFile = sys_get_temp_dir() . '/okno_day_' . date('Ymd') . '_' . md5($ip);
+$dayCount = is_file($dayFile) ? (int)file_get_contents($dayFile) : 0;
+if ($dayCount >= 5) spam('больше 5 заявок за сутки');
 
 function clean(string $key, int $max = 500): string {
     $v = trim((string)($_POST[$key] ?? ''));
@@ -134,4 +180,7 @@ if (!$sent && !$saved) respond(500, ['ok' => false, 'error' => 'mail']);
 if (!$sent) error_log('form-handler: mail() не отправил заявку, она сохранена в admin/_data/leads.jsonl');
 
 @touch($lockFile);
+@file_put_contents($dayFile, (string)($dayCount + 1), LOCK_EX);
+// Срок хранения: заявки старше года и спам старше 30 дней удаляются
+if (is_file(__DIR__ . '/admin/inc/retention.php')) { require_once __DIR__ . '/admin/inc/retention.php'; prune_leads(A_DIR); }
 respond(200, ['ok' => true]);

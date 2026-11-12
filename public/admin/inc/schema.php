@@ -21,10 +21,10 @@ function f_type_item(): array
 {
     return [
         ['k' => 'id', 'type' => 'id'],
-        ['k' => 'title', 'type' => 'text', 'label' => 'Название', 'max' => 80, 'req' => true],
-        ['k' => 'text', 'type' => 'textarea', 'label' => 'Описание', 'max' => 200, 'rows' => 2],
+        ['k' => 'title', 'type' => 'text', 'label' => 'Название', 'max' => 240, 'req' => true],
+        ['k' => 'text', 'type' => 'textarea', 'label' => 'Описание', 'max' => 1000, 'rows' => 2],
         ['k' => 'images', 'type' => 'gallery', 'max' => 40, 'label' => 'Фото (несколько: на сайте они листаются. Перетащите фото, чтобы изменить порядок; первое фото — обложка)'],
-        ['k' => 'points', 'type' => 'textarea', 'label' => 'Особенности (по одной в строке, лучше 2)', 'max' => 120, 'rows' => 2],
+        ['k' => 'points', 'type' => 'textarea', 'label' => 'Особенности (по одной в строке, лучше 2)', 'max' => 1000, 'rows' => 2],
     ];
 }
 
@@ -33,20 +33,20 @@ function f_card_item(): array
 {
     return [
         ['k' => 'id', 'type' => 'id'],
-        ['k' => 'name', 'type' => 'text', 'label' => 'Название (например: AWS 75.SI+)', 'max' => 40, 'req' => true],
-        ['k' => 'tag', 'type' => 'text', 'label' => 'Короткая метка (1–2 слова: Тёплая, Премиум)', 'max' => 24],
-        ['k' => 'text', 'type' => 'textarea', 'label' => 'Описание', 'max' => 420, 'rows' => 3],
+        ['k' => 'name', 'type' => 'text', 'label' => 'Название (например: AWS 75.SI+)', 'max' => 150, 'req' => true],
+        ['k' => 'tag', 'type' => 'text', 'label' => 'Короткая метка (1–2 слова: Тёплая, Премиум)', 'max' => 150],
+        ['k' => 'text', 'type' => 'textarea', 'label' => 'Описание', 'max' => 1260, 'rows' => 3],
         ['k' => 'image', 'type' => 'image', 'label' => 'Фото'],
-        ['k' => 'specs', 'type' => 'textarea', 'label' => 'Особенности (по одной в строке, лучше 3)', 'max' => 200, 'rows' => 3],
+        ['k' => 'specs', 'type' => 'textarea', 'label' => 'Особенности (по одной в строке, лучше 3)', 'max' => 1000, 'rows' => 3],
     ];
 }
 
 function f_file_item(): array
 {
     return [
-        ['k' => 'title', 'type' => 'text', 'label' => 'Название', 'max' => 100, 'req' => true],
+        ['k' => 'title', 'type' => 'text', 'label' => 'Название', 'max' => 300, 'req' => true],
         ['k' => 'pdf', 'type' => 'pdf', 'label' => 'PDF-файл'],
-        ['k' => 'size', 'type' => 'text', 'label' => 'Размер (для подписи, например 12 МБ)', 'max' => 20],
+        ['k' => 'size', 'type' => 'text', 'label' => 'Размер (для подписи, например 12 МБ)', 'max' => 150],
     ];
 }
 
@@ -57,21 +57,21 @@ function page_schemas(): array
             'label' => $label,
             'groups' => array_merge(
                 [['title' => 'Заголовок страницы', 'fields' => [
-                    ['k' => 'h1', 'type' => 'lines', 'n' => 2, 'max' => 50, 'label' => 'Заголовок (2 строки)'],
-                    ['k' => 'lead', 'type' => 'textarea', 'max' => 220, 'rows' => 3, 'label' => 'Подзаголовок'],
+                    ['k' => 'h1', 'type' => 'lines', 'n' => 2, 'max' => 150, 'label' => 'Заголовок (2 строки)'],
+                    ['k' => 'lead', 'type' => 'textarea', 'max' => 1000, 'rows' => 3, 'label' => 'Подзаголовок'],
                 ]]],
                 $typeGroups,
                 [
                     ['title' => 'Характеристики', 'hint' => 'Карточки с параметрами под видами.', 'fields' => [
-                        ['k' => 'specs', 'type' => 'list', 'max' => 6, 'row' => 'param', 'sub' => 'value', 'label' => 'Параметры', 'add' => 'Добавить параметр', 'item' => [
-                            ['k' => 'param', 'type' => 'text', 'label' => 'Название', 'max' => 30, 'req' => true],
-                            ['k' => 'value', 'type' => 'text', 'label' => 'Значение', 'max' => 40],
+                        ['k' => 'specs', 'type' => 'list', 'max' => 14, 'row' => 'param', 'sub' => 'value', 'label' => 'Параметры', 'add' => 'Добавить параметр', 'item' => [
+                            ['k' => 'param', 'type' => 'text', 'label' => 'Название', 'max' => 150, 'req' => true],
+                            ['k' => 'value', 'type' => 'text', 'label' => 'Значение', 'max' => 150],
                         ]],
                     ]],
                     ['title' => 'Вопросы и ответы', 'fields' => [
-                        ['k' => 'faq', 'type' => 'list', 'max' => 12, 'row' => 'q', 'sub' => 'a', 'label' => 'Вопросы', 'add' => 'Добавить вопрос', 'item' => [
-                            ['k' => 'q', 'type' => 'text', 'label' => 'Вопрос', 'max' => 150, 'req' => true],
-                            ['k' => 'a', 'type' => 'textarea', 'label' => 'Ответ', 'max' => 600, 'rows' => 4],
+                        ['k' => 'faq', 'type' => 'list', 'max' => 40, 'row' => 'q', 'sub' => 'a', 'label' => 'Вопросы', 'add' => 'Добавить вопрос', 'item' => [
+                            ['k' => 'q', 'type' => 'text', 'label' => 'Вопрос', 'max' => 450, 'req' => true],
+                            ['k' => 'a', 'type' => 'textarea', 'label' => 'Ответ', 'max' => 1800, 'rows' => 4],
                         ]],
                     ]],
                 ]
@@ -85,17 +85,17 @@ function page_schemas(): array
             'label' => $label,
             'groups' => array_merge(
                 [['title' => 'Заголовок страницы', 'fields' => [
-                    ['k' => 'h1', 'type' => 'text', 'max' => 70, 'label' => 'Заголовок'],
-                    ['k' => 'lead', 'type' => 'textarea', 'max' => 260, 'rows' => 3, 'label' => 'Подзаголовок'],
+                    ['k' => 'h1', 'type' => 'text', 'max' => 210, 'label' => 'Заголовок'],
+                    ['k' => 'lead', 'type' => 'textarea', 'max' => 1000, 'rows' => 3, 'label' => 'Подзаголовок'],
                 ]]],
                 $typeGroups,
                 [['title' => 'Наши работы на странице', 'hint' => 'Отметьте до 4 работ из общего списка (раздел «Наши работы»). Они покажутся на этой странице.', 'fields' => [
                     ['k' => 'worksPick', 'type' => 'worksel', 'max' => 4, 'brand' => $label, 'label' => 'Какие работы показывать'],
                 ]]],
                 [['title' => 'Вопросы и ответы', 'fields' => [
-                    ['k' => 'faq', 'type' => 'list', 'max' => 12, 'row' => 'q', 'sub' => 'a', 'label' => 'Вопросы', 'add' => 'Добавить вопрос', 'item' => [
-                        ['k' => 'q', 'type' => 'text', 'label' => 'Вопрос', 'max' => 150, 'req' => true],
-                        ['k' => 'a', 'type' => 'textarea', 'label' => 'Ответ', 'max' => 600, 'rows' => 4],
+                    ['k' => 'faq', 'type' => 'list', 'max' => 40, 'row' => 'q', 'sub' => 'a', 'label' => 'Вопросы', 'add' => 'Добавить вопрос', 'item' => [
+                        ['k' => 'q', 'type' => 'text', 'label' => 'Вопрос', 'max' => 450, 'req' => true],
+                        ['k' => 'a', 'type' => 'textarea', 'label' => 'Ответ', 'max' => 1800, 'rows' => 4],
                     ]],
                 ]]]
             ),
@@ -103,7 +103,7 @@ function page_schemas(): array
     };
     // вид с несколькими системами (переключатель карточек на странице)
     $cards = fn(string $id, string $title, string $label, bool $one = false): array => ['title' => $title, 'hint' => $one ? 'Карточка вида. Можно добавить ещё систему: тогда на странице появится переключатель.' : 'Каждая карточка — одна система. Порядок меняется перетаскиванием; если систем больше одной, на странице появится переключатель.', 'fields' => [
-        ['k' => 'cards.' . $id, 'type' => 'list', 'max' => 10, 'row' => 'name', 'sub' => 'tag', 'thumb' => 'image', 'label' => $label, 'add' => 'Добавить систему', 'item' => f_card_item()],
+        ['k' => 'cards.' . $id, 'type' => 'list', 'max' => 30, 'row' => 'name', 'sub' => 'tag', 'thumb' => 'image', 'label' => $label, 'add' => 'Добавить систему', 'item' => f_card_item()],
     ]];
     // виды из одной карточки
     $plain = fn(string $title, string $hint): array => ['title' => $title, 'hint' => $hint, 'fields' => [
@@ -113,41 +113,41 @@ function page_schemas(): array
     return [
         'home' => ['label' => 'Главная', 'groups' => [
             ['title' => 'Главный экран', 'fields' => [
-                ['k' => 'hero', 'type' => 'lines', 'n' => 2, 'max' => 50, 'label' => 'Заголовок (2 строки)'],
-                ['k' => 'heroStats', 'type' => 'lines', 'n' => 3, 'max' => 30, 'label' => 'Карточка справа внизу (3 пункта: лет на рынке, объектов, оценка отзывов)'],
+                ['k' => 'hero', 'type' => 'lines', 'n' => 2, 'max' => 150, 'label' => 'Заголовок (2 строки)'],
+                ['k' => 'heroStats', 'type' => 'lines', 'n' => 3, 'max' => 120, 'label' => 'Карточка справа внизу (3 пункта: лет на рынке, объектов, оценка отзывов)'],
             ]],
             ['title' => 'Наши работы на главной', 'hint' => 'Отметьте до 3 работ из общего списка (раздел «Наши работы»). Они покажутся на главной.', 'fields' => [
                 ['k' => 'worksPick', 'type' => 'worksel', 'max' => 3, 'brand' => '', 'label' => 'Какие работы показывать'],
             ]],
             ['title' => 'Блок «Продукция»', 'fields' => [
-                ['k' => 'prod.title', 'type' => 'text', 'max' => 40, 'label' => 'Заголовок'],
-                ['k' => 'prod.text', 'type' => 'textarea', 'max' => 170, 'rows' => 2, 'label' => 'Описание (до двух строк)'],
+                ['k' => 'prod.title', 'type' => 'text', 'max' => 150, 'label' => 'Заголовок'],
+                ['k' => 'prod.text', 'type' => 'textarea', 'max' => 1000, 'rows' => 2, 'label' => 'Описание (до двух строк)'],
                 ['k' => 'prod.cards', 'type' => 'list', 'fixed' => true, 'row' => 'title', 'sub' => 'brand', 'thumb' => 'image', 'label' => 'Карточки (5 штук, количество не меняется)', 'item' => [
-                    ['k' => 'title', 'type' => 'text', 'label' => 'Название', 'max' => 40, 'req' => true],
-                    ['k' => 'brand', 'type' => 'text', 'label' => 'Бренд (необязательно: Alutech, Schuco, VEKA)', 'max' => 20],
+                    ['k' => 'title', 'type' => 'text', 'label' => 'Название', 'max' => 150, 'req' => true],
+                    ['k' => 'brand', 'type' => 'text', 'label' => 'Бренд (необязательно: Alutech, Schuco, VEKA)', 'max' => 150],
                     ['k' => 'image', 'type' => 'image', 'label' => 'Фото'],
                     ['k' => 'href', 'type' => 'link', 'label' => 'Куда ведёт карточка', 'max' => 200],
                 ]],
             ]],
             ['title' => 'Блок «Услуги»', 'fields' => [
-                ['k' => 'services.title', 'type' => 'text', 'max' => 60, 'label' => 'Заголовок'],
+                ['k' => 'services.title', 'type' => 'text', 'max' => 180, 'label' => 'Заголовок'],
                 ['k' => 'services.items', 'type' => 'list', 'fixed' => true, 'row' => 'title', 'label' => 'Услуги (4 штуки)', 'item' => [
-                    ['k' => 'title', 'type' => 'text', 'label' => 'Название', 'max' => 80, 'req' => true],
-                    ['k' => 'text', 'type' => 'text', 'label' => 'Описание', 'max' => 100],
+                    ['k' => 'title', 'type' => 'text', 'label' => 'Название', 'max' => 240, 'req' => true],
+                    ['k' => 'text', 'type' => 'text', 'label' => 'Описание', 'max' => 300],
                 ]],
             ]],
             ['title' => 'Блок «Наши работы»', 'hint' => 'Сами объекты редактируются на странице «Наши работы».', 'fields' => [
-                ['k' => 'works.title', 'type' => 'text', 'max' => 40, 'label' => 'Заголовок'],
-                ['k' => 'works.text', 'type' => 'textarea', 'max' => 170, 'rows' => 2, 'label' => 'Описание'],
+                ['k' => 'works.title', 'type' => 'text', 'max' => 150, 'label' => 'Заголовок'],
+                ['k' => 'works.text', 'type' => 'textarea', 'max' => 1000, 'rows' => 2, 'label' => 'Описание'],
             ]],
             ['title' => 'Блок «Заявка»', 'fields' => [
-                ['k' => 'lead.title', 'type' => 'text', 'max' => 60, 'label' => 'Заголовок'],
-                ['k' => 'lead.text', 'type' => 'textarea', 'max' => 170, 'rows' => 2, 'label' => 'Текст'],
+                ['k' => 'lead.title', 'type' => 'text', 'max' => 180, 'label' => 'Заголовок'],
+                ['k' => 'lead.text', 'type' => 'textarea', 'max' => 1000, 'rows' => 2, 'label' => 'Текст'],
             ]],
             ['title' => 'Вопросы и ответы', 'hint' => 'Блок «Частые вопросы» перед формой заявки.', 'fields' => [
-                ['k' => 'faq', 'type' => 'list', 'max' => 12, 'row' => 'q', 'sub' => 'a', 'label' => 'Вопросы', 'add' => 'Добавить вопрос', 'item' => [
-                    ['k' => 'q', 'type' => 'text', 'label' => 'Вопрос', 'max' => 150, 'req' => true],
-                    ['k' => 'a', 'type' => 'textarea', 'label' => 'Ответ', 'max' => 600, 'rows' => 4],
+                ['k' => 'faq', 'type' => 'list', 'max' => 40, 'row' => 'q', 'sub' => 'a', 'label' => 'Вопросы', 'add' => 'Добавить вопрос', 'item' => [
+                    ['k' => 'q', 'type' => 'text', 'label' => 'Вопрос', 'max' => 450, 'req' => true],
+                    ['k' => 'a', 'type' => 'textarea', 'label' => 'Ответ', 'max' => 1800, 'rows' => 4],
                 ]],
             ]],
         ]],
@@ -173,41 +173,41 @@ function page_schemas(): array
 
         'docs' => ['label' => 'Документы и правила', 'groups' => [
             ['title' => 'Политика конфиденциальности персональных данных', 'hint' => 'Текст страницы-документа на сайте. Правки публикуются сразу после сохранения.', 'fields' => [
-                ['k' => 'items.0.title', 'type' => 'text', 'label' => 'Название документа', 'max' => 120, 'req' => true],
-                ['k' => 'items.0.lead', 'type' => 'textarea', 'label' => 'Краткая подпись под названием (например, дата редакции)', 'max' => 400, 'rows' => 2],
+                ['k' => 'items.0.title', 'type' => 'text', 'label' => 'Название документа', 'max' => 360, 'req' => true],
+                ['k' => 'items.0.lead', 'type' => 'textarea', 'label' => 'Краткая подпись под названием (например, дата редакции)', 'max' => 1200, 'rows' => 2],
                 ['k' => 'items.0.body', 'type' => 'textarea', 'label' => 'Текст документа', 'max' => 90000, 'rows' => 16],
             ]],
             ['title' => 'Политика оператора в отношении обработки персональных данных', 'hint' => 'Текст страницы-документа на сайте. Правки публикуются сразу после сохранения.', 'fields' => [
-                ['k' => 'items.1.title', 'type' => 'text', 'label' => 'Название документа', 'max' => 120, 'req' => true],
-                ['k' => 'items.1.lead', 'type' => 'textarea', 'label' => 'Краткая подпись под названием (например, дата редакции)', 'max' => 400, 'rows' => 2],
+                ['k' => 'items.1.title', 'type' => 'text', 'label' => 'Название документа', 'max' => 360, 'req' => true],
+                ['k' => 'items.1.lead', 'type' => 'textarea', 'label' => 'Краткая подпись под названием (например, дата редакции)', 'max' => 1200, 'rows' => 2],
                 ['k' => 'items.1.body', 'type' => 'textarea', 'label' => 'Текст документа', 'max' => 90000, 'rows' => 16],
             ]],
             ['title' => 'Согласие на обработку персональных данных', 'hint' => 'Текст страницы-документа на сайте. Правки публикуются сразу после сохранения.', 'fields' => [
-                ['k' => 'items.2.title', 'type' => 'text', 'label' => 'Название документа', 'max' => 120, 'req' => true],
-                ['k' => 'items.2.lead', 'type' => 'textarea', 'label' => 'Краткая подпись под названием (например, дата редакции)', 'max' => 400, 'rows' => 2],
+                ['k' => 'items.2.title', 'type' => 'text', 'label' => 'Название документа', 'max' => 360, 'req' => true],
+                ['k' => 'items.2.lead', 'type' => 'textarea', 'label' => 'Краткая подпись под названием (например, дата редакции)', 'max' => 1200, 'rows' => 2],
                 ['k' => 'items.2.body', 'type' => 'textarea', 'label' => 'Текст документа', 'max' => 90000, 'rows' => 16],
             ]],
             ['title' => 'Согласие на обработку данных, собираемых с использованием файлов cookie', 'hint' => 'Текст страницы-документа на сайте. Правки публикуются сразу после сохранения.', 'fields' => [
-                ['k' => 'items.3.title', 'type' => 'text', 'label' => 'Название документа', 'max' => 120, 'req' => true],
-                ['k' => 'items.3.lead', 'type' => 'textarea', 'label' => 'Краткая подпись под названием (например, дата редакции)', 'max' => 400, 'rows' => 2],
+                ['k' => 'items.3.title', 'type' => 'text', 'label' => 'Название документа', 'max' => 360, 'req' => true],
+                ['k' => 'items.3.lead', 'type' => 'textarea', 'label' => 'Краткая подпись под названием (например, дата редакции)', 'max' => 1200, 'rows' => 2],
                 ['k' => 'items.3.body', 'type' => 'textarea', 'label' => 'Текст документа', 'max' => 90000, 'rows' => 16],
             ]],
             ['title' => 'Пользовательское соглашение', 'hint' => 'Текст страницы-документа на сайте. Правки публикуются сразу после сохранения.', 'fields' => [
-                ['k' => 'items.4.title', 'type' => 'text', 'label' => 'Название документа', 'max' => 120, 'req' => true],
-                ['k' => 'items.4.lead', 'type' => 'textarea', 'label' => 'Краткая подпись под названием (например, дата редакции)', 'max' => 400, 'rows' => 2],
+                ['k' => 'items.4.title', 'type' => 'text', 'label' => 'Название документа', 'max' => 360, 'req' => true],
+                ['k' => 'items.4.lead', 'type' => 'textarea', 'label' => 'Краткая подпись под названием (например, дата редакции)', 'max' => 1200, 'rows' => 2],
                 ['k' => 'items.4.body', 'type' => 'textarea', 'label' => 'Текст документа', 'max' => 90000, 'rows' => 16],
             ]],
         ]],
 
         'works' => ['label' => 'Наши работы', 'groups' => [
             ['title' => 'Страница', 'fields' => [
-                ['k' => 'lead', 'type' => 'text', 'max' => 200, 'label' => 'Подзаголовок'],
+                ['k' => 'lead', 'type' => 'text', 'max' => 600, 'label' => 'Подзаголовок'],
             ]],
             ['title' => 'Объекты', 'hint' => 'Нажмите на работу, чтобы изменить её. Здесь общий список работ. Какие из них показывать на главной и на страницах Schuco, Alutech и VEKA, выбирается в самих этих разделах. Порядок меняется перетаскиванием.', 'fields' => [
-                ['k' => 'items', 'type' => 'list', 'max' => 60, 'row' => 'title', 'sub' => 'place', 'thumb' => 'images', 'label' => 'Список работ', 'add' => 'Создать работу', 'item' => [
+                ['k' => 'items', 'type' => 'list', 'max' => 200, 'row' => 'title', 'sub' => 'place', 'thumb' => 'images', 'label' => 'Список работ', 'add' => 'Создать работу', 'item' => [
                     ['k' => 'id', 'type' => 'id'],
-                    ['k' => 'title', 'type' => 'text', 'label' => 'Название (коротко, до 36 знаков)', 'max' => 36, 'req' => true],
-                    ['k' => 'place', 'type' => 'text', 'label' => 'Где и система (например: Домодедово · VEKA)', 'max' => 40],
+                    ['k' => 'title', 'type' => 'text', 'label' => 'Название (лучше коротко)', 'max' => 150, 'req' => true],
+                    ['k' => 'place', 'type' => 'text', 'label' => 'Где и система (например: Домодедово · VEKA)', 'max' => 150],
                     ['k' => 'images', 'type' => 'gallery', 'max' => 40, 'label' => 'Фото (несколько: на сайте они листаются. Перетащите фото, чтобы изменить порядок; первое фото — обложка)'],
                     ['k' => 'tags', 'type' => 'tags', 'label' => 'Метки для фильтра на странице «Наши работы»'],
                 ]],
@@ -216,24 +216,24 @@ function page_schemas(): array
 
         'tech' => ['label' => 'Техническая информация', 'groups' => [
             ['title' => 'Страница', 'fields' => [
-                ['k' => 'lead', 'type' => 'text', 'max' => 200, 'label' => 'Подзаголовок'],
+                ['k' => 'lead', 'type' => 'text', 'max' => 600, 'label' => 'Подзаголовок'],
             ]],
             ['title' => 'Alutech', 'fields' => [
-                ['k' => 'alutech.text', 'type' => 'textarea', 'max' => 260, 'rows' => 2, 'label' => 'Описание'],
+                ['k' => 'alutech.text', 'type' => 'textarea', 'max' => 1000, 'rows' => 2, 'label' => 'Описание'],
                 ['k' => 'alutech.files', 'type' => 'list', 'max' => 30, 'row' => 'title', 'sub' => 'size', 'label' => 'Каталоги', 'add' => 'Добавить каталог', 'item' => f_file_item()],
             ]],
             ['title' => 'Schuco', 'fields' => [
-                ['k' => 'schuco.text', 'type' => 'textarea', 'max' => 260, 'rows' => 2, 'label' => 'Описание'],
+                ['k' => 'schuco.text', 'type' => 'textarea', 'max' => 1000, 'rows' => 2, 'label' => 'Описание'],
                 ['k' => 'schuco.files', 'type' => 'list', 'max' => 30, 'row' => 'title', 'sub' => 'size', 'label' => 'Каталоги', 'add' => 'Добавить каталог', 'item' => f_file_item()],
             ]],
             ['title' => 'VEKA', 'fields' => [
-                ['k' => 'veka.text', 'type' => 'textarea', 'max' => 260, 'rows' => 2, 'label' => 'Описание'],
+                ['k' => 'veka.text', 'type' => 'textarea', 'max' => 1000, 'rows' => 2, 'label' => 'Описание'],
                 ['k' => 'veka.profiles', 'type' => 'list', 'fixed' => true, 'row' => 'name', 'sub' => 'tag', 'thumb' => 'image', 'label' => 'Профили (3 штуки)', 'item' => [
-                    ['k' => 'name', 'type' => 'text', 'label' => 'Название профиля', 'max' => 40, 'req' => true],
-                    ['k' => 'tag', 'type' => 'text', 'label' => 'Метка (например, Универсальный)', 'max' => 30],
-                    ['k' => 'text', 'type' => 'textarea', 'label' => 'Описание', 'max' => 160, 'rows' => 2],
+                    ['k' => 'name', 'type' => 'text', 'label' => 'Название профиля', 'max' => 150, 'req' => true],
+                    ['k' => 'tag', 'type' => 'text', 'label' => 'Метка (например, Универсальный)', 'max' => 150],
+                    ['k' => 'text', 'type' => 'textarea', 'label' => 'Описание', 'max' => 1000, 'rows' => 2],
                     ['k' => 'image', 'type' => 'image', 'label' => 'Рисунок профиля'],
-                    ['k' => 'specs', 'type' => 'textarea', 'label' => 'Параметры (по одному в строке)', 'max' => 160, 'rows' => 3],
+                    ['k' => 'specs', 'type' => 'textarea', 'label' => 'Параметры (по одному в строке)', 'max' => 1000, 'rows' => 3],
                 ]],
                 ['k' => 'veka.files', 'type' => 'list', 'max' => 30, 'row' => 'title', 'sub' => 'size', 'label' => 'Каталоги VEKA', 'add' => 'Добавить каталог', 'item' => f_file_item()],
             ]],

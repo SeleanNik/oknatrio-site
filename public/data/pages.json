@@ -11,32 +11,32 @@
         {
           "title": "Алюминиевые окна",
           "brand": "Alutech",
-          "href": "/okna/alyuminievye/alutech/",
-          "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793384722/%D0%A3%D1%8E%D1%82%D0%BD%D1%8B%D0%B9_%D0%BB%D0%BE%D1%84%D1%82_%D1%83_%D0%BE%D0%BA%D0%BD%D0%B0_%D1%81_%D0%BF%D0%BB%D1%8E%D1%89%D0%BE%D0%BC.png"
+          "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793384722/%D0%A3%D1%8E%D1%82%D0%BD%D1%8B%D0%B9_%D0%BB%D0%BE%D1%84%D1%82_%D1%83_%D0%BE%D0%BA%D0%BD%D0%B0_%D1%81_%D0%BF%D0%BB%D1%8E%D1%89%D0%BE%D0%BC.png",
+          "href": "/okna/alyuminievye/alutech/"
         },
         {
           "title": "Алюминиевые окна",
           "brand": "Schuco",
-          "href": "/okna/alyuminievye/schuco/",
-          "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793206642/Gemini_Generated_Image_jvsic0jvsic0jvsi.jpg"
+          "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793206642/Gemini_Generated_Image_jvsic0jvsic0jvsi.jpg",
+          "href": "/okna/alyuminievye/schuco/"
         },
         {
           "title": "Окна ПВХ",
           "brand": "VEKA",
-          "href": "/okna/pvh/",
-          "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793207418/%D0%BE%D0%BA%D0%BD%D0%BE_Veka.jpg"
+          "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793207418/%D0%BE%D0%BA%D0%BD%D0%BE_Veka.jpg",
+          "href": "/okna/pvh/"
         },
         {
           "title": "Фасады и витражи",
           "brand": "",
-          "href": "/okna/alyuminievye/schuco/#fasady",
-          "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793026953/%D1%84%D0%B0%D1%81%D0%B0%D0%B4%D1%8B.jpg"
+          "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793026953/%D1%84%D0%B0%D1%81%D0%B0%D0%B4%D1%8B.jpg",
+          "href": "/okna/alyuminievye/schuco/#fasady"
         },
         {
           "title": "Балконы и лоджии",
           "brand": "",
-          "href": "/okna/pvh/#balkony",
-          "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793026993/g-balkon.jpg"
+          "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793026993/g-balkon.jpg",
+          "href": "/okna/pvh/#balkony"
         }
       ]
     },
@@ -45,7 +45,7 @@
       "items": [
         {
           "title": "Замер",
-          "text": "Приедем бесплатно в удобный вам день."
+          "text": "Точность и внимательность к деталям."
         },
         {
           "title": "Проект",
@@ -57,26 +57,26 @@
         },
         {
           "title": "Монтаж",
-          "text": "Аккуратно установим и вывезем весь мусор."
+          "text": "Соблюдение технологий и стандартов."
         }
       ]
     },
     "works": {
       "title": "Наши работы",
-      "text": "Посмотрите, как мы остеклили квартиры, коттеджи, балконы и фасады. Окна ПВХ и алюминиевые конструкции."
+      "text": "Мы реализовали разные проекты остекления — от квартир и коттеджей до крупноформатных витражей и фасадов. В работе используем два основных материала: Алюминий и ПВХ."
     },
     "faq": [
       {
         "q": "Сколько стоит остекление?",
-        "a": "Цена зависит от размеров, профиля, стекла и фурнитуры. Мастер приедет на замер бесплатно и подготовит смету. Сумму фиксируем в договоре."
+        "a": "На стоимость остекления влияет множество факторов, таких как:\r\n•\tРазмеры изделия\r\n•\tГеометрическая форма и особенности. \r\n•\tСостояние проема\r\n•\tТип остекление “холодное или теплое”\r\n•\tПрофиль ПВХ или алюминиевый, производитель\r\n•\tЗаполнение\r\n•\tВысотность\r\n•\tЛогистика\r\n•\tСезонность\r\n•\tСрочность\r\n•\tРегион.\r\nЧтобы получить точную смету, обязательно пригласите специалиста для замера на месте. Стоимость работ и материалов определяется после осмотра объекта инженером. На основании выявленных особенностей составляется расчётная ведомость, на основе которой в договоре фиксируется итоговая стоимость."
       },
       {
         "q": "Какие профильные системы вы используете?",
-        "a": "Для алюминиевых конструкций мы работаем с профилями Alutech и Schuco, для окон из ПВХ с профилем VEKA. Подскажем, что лучше подойдёт для вашего дома, квартиры или объекта."
+        "a": "Мы работаем с двумя проверенными направлениями: алюминиевые конструкции (профили Alutech и Schuco) и ПВХ конструкции (профиль VEKA). У каждого свои сильные стороны — и мы с удовольствием поможем подобрать решение именно под ваш проект."
       },
       {
         "q": "Чем алюминиевые окна отличаются от пластиковых?",
-        "a": "Алюминий прочнее и позволяет делать большие стёкла в тонких рамах: витражи, раздвижные порталы, зимние сады. Тёплый алюминий с терморазрывом подходит для жилья, холодный для лоджий и веранд. Окна ПВХ хороши для квартир и коттеджей, когда важны тепло и разумный бюджет."
+        "a": "Алюминий прочнее и подходит для крупногабаритных конструкций\r\n•\tПанорамного остекления (окна «в пол», витражи на фасадах).\r\n•\tРаздвижных порталов (например, для объединения гостиной с террасой).\r\n•\tЗимних садов и других сооружений с большими световыми проёмами.\r\nПВХ конструкции подходят для квартир, коттеджей, с свойственными им ограничениями по габаритам. Для придания жёсткости внутрь профиля устанавливается стальное армирование.\r\nОсновные преимущества:\r\n•\tВысокая тепло звукоизоляция. При правильном подборе профиля и стеклопакета.\r\n•\tДоступная цена. ПВХ-окна дешевле алюминиевых аналогов."
       },
       {
         "q": "Вы делаете замер и проект?",
@@ -96,18 +96,18 @@
       }
     ],
     "heroStats": [
-      "25+ лет на рынке",
-      "6000+ объектов",
+      "23+ лет на рынке",
+      "5000+ объектов",
       "5,0 ★ рейтинг отзывов"
     ],
     "lead": {
       "title": "Рассчитаем стоимость бесплатно",
-      "text": "Перезвоним за 15 минут в рабочее время. Можно прикрепить фото или план помещения."
+      "text": "Пожалуйста прикрепите спецификацию изделий ,фото объекта и адрес."
     },
     "worksPick": [
+      "w4d6f76",
       "w311990",
-      "we59b9d",
-      "w4d6f76"
+      "we59b9d"
     ]
   },
   "alyuminievye": {
@@ -392,15 +392,12 @@
     "lead": "Объекты, которые мы остеклили. Фильтруйте по типу помещения и материалу.",
     "items": [
       {
-        "title": "Алюминиевые конструкции Schuco и Alutech",
+        "id": "w407581",
+        "title": "Конструкции Schuco и Alutech",
         "place": "Мещерское полесье · алюминий",
-        "tags": [
-          "aluminum"
-        ],
         "images": [
           "/img/works/al-schuco-i-alutech-mescherskoe-polese/01.webp",
           "/img/works/al-schuco-i-alutech-mescherskoe-polese/02.webp",
-          "/img/works/al-schuco-i-alutech-mescherskoe-polese/03.webp",
           "/img/works/al-schuco-i-alutech-mescherskoe-polese/04.webp",
           "/img/works/al-schuco-i-alutech-mescherskoe-polese/05.webp",
           "/img/works/al-schuco-i-alutech-mescherskoe-polese/06.webp",
@@ -434,15 +431,14 @@
           "/img/works/al-schuco-i-alutech-mescherskoe-polese/34.webp",
           "/img/works/al-schuco-i-alutech-mescherskoe-polese/35.webp"
         ],
-        "id": "w407581"
+        "tags": [
+          "aluminum"
+        ]
       },
       {
+        "id": "w931435",
         "title": "Коттедж",
         "place": "к.п. Полуостров · алюминий Schuco",
-        "tags": [
-          "aluminum",
-          "cottage"
-        ],
         "images": [
           "/img/works/al-schuco-kottedzh-k-p-poluostrov/01.webp",
           "/img/works/al-schuco-kottedzh-k-p-poluostrov/02.webp",
@@ -470,15 +466,15 @@
           "/img/works/al-schuco-kottedzh-k-p-poluostrov/24.webp",
           "/img/works/al-schuco-kottedzh-k-p-poluostrov/25.webp"
         ],
-        "id": "w931435"
+        "tags": [
+          "cottage",
+          "aluminum"
+        ]
       },
       {
+        "id": "w4d6f76",
         "title": "Коттедж",
         "place": "Домодедово · ПВХ",
-        "tags": [
-          "pvc",
-          "cottage"
-        ],
         "images": [
           "/img/works/plastikovye-okna-kottedzh-domodedovo/01.webp",
           "/img/works/plastikovye-okna-kottedzh-domodedovo/02.webp",
@@ -505,15 +501,15 @@
           "/img/works/plastikovye-okna-kottedzh-domodedovo/23.webp",
           "/img/works/plastikovye-okna-kottedzh-domodedovo/24.webp"
         ],
-        "id": "w4d6f76"
+        "tags": [
+          "cottage",
+          "pvc"
+        ]
       },
       {
+        "id": "w54e996",
         "title": "Коттедж",
         "place": "г. Красногорск · алюминий",
-        "tags": [
-          "aluminum",
-          "cottage"
-        ],
         "images": [
           "/img/works/alyuminievye-konstrukcii-kottedzh-g-krasnogorsk/01.webp",
           "/img/works/alyuminievye-konstrukcii-kottedzh-g-krasnogorsk/02.webp",
@@ -536,14 +532,15 @@
           "/img/works/alyuminievye-konstrukcii-kottedzh-g-krasnogorsk/19.webp",
           "/img/works/alyuminievye-konstrukcii-kottedzh-g-krasnogorsk/20.webp"
         ],
-        "id": "w54e996"
+        "tags": [
+          "cottage",
+          "aluminum"
+        ]
       },
       {
+        "id": "w4acb74",
         "title": "Алюминиевые конструкции",
         "place": "к.п. Фаворит · алюминий Alutech",
-        "tags": [
-          "aluminum"
-        ],
         "images": [
           "/img/works/alyuminievye-konstrukcii-alutech-k-p-favorit/01.webp",
           "/img/works/alyuminievye-konstrukcii-alutech-k-p-favorit/02.webp",
@@ -566,15 +563,14 @@
           "/img/works/alyuminievye-konstrukcii-alutech-k-p-favorit/19.webp",
           "/img/works/alyuminievye-konstrukcii-alutech-k-p-favorit/20.webp"
         ],
-        "id": "w4acb74"
+        "tags": [
+          "aluminum"
+        ]
       },
       {
+        "id": "w311990",
         "title": "Коттедж",
         "place": "дер. Колычево · алюминий Schuco",
-        "tags": [
-          "aluminum",
-          "cottage"
-        ],
         "images": [
           "/img/works/al-schuco-kottedzh-der-kolychevo/01.webp",
           "/img/works/al-schuco-kottedzh-der-kolychevo/02.webp",
@@ -597,14 +593,15 @@
           "/img/works/al-schuco-kottedzh-der-kolychevo/19.webp",
           "/img/works/al-schuco-kottedzh-der-kolychevo/20.webp"
         ],
-        "id": "w311990"
+        "tags": [
+          "cottage",
+          "aluminum"
+        ]
       },
       {
+        "id": "wc90830",
         "title": "Пластиковые окна",
         "place": "Купавна · ПВХ",
-        "tags": [
-          "pvc"
-        ],
         "images": [
           "/img/works/plastikovye-okna-kupavna/01.webp",
           "/img/works/plastikovye-okna-kupavna/02.webp",
@@ -624,14 +621,14 @@
           "/img/works/plastikovye-okna-kupavna/16.webp",
           "/img/works/plastikovye-okna-kupavna/17.webp"
         ],
-        "id": "wc90830"
+        "tags": [
+          "pvc"
+        ]
       },
       {
+        "id": "w660904",
         "title": "Навес",
         "place": "к.п. Полуостров · алюминий Alutech",
-        "tags": [
-          "aluminum"
-        ],
         "images": [
           "/img/works/al-alutech-naves-k-p-poluostrov/01.webp",
           "/img/works/al-alutech-naves-k-p-poluostrov/02.webp",
@@ -650,14 +647,14 @@
           "/img/works/al-alutech-naves-k-p-poluostrov/15.webp",
           "/img/works/al-alutech-naves-k-p-poluostrov/16.webp"
         ],
-        "id": "w660904"
-      },
-      {
-        "title": "Торгово-офисный центр",
-        "place": "ул. Стромынка · алюминий",
         "tags": [
           "aluminum"
-        ],
+        ]
+      },
+      {
+        "id": "we59b9d",
+        "title": "Торгово-офисный центр",
+        "place": "ул. Стромынка · алюминий",
         "images": [
           "/img/works/al-konstrukcii-torgovo-ofisnyy-centr-ul-stroomynka/01.webp",
           "/img/works/al-konstrukcii-torgovo-ofisnyy-centr-ul-stroomynka/02.webp",
@@ -675,14 +672,14 @@
           "/img/works/al-konstrukcii-torgovo-ofisnyy-centr-ul-stroomynka/14.webp",
           "/img/works/al-konstrukcii-torgovo-ofisnyy-centr-ul-stroomynka/15.webp"
         ],
-        "id": "we59b9d"
+        "tags": [
+          "aluminum"
+        ]
       },
       {
+        "id": "wab7695",
         "title": "Ленточное остекление склада",
         "place": "Южное Бутово · ПВХ",
-        "tags": [
-          "pvc"
-        ],
         "images": [
           "/img/works/pvh-okna-lentochnoe-osteklenie-sklad-yuzhno-butovo/01.webp",
           "/img/works/pvh-okna-lentochnoe-osteklenie-sklad-yuzhno-butovo/02.webp",
@@ -698,14 +695,14 @@
           "/img/works/pvh-okna-lentochnoe-osteklenie-sklad-yuzhno-butovo/12.webp",
           "/img/works/pvh-okna-lentochnoe-osteklenie-sklad-yuzhno-butovo/13.webp"
         ],
-        "id": "wab7695"
+        "tags": [
+          "pvc"
+        ]
       },
       {
+        "id": "w0d8b28",
         "title": "Алюминиевые конструкции",
         "place": "МГТ, Москва · алюминий Alutech",
-        "tags": [
-          "aluminum"
-        ],
         "images": [
           "/img/works/alyuminievye-konstrukcii-alutech-mgt-moskva/01.webp",
           "/img/works/alyuminievye-konstrukcii-alutech-mgt-moskva/02.webp",
@@ -720,14 +717,14 @@
           "/img/works/alyuminievye-konstrukcii-alutech-mgt-moskva/11.webp",
           "/img/works/alyuminievye-konstrukcii-alutech-mgt-moskva/12.webp"
         ],
-        "id": "w0d8b28"
-      },
-      {
-        "title": "Алюминиевые конструкции",
-        "place": "Парк Горького · алюминий Alutech",
         "tags": [
           "aluminum"
-        ],
+        ]
+      },
+      {
+        "id": "w54e509",
+        "title": "Алюминиевые конструкции",
+        "place": "Парк Горького · алюминий Alutech",
         "images": [
           "/img/works/alyuminievye-konstrukcii-alutech-park-gorkogo/01.webp",
           "/img/works/alyuminievye-konstrukcii-alutech-park-gorkogo/02.webp",
@@ -742,14 +739,14 @@
           "/img/works/alyuminievye-konstrukcii-alutech-park-gorkogo/11.webp",
           "/img/works/alyuminievye-konstrukcii-alutech-park-gorkogo/12.webp"
         ],
-        "id": "w54e509"
-      },
-      {
-        "title": "Зимний сад",
-        "place": "дер. Колычево · алюминий Alutech",
         "tags": [
           "aluminum"
-        ],
+        ]
+      },
+      {
+        "id": "w5cf731",
+        "title": "Зимний сад",
+        "place": "дер. Колычево · алюминий Alutech",
         "images": [
           "/img/works/zimniy-sad-al-alutech-der-kolychevo/01.webp",
           "/img/works/zimniy-sad-al-alutech-der-kolychevo/02.webp",
@@ -764,14 +761,14 @@
           "/img/works/zimniy-sad-al-alutech-der-kolychevo/11.webp",
           "/img/works/zimniy-sad-al-alutech-der-kolychevo/12.webp"
         ],
-        "id": "w5cf731"
-      },
-      {
-        "title": "Офисно-складской комплекс",
-        "place": "Видное · алюминий Alutech",
         "tags": [
           "aluminum"
-        ],
+        ]
+      },
+      {
+        "id": "w514724",
+        "title": "Офисно-складской комплекс",
+        "place": "Видное · алюминий Alutech",
         "images": [
           "/img/works/alyuminievye-konstrukcii-alutech-ofisno-skladkoy-kompleks-vi/01.webp",
           "/img/works/alyuminievye-konstrukcii-alutech-ofisno-skladkoy-kompleks-vi/02.webp",
@@ -785,14 +782,14 @@
           "/img/works/alyuminievye-konstrukcii-alutech-ofisno-skladkoy-kompleks-vi/10.webp",
           "/img/works/alyuminievye-konstrukcii-alutech-ofisno-skladkoy-kompleks-vi/11.webp"
         ],
-        "id": "w514724"
-      },
-      {
-        "title": "Навес",
-        "place": "Мещерское полесье · алюминий Alutech",
         "tags": [
           "aluminum"
-        ],
+        ]
+      },
+      {
+        "id": "wdc9143",
+        "title": "Навес",
+        "place": "Мещерское полесье · алюминий Alutech",
         "images": [
           "/img/works/al-alutech-naves-mescherskoe-polese/01.webp",
           "/img/works/al-alutech-naves-mescherskoe-polese/02.webp",
@@ -805,14 +802,14 @@
           "/img/works/al-alutech-naves-mescherskoe-polese/09.webp",
           "/img/works/al-alutech-naves-mescherskoe-polese/10.webp"
         ],
-        "id": "wdc9143"
+        "tags": [
+          "aluminum"
+        ]
       },
       {
+        "id": "wf85f2a",
         "title": "Арочный витраж",
         "place": "ПВХ VEKA",
-        "tags": [
-          "pvc"
-        ],
         "images": [
           "/img/works/plastikovye-konstrukcii-veka-arochnyy-vitrazh/01.webp",
           "/img/works/plastikovye-konstrukcii-veka-arochnyy-vitrazh/02.webp",
@@ -824,15 +821,14 @@
           "/img/works/plastikovye-konstrukcii-veka-arochnyy-vitrazh/08.webp",
           "/img/works/plastikovye-konstrukcii-veka-arochnyy-vitrazh/09.webp"
         ],
-        "id": "wf85f2a"
+        "tags": [
+          "pvc"
+        ]
       },
       {
+        "id": "w9f6a2d",
         "title": "Коттедж",
         "place": "дер. Томарово · ПВХ",
-        "tags": [
-          "pvc",
-          "cottage"
-        ],
         "images": [
           "/img/works/plastikovye-okna-kottedzh-der-tomarovo/01.webp",
           "/img/works/plastikovye-okna-kottedzh-der-tomarovo/02.webp",
@@ -844,14 +840,15 @@
           "/img/works/plastikovye-okna-kottedzh-der-tomarovo/08.webp",
           "/img/works/plastikovye-okna-kottedzh-der-tomarovo/09.webp"
         ],
-        "id": "w9f6a2d"
+        "tags": [
+          "cottage",
+          "pvc"
+        ]
       },
       {
+        "id": "w28fb99",
         "title": "Огнестойкие конструкции",
         "place": "ул. Павла Корчагина · алюминий",
-        "tags": [
-          "aluminum"
-        ],
         "images": [
           "/img/works/al-ognestoykie-konstrukcii-ul-pavla-korchagina/01.webp",
           "/img/works/al-ognestoykie-konstrukcii-ul-pavla-korchagina/02.webp",
@@ -863,14 +860,14 @@
           "/img/works/al-ognestoykie-konstrukcii-ul-pavla-korchagina/08.webp",
           "/img/works/al-ognestoykie-konstrukcii-ul-pavla-korchagina/09.webp"
         ],
-        "id": "w28fb99"
-      },
-      {
-        "title": "Входные группы и витражи",
-        "place": "склад, Южное Бутово · алюминий Alutech",
         "tags": [
           "aluminum"
-        ],
+        ]
+      },
+      {
+        "id": "w94b688",
+        "title": "Входные группы и витражи",
+        "place": "склад, Южное Бутово · алюминий Alutech",
         "images": [
           "/img/works/al-alutech-vodnye-gruppy-i-vitrazhi-sklad-yuzhnoe-butovo/01.webp",
           "/img/works/al-alutech-vodnye-gruppy-i-vitrazhi-sklad-yuzhnoe-butovo/02.webp",
@@ -881,15 +878,14 @@
           "/img/works/al-alutech-vodnye-gruppy-i-vitrazhi-sklad-yuzhnoe-butovo/07.webp",
           "/img/works/al-alutech-vodnye-gruppy-i-vitrazhi-sklad-yuzhnoe-butovo/08.webp"
         ],
-        "id": "w94b688"
+        "tags": [
+          "aluminum"
+        ]
       },
       {
+        "id": "w92a73b",
         "title": "Коттедж",
         "place": "к.п. Фаворит · ПВХ",
-        "tags": [
-          "pvc",
-          "cottage"
-        ],
         "images": [
           "/img/works/pvh-okna-kotedzh-k-p-favorit/01.webp",
           "/img/works/pvh-okna-kotedzh-k-p-favorit/02.webp",
@@ -899,14 +895,15 @@
           "/img/works/pvh-okna-kotedzh-k-p-favorit/06.webp",
           "/img/works/pvh-okna-kotedzh-k-p-favorit/07.webp"
         ],
-        "id": "w92a73b"
+        "tags": [
+          "cottage",
+          "pvc"
+        ]
       },
       {
+        "id": "w64eea8",
         "title": "Лоджия",
         "place": "Ленинский проспект · ПВХ VEKA",
-        "tags": [
-          "pvc"
-        ],
         "images": [
           "/img/works/pvh-veka-lodzhiya-leninskiy-prospekt/01.webp",
           "/img/works/pvh-veka-lodzhiya-leninskiy-prospekt/02.webp",
@@ -916,15 +913,14 @@
           "/img/works/pvh-veka-lodzhiya-leninskiy-prospekt/06.webp",
           "/img/works/pvh-veka-lodzhiya-leninskiy-prospekt/07.webp"
         ],
-        "id": "w64eea8"
+        "tags": [
+          "pvc"
+        ]
       },
       {
+        "id": "wb57527",
         "title": "Коттедж",
         "place": "СНТ Мичуринец · ПВХ",
-        "tags": [
-          "pvc",
-          "cottage"
-        ],
         "images": [
           "/img/works/plastikovye-okna-kottedzh-snt-michurinec/01.webp",
           "/img/works/plastikovye-okna-kottedzh-snt-michurinec/02.webp",
@@ -934,14 +930,15 @@
           "/img/works/plastikovye-okna-kottedzh-snt-michurinec/06.webp",
           "/img/works/plastikovye-okna-kottedzh-snt-michurinec/07.webp"
         ],
-        "id": "wb57527"
+        "tags": [
+          "cottage",
+          "pvc"
+        ]
       },
       {
+        "id": "w05e482",
         "title": "Офисные перегородки",
         "place": "Кутузовский проспект · алюминий",
-        "tags": [
-          "aluminum"
-        ],
         "images": [
           "/img/works/alyuminevye-konstrukcii-ofisnye-peregorodki-kutuzovskiy-pros/01.webp",
           "/img/works/alyuminevye-konstrukcii-ofisnye-peregorodki-kutuzovskiy-pros/02.webp",
@@ -950,14 +947,14 @@
           "/img/works/alyuminevye-konstrukcii-ofisnye-peregorodki-kutuzovskiy-pros/05.webp",
           "/img/works/alyuminevye-konstrukcii-ofisnye-peregorodki-kutuzovskiy-pros/06.webp"
         ],
-        "id": "w05e482"
-      },
-      {
-        "title": "Рынок",
-        "place": "Отрадное · алюминий",
         "tags": [
           "aluminum"
-        ],
+        ]
+      },
+      {
+        "id": "we396bb",
+        "title": "Рынок",
+        "place": "Отрадное · алюминий",
         "images": [
           "/img/works/alyuminievye-konstrukcii-rynok-otradnoe/01.webp",
           "/img/works/alyuminievye-konstrukcii-rynok-otradnoe/02.webp",
@@ -966,15 +963,14 @@
           "/img/works/alyuminievye-konstrukcii-rynok-otradnoe/05.webp",
           "/img/works/alyuminievye-konstrukcii-rynok-otradnoe/06.webp"
         ],
-        "id": "we396bb"
+        "tags": [
+          "aluminum"
+        ]
       },
       {
+        "id": "w1532cd",
         "title": "Беседка",
         "place": "дер. Томарово · ПВХ",
-        "tags": [
-          "pvc",
-          "cottage"
-        ],
         "images": [
           "/img/works/pvh-okna-besedka-der-tomarovo/01.webp",
           "/img/works/pvh-okna-besedka-der-tomarovo/02.webp",
@@ -983,15 +979,15 @@
           "/img/works/pvh-okna-besedka-der-tomarovo/05.webp",
           "/img/works/pvh-okna-besedka-der-tomarovo/06.webp"
         ],
-        "id": "w1532cd"
+        "tags": [
+          "cottage",
+          "pvc"
+        ]
       },
       {
+        "id": "w0ade31",
         "title": "Веранда",
         "place": "дер. Бородино · ПВХ",
-        "tags": [
-          "pvc",
-          "cottage"
-        ],
         "images": [
           "/img/works/plastikovye-konstrukcii-veranda-derevnya-borodino/01.webp",
           "/img/works/plastikovye-konstrukcii-veranda-derevnya-borodino/02.webp",
@@ -1000,15 +996,15 @@
           "/img/works/plastikovye-konstrukcii-veranda-derevnya-borodino/05.webp",
           "/img/works/plastikovye-konstrukcii-veranda-derevnya-borodino/06.webp"
         ],
-        "id": "w0ade31"
+        "tags": [
+          "cottage",
+          "pvc"
+        ]
       },
       {
+        "id": "w47c42b",
         "title": "Деревянный коттедж",
         "place": "ПВХ",
-        "tags": [
-          "pvc",
-          "cottage"
-        ],
         "images": [
           "/img/works/pvh-okna-derevyannyy-kottedzh/01.webp",
           "/img/works/pvh-okna-derevyannyy-kottedzh/02.webp",
@@ -1016,158 +1012,161 @@
           "/img/works/pvh-okna-derevyannyy-kottedzh/04.webp",
           "/img/works/pvh-okna-derevyannyy-kottedzh/05.webp"
         ],
-        "id": "w47c42b"
+        "tags": [
+          "cottage",
+          "pvc"
+        ]
       },
       {
+        "id": "w6af61e",
         "title": "Квартира",
         "place": "Войковская · ПВХ",
-        "tags": [
-          "pvc"
-        ],
         "images": [
           "/img/works/okna-pvh-kvartira-voykovskaya/01.webp",
           "/img/works/okna-pvh-kvartira-voykovskaya/02.webp",
           "/img/works/okna-pvh-kvartira-voykovskaya/03.webp",
           "/img/works/okna-pvh-kvartira-voykovskaya/04.webp"
         ],
-        "id": "w6af61e"
+        "tags": [
+          "pvc"
+        ]
       },
       {
+        "id": "w35d974",
         "title": "Окна и двери коттеджа",
         "place": "дер. Томарово · ПВХ",
-        "tags": [
-          "pvc",
-          "cottage"
-        ],
         "images": [
           "/img/works/pvh-okna-i-dveri-der-tomarovo-kottedzh/01.webp",
           "/img/works/pvh-okna-i-dveri-der-tomarovo-kottedzh/02.webp",
           "/img/works/pvh-okna-i-dveri-der-tomarovo-kottedzh/03.webp",
           "/img/works/pvh-okna-i-dveri-der-tomarovo-kottedzh/04.webp"
         ],
-        "id": "w35d974"
+        "tags": [
+          "cottage",
+          "pvc"
+        ]
       },
       {
+        "id": "wb3c1f8",
         "title": "Пластиковые конструкции",
         "place": "ул. Павла Корчагина · ПВХ VEKA",
-        "tags": [
-          "pvc"
-        ],
         "images": [
           "/img/works/plastikovye-konstrukcii-veka-ul-pavla-korchagina/01.webp",
           "/img/works/plastikovye-konstrukcii-veka-ul-pavla-korchagina/02.webp",
           "/img/works/plastikovye-konstrukcii-veka-ul-pavla-korchagina/03.webp",
           "/img/works/plastikovye-konstrukcii-veka-ul-pavla-korchagina/04.webp"
         ],
-        "id": "wb3c1f8"
+        "tags": [
+          "pvc"
+        ]
       },
       {
-        "title": "Алюминиевые конструкции Schuco и Alutech",
+        "id": "w545f2e",
+        "title": "Алюминиевые конструкции Schuco и Alu",
         "place": "ул. Павла Корчагина, Москва · алюминий",
-        "tags": [
-          "aluminum"
-        ],
         "images": [
           "/img/works/alyuminievye-konstrukcii-shuco-i-alutech-moskva-pavla-korcha/01.webp",
           "/img/works/alyuminievye-konstrukcii-shuco-i-alutech-moskva-pavla-korcha/02.webp",
           "/img/works/alyuminievye-konstrukcii-shuco-i-alutech-moskva-pavla-korcha/03.webp"
         ],
-        "id": "w545f2e"
+        "tags": [
+          "aluminum"
+        ]
       },
       {
+        "id": "w9ed65f",
         "title": "Бассейн",
         "place": "Чеховский район · ПВХ",
-        "tags": [
-          "pvc"
-        ],
         "images": [
           "/img/works/pvh-okna-basseyn-chehovskiy-rayon/01.webp",
           "/img/works/pvh-okna-basseyn-chehovskiy-rayon/02.webp",
           "/img/works/pvh-okna-basseyn-chehovskiy-rayon/03.webp"
         ],
-        "id": "w9ed65f"
+        "tags": [
+          "pvc"
+        ]
       },
       {
+        "id": "w3df454",
         "title": "Входная группа",
         "place": "Кутузовский проспект · алюминий",
-        "tags": [
-          "aluminum"
-        ],
         "images": [
           "/img/works/alyuminievaya-vhodnaya-gruppa-kutuzovskiy-prospekt/01.webp",
           "/img/works/alyuminievaya-vhodnaya-gruppa-kutuzovskiy-prospekt/02.webp"
         ],
-        "id": "w3df454"
+        "tags": [
+          "aluminum"
+        ]
       },
       {
+        "id": "w43282e",
         "title": "Окна коттеджа",
         "place": "дер. Томарово · ПВХ",
-        "tags": [
-          "pvc",
-          "cottage"
-        ],
         "images": [
           "/img/works/okna-pvh-kotedzh-der-tomarovo/01.webp",
           "/img/works/okna-pvh-kotedzh-der-tomarovo/02.webp"
         ],
-        "id": "w43282e"
+        "tags": [
+          "cottage",
+          "pvc"
+        ]
       },
       {
+        "id": "w56304b",
         "title": "Эркер",
         "place": "ул. Фестивальная, Москва · ПВХ",
-        "tags": [
-          "pvc"
-        ],
         "images": [
           "/img/works/plastikovye-konstrukcii-erkera-ul-festivalnaya-moskva/01.webp",
           "/img/works/plastikovye-konstrukcii-erkera-ul-festivalnaya-moskva/02.webp"
         ],
-        "id": "w56304b"
-      },
-      {
-        "title": "Пластиковые окна",
-        "place": "Подмосковье · ПВХ",
         "tags": [
           "pvc"
-        ],
+        ]
+      },
+      {
+        "id": "wfc6dda",
+        "title": "Пластиковые окна",
+        "place": "Подмосковье · ПВХ",
         "images": [
           "/img/works/plastikovye-okna-podmoskove/01.webp",
           "/img/works/plastikovye-okna-podmoskove/02.webp"
         ],
-        "id": "wfc6dda"
-      },
-      {
-        "title": "Входная группа",
-        "place": "ПВХ",
         "tags": [
           "pvc"
-        ],
+        ]
+      },
+      {
+        "id": "w29e218",
+        "title": "Входная группа",
+        "place": "ПВХ",
         "images": [
           "/img/works/pvh-konstrukcii-vhodnaya-gruppa/01.webp"
         ],
-        "id": "w29e218"
+        "tags": [
+          "pvc"
+        ]
       },
       {
+        "id": "w039078",
         "title": "Медальоны",
         "place": "Парк Горького · алюминий Alutech",
-        "tags": [
-          "aluminum"
-        ],
         "images": [
           "/img/works/al-alutech-medalony-park-gorkogo/01.webp"
         ],
-        "id": "w039078"
-      },
-      {
-        "title": "Подъёмно-раздвижная и наклонно-сдвижная двери",
-        "place": "пос. Мещерское · алюминий Schuco",
         "tags": [
           "aluminum"
-        ],
+        ]
+      },
+      {
+        "id": "wba7a23",
+        "title": "Подъёмно-раздвижная и наклонно-сдвиж",
+        "place": "пос. Мещерское · алюминий Schuco",
         "images": [
           "/img/works/al-schuco-video-portal-podemno-razdvizhnaya-dver-i-balkonnay/01.webp"
         ],
-        "id": "wba7a23"
+        "tags": [
+          "aluminum"
+        ]
       }
     ]
   },
@@ -1278,7 +1277,7 @@
           "tag": "Новая серия",
           "text": "Тёплая оконная система Schuco с глубиной 75 мм: тонкие рамы, большие стёкла и хорошее сохранение тепла.",
           "image": "/img/schuco/aws-75-pd.webp",
-          "specs": "Монтажная глубина 75 мм\nТерморазрыв\nТонкие рамы"
+          "specs": "Монтажная глубина 75 мм\r\nТерморазрыв\r\nТонкие рамы"
         },
         {
           "id": "aws-75-si-plus",
@@ -1286,7 +1285,7 @@
           "tag": "Энергосберегающая",
           "text": "Тёплая оконная система повышенной теплоизоляции для квартир и коттеджей: тонкие рамы, большие стёкла, сохранение тепла.",
           "image": "/img/schuco/aws-75-si-plus.webp",
-          "specs": "Монтажная глубина 75 мм\nТерморазрыв\nПовышенная теплоизоляция"
+          "specs": "Монтажная глубина 75 мм\r\nТерморазрыв\r\nПовышенная теплоизоляция"
         },
         {
           "id": "aws-75-bs-si-plus",
@@ -1294,7 +1293,7 @@
           "tag": "Блочная",
           "text": "Блочная конструкция со скрытой створкой: остекление выглядит единым и занимает больше площади, при этом остаётся тёплым.",
           "image": "/img/schuco/aws-75-bs-si-plus.webp",
-          "specs": "Монтажная глубина 75 мм\nСкрытая створка\nПовышенная теплоизоляция"
+          "specs": "Монтажная глубина 75 мм\r\nСкрытая створка\r\nПовышенная теплоизоляция"
         },
         {
           "id": "aws-90-si-plus",
@@ -1302,7 +1301,7 @@
           "tag": "Премиум",
           "text": "Премиальная система с глубиной 90 мм для проектов с максимальными требованиями к теплу и шуму.",
           "image": "/img/schuco/aws-90-si-plus.webp",
-          "specs": "Монтажная глубина 90 мм\nМаксимальная теплоизоляция\nТройное остекление"
+          "specs": "Монтажная глубина 90 мм\r\nМаксимальная теплоизоляция\r\nТройное остекление"
         },
         {
           "id": "aws-75-hi-alu-holz",
@@ -1310,7 +1309,7 @@
           "tag": "Алюминий и дерево",
           "text": "Комбинированное окно: снаружи прочный алюминий, внутри тёплое дерево. Подходит для домов, где важен натуральный интерьер.",
           "image": "/img/schuco/aws-75-hi-alu-holz.webp",
-          "specs": "Монтажная глубина 75 мм\nСнаружи алюминий, внутри дерево\nТерморазрыв"
+          "specs": "Монтажная глубина 75 мм\r\nСнаружи алюминий, внутри дерево\r\nТерморазрыв"
         }
       ],
       "dveri": [
@@ -1320,7 +1319,7 @@
           "tag": "Дизайн",
           "text": "Дверная система с минималистичным дизайном и скрытыми элементами: чистые линии для входных групп и интерьерных решений.",
           "image": "/img/schuco/ad-up-design-edition.webp",
-          "specs": "Минималистичный дизайн\nВходные группы\nСтекло и панели"
+          "specs": "Минималистичный дизайн\r\nВходные группы\r\nСтекло и панели"
         },
         {
           "id": "ad-up-75",
@@ -1328,7 +1327,7 @@
           "tag": "Тёплая",
           "text": "Тёплая дверная система с глубиной 75 мм для квартир, коттеджей и офисов.",
           "image": "/img/schuco/ad-up-75.webp",
-          "specs": "Монтажная глубина 75 мм\nТерморазрыв\nВходные группы"
+          "specs": "Монтажная глубина 75 мм\r\nТерморазрыв\r\nВходные группы"
         },
         {
           "id": "ad-up-90",
@@ -1336,7 +1335,7 @@
           "tag": "Премиум",
           "text": "Дверная система с глубиной 90 мм и повышенной теплоизоляцией для проектов с высокими требованиями к энергоэффективности.",
           "image": "/img/schuco/ad-up-90.webp",
-          "specs": "Монтажная глубина 90 мм\nПовышенная теплоизоляция\nТройное остекление"
+          "specs": "Монтажная глубина 90 мм\r\nПовышенная теплоизоляция\r\nТройное остекление"
         }
       ],
       "fasady": [
@@ -1346,7 +1345,7 @@
           "tag": "Фасадная",
           "text": "Фасадная система FWS 50: стоечно-ригельные конструкции для фасадов, витражей и больших остеклённых поверхностей.",
           "image": "/img/schuco/fws-50.webp",
-          "specs": "Стоечно-ригельная конструкция\nФасады и витражи\nПроект и расчёт"
+          "specs": "Стоечно-ригельная конструкция\r\nФасады и витражи\r\nПроект и расчёт"
         },
         {
           "id": "fws-35-pd",
@@ -1354,7 +1353,7 @@
           "tag": "Фасадная",
           "text": "Фасадная система Schüco FWS 35 PD с узкими видимыми профилями — лёгкий, светлый вид остекления.",
           "image": "/img/schuco/fws-35-pd.webp",
-          "specs": "Видимая ширина 35 мм\nФасады и витражи\nБольшая площадь стекла"
+          "specs": "Видимая ширина 35 мм\r\nФасады и витражи\r\nБольшая площадь стекла"
         },
         {
           "id": "fws-50-sg",
@@ -1362,7 +1361,7 @@
           "tag": "Структурная",
           "text": "Фасадная система FWS 50 SG: структурное остекление, при котором стёкла выглядят единой гладкой поверхностью.",
           "image": "/img/schuco/fws-50-sg.webp",
-          "specs": "Структурное остекление\nГладкий фасад\nПроект и расчёт"
+          "specs": "Структурное остекление\r\nГладкий фасад\r\nПроект и расчёт"
         }
       ],
       "razdvizhnye": [
@@ -1372,7 +1371,7 @@
           "tag": "Подъёмно-раздвижная",
           "text": "Подъёмно-раздвижная система для больших проёмов: выход на террасу, остекление веранд и гостиных.",
           "image": "/img/schuco/ase-67-pd.webp",
-          "specs": "Раздвижные порталы\nБольшие проёмы\nВыход на террасу"
+          "specs": "Раздвижные порталы\r\nБольшие проёмы\r\nВыход на террасу"
         },
         {
           "id": "ase-80-hi",
@@ -1380,7 +1379,7 @@
           "tag": "Тёплая",
           "text": "Тёплый раздвижной портал для больших проёмов: выход на террасу, остекление веранд и гостиных.",
           "image": "/img/schuco/ase-80-hi.webp",
-          "specs": "Раздвижные порталы\nПовышенная теплоизоляция\nВыход на террасу"
+          "specs": "Раздвижные порталы\r\nПовышенная теплоизоляция\r\nВыход на террасу"
         },
         {
           "id": "ass-77-pd-hi",
@@ -1388,7 +1387,7 @@
           "tag": "Параллельная",
           "text": "Параллельно-раздвижная система: створки сдвигаются вдоль стены и не занимают места в помещении.",
           "image": "/img/schuco/ass-77-pd-hi.webp",
-          "specs": "Параллельно-раздвижные створки\nБольшие проёмы\nТеррасы и веранды"
+          "specs": "Параллельно-раздвижные створки\r\nБольшие проёмы\r\nТеррасы и веранды"
         },
         {
           "id": "ass-80-fd-hi",
@@ -1396,7 +1395,7 @@
           "tag": "Складная",
           "text": "Складная система: створки складываются «гармошкой» и полностью открывают проём.",
           "image": "/img/schuco/ass-80-fd-hi.webp",
-          "specs": "Складные створки\nОткрытый проём\nТеррасы и кафе"
+          "specs": "Складные створки\r\nОткрытый проём\r\nТеррасы и кафе"
         }
       ],
       "garmoshka": [
@@ -1406,7 +1405,7 @@
           "tag": "Складная",
           "text": "Складные двери «гармошка»: створки складываются и полностью открывают проём.",
           "image": "/img/schuco/fd-90-hi.webp",
-          "specs": "Складные створки\nОткрытый проём\nТеррасы и кафе"
+          "specs": "Складные створки\r\nОткрытый проём\r\nТеррасы и кафе"
         }
       ],
       "zimnie-sady": [
@@ -1416,7 +1415,7 @@
           "tag": "Зимний сад",
           "text": "Система для зимних садов и остеклённых веранд, которыми можно пользоваться круглый год.",
           "image": "/img/schuco/cmc-50.webp",
-          "specs": "Зимние сады и веранды\nКровля и стены\nОстекление любой формы"
+          "specs": "Зимние сады и веранды\r\nКровля и стены\r\nОстекление любой формы"
         }
       ]
     },
@@ -1427,7 +1426,7 @@
         "tag": "",
         "text": "Световые фонари и мансардное остекление.",
         "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793208269/%D0%97%D0%B5%D0%BD%D0%B8%D1%82%D0%BD%D1%8B%D0%B5_%D1%84%D0%BE%D0%BD%D0%B0%D1%80%D0%B8_Schuco.jpg",
-        "specs": "Много света\nОткрывающиеся секции"
+        "specs": "Много света\r\nОткрывающиеся секции"
       },
       {
         "id": "kozyrki-navesy",
@@ -1435,7 +1434,7 @@
         "tag": "",
         "text": "Козырьки над входом, навесы и перголы.",
         "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793208268/%D0%A1%D1%82%D0%B5%D0%BA%D0%BB%D1%8F%D0%BD%D0%BD%D1%8B%D0%B5_%D0%BA%D0%BE%D0%B7%D1%8B%D1%80%D1%8C%D0%BA%D0%B8_%D0%B8_%D0%BD%D0%B0%D0%B2%D0%B5%D1%81%D1%8B_Schuco.jpg",
-        "specs": "Триплекс\nАлюминиевый каркас"
+        "specs": "Триплекс\r\nАлюминиевый каркас"
       }
     ],
     "faq": [
@@ -1449,20 +1448,20 @@
       },
       {
         "q": "Можно ли заказать нестандартный цвет рам?",
-        "a": "Да, профиль окрашивается в любой цвет по каталогу RAL, возможна двусторонняя окраска."
+        "a": "Профиль можно окрасить в любой оттенок из каталога RAL либо выполнить с имитацией структуры дерева. При двусторонней окраске каждая сторона может быть выполнена в своём цвете."
       }
     ],
     "worksPick": [
-      "w311990",
-      "w931435",
       "w407581",
+      "w931435",
+      "w311990",
       "wba7a23"
     ]
   },
   "alutech": {
     "h1": "Алюминиевые окна Alutech",
     "lead": "Профильные системы Alutech для окон, дверей, раздвижных конструкций и фасадов: от холодных систем для лоджий до тёплых для жилья.",
-    "cards": {},
+    "cards": [],
     "plain": [
       {
         "id": "okna",
@@ -1470,7 +1469,7 @@
         "tag": "",
         "text": "Тёплые с терморазрывом для жилья и холодные для лоджий.",
         "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793384722/%D0%A3%D1%8E%D1%82%D0%BD%D1%8B%D0%B9_%D0%BB%D0%BE%D1%84%D1%82_%D1%83_%D0%BE%D0%BA%D0%BD%D0%B0_%D1%81_%D0%BF%D0%BB%D1%8E%D1%89%D0%BE%D0%BC.png",
-        "specs": "Любой цвет RAL\nСтворки до 3 м"
+        "specs": "Любой цвет RAL\r\nСтворки до 3 м"
       },
       {
         "id": "dveri",
@@ -1478,7 +1477,7 @@
         "tag": "",
         "text": "Входные, балконные и межкомнатные двери.",
         "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793386116/%D0%90%D0%BB%D1%8E%D0%BC%D0%B8%D0%BD%D0%B8%D0%B5%D0%B2%D1%8B%D0%B5_%D0%B4%D0%B2%D0%B5%D1%80%D0%B8_Alutech.jpg",
-        "specs": "Стекло и панели\nУсиленная фурнитура"
+        "specs": "Стекло и панели\r\nУсиленная фурнитура"
       },
       {
         "id": "fasady",
@@ -1486,7 +1485,7 @@
         "tag": "",
         "text": "Стоечно-ригельные фасады и большие витражи.",
         "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793030506/simplistic-apartment-building-city.jpg",
-        "specs": "Проект и расчёт\nМонтаж на высоте"
+        "specs": "Проект и расчёт\r\nМонтаж на высоте"
       },
       {
         "id": "razdvizhnye",
@@ -1494,7 +1493,7 @@
         "tag": "",
         "text": "Порталы, подъёмно-сдвижные и параллельно-раздвижные.",
         "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793029378/Sliding_Doors_and_Windows.jpg",
-        "specs": "Выход на террасу\nТёплые и холодные"
+        "specs": "Выход на террасу\r\nТёплые и холодные"
       },
       {
         "id": "garmoshka",
@@ -1502,7 +1501,7 @@
         "tag": "",
         "text": "Складные створки, полностью открывающие проём.",
         "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793208622/%D0%A1%D0%BA%D0%BB%D0%B0%D0%B4%D0%BD%D1%8B%D0%B5_%D0%B4%D0%B2%D0%B5%D1%80%D0%B8_%D0%B3%D0%B0%D1%80%D0%BC%D0%BE%D1%88%D0%BA%D0%B0_Alutech.jpg",
-        "specs": "Открытый проём\nДля террас и кафе"
+        "specs": "Открытый проём\r\nДля террас и кафе"
       },
       {
         "id": "zimnie-sady",
@@ -1510,7 +1509,7 @@
         "tag": "",
         "text": "Остеклённые веранды и зимние сады круглый год.",
         "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793029033/%D0%97%D0%B8%D0%BC%D0%BD%D0%B8%D0%B5_%D1%81%D0%B0%D0%B4%D1%8B.jpg",
-        "specs": "Тёплые системы\nКровля и стены"
+        "specs": "Тёплые системы\r\nКровля и стены"
       },
       {
         "id": "zenitnye-fonari",
@@ -1518,7 +1517,7 @@
         "tag": "",
         "text": "Световые фонари и мансардное остекление.",
         "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793029033/Skylights_roof_windows.jpg",
-        "specs": "Много света\nОткрывающиеся секции"
+        "specs": "Много света\r\nОткрывающиеся секции"
       },
       {
         "id": "kozyrki-navesy",
@@ -1526,7 +1525,7 @@
         "tag": "",
         "text": "Козырьки над входом, навесы и перголы.",
         "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793029033/%D0%BD%D0%B0%D0%B2%D0%B5%D1%81%D1%8B.jpg",
-        "specs": "Триплекс\nАлюминиевый каркас"
+        "specs": "Триплекс\r\nАлюминиевый каркас"
       }
     ],
     "faq": [
@@ -1544,8 +1543,8 @@
       }
     ],
     "worksPick": [
+      "w4d6f76",
       "w54e509",
-      "w4acb74",
       "w5cf731",
       "w514724"
     ]
@@ -1561,7 +1560,7 @@
           "tag": "Базовый",
           "text": "Классическая система для квартир и дач: надёжно и доступно.",
           "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793183389/Gemini_Generated_Image_igjubmigjubmigju-removebg-preview.png",
-          "specs": "Монтажная глубина 58 мм\n3 камеры\nСтеклопакет до 32 мм"
+          "specs": "Монтажная глубина 58 мм\r\n3 камеры\r\nСтеклопакет до 32 мм"
         },
         {
           "id": "softline-70",
@@ -1569,7 +1568,7 @@
           "tag": "Универсальный",
           "text": "Оконные конструкции практически любой сложности.",
           "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793023777/softline_70.png",
-          "specs": "Монтажная глубина 70 мм\n5 камер\nСтеклопакет до 42 мм"
+          "specs": "Монтажная глубина 70 мм\r\n5 камер\r\nСтеклопакет до 42 мм"
         },
         {
           "id": "softline-82",
@@ -1577,7 +1576,7 @@
           "tag": "Энергосберегающий",
           "text": "Максимальная тепло- и шумоизоляция окна.",
           "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793023777/softline_82.png",
-          "specs": "Монтажная глубина 82 мм\n6 камер\nСтеклопакет до 51 мм"
+          "specs": "Монтажная глубина 82 мм\r\n6 камер\r\nСтеклопакет до 51 мм"
         }
       ]
     },
@@ -1588,7 +1587,7 @@
         "tag": "",
         "text": "Входные, балконные и межкомнатные двери из ПВХ.",
         "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793033980/%D0%B4%D0%B2%D0%B5%D1%80%D0%B8.jpg",
-        "specs": "Тёплые\nУсиленные петли"
+        "specs": "Тёплые\r\nУсиленные петли"
       },
       {
         "id": "razdvizhnye",
@@ -1596,7 +1595,7 @@
         "tag": "",
         "text": "Подъёмно-сдвижные порталы и раздвижные системы.",
         "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793387396/%D0%9F%D0%BB%D0%B0%D1%81%D1%82%D0%B8%D0%BA%D0%BE%D0%B2%D1%8B%D0%B5_%D1%80%D0%B0%D0%B7%D0%B4%D0%B2%D0%B8%D0%B6%D0%BD%D1%8B%D0%B5_%D0%BA%D0%BE%D0%BD%D1%81%D1%82%D1%80%D1%83%D0%BA%D1%86%D0%B8%D0%B8_VEKA11.png",
-        "specs": "Выход на террасу\nБольшие створки"
+        "specs": "Выход на террасу\r\nБольшие створки"
       },
       {
         "id": "balkony",
@@ -1604,7 +1603,7 @@
         "tag": "",
         "text": "Тёплое и холодное остекление, утепление и отделка.",
         "image": "https://res.cloudinary.com/s87zgrcl/image/upload/v1793033981/belie-paneli.jpg",
-        "specs": "Балкон как комната\nОтделка под ключ"
+        "specs": "Балкон как комната\r\nОтделка под ключ"
       }
     ],
     "faq": [
@@ -1623,8 +1622,8 @@
     ],
     "worksPick": [
       "w4d6f76",
-      "w9f6a2d",
       "wc90830",
+      "w9f6a2d",
       "wb57527"
     ]
   },

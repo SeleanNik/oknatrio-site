@@ -48,9 +48,18 @@ const goal = (name) => { try { window.ym && window.ym(window.__YM_ID__, 'reachGo
 const phoneOk = (v) => v.replace(/\D/g, '').length >= 10;
 
 document.querySelectorAll('[data-lead-form]').forEach((form) => {
-  const stamp = () => { form.querySelector('[data-ts]').value = String(Math.floor(Date.now() / 1000)); };
+  // Антиспам-токен: берём у сервера, когда человек начал заполнять форму (боты без JS его не получат)
+  const tsField = form.querySelector('[data-ts]');
+  let tokP = null, tokAt = 0;
+  const getToken = (fresh) => {
+    if (fresh) tokP = null;
+    return tokP ||= fetch(form.action + '?token=1', { headers: { Accept: 'application/json' }, cache: 'no-store' })
+      .then((r) => r.json()).then((d) => { if (!d.t) throw 0; tsField.value = d.t; tokAt = Date.now(); })
+      .catch(() => { tokP = null; });
+  };
+  const stamp = () => { tsField.value = ''; tokP = null; };
+  form.addEventListener('focusin', () => getToken());
   form.querySelector('[data-page]').value = location.pathname;
-  stamp();
 
   const setErr = (name, msg) => {
     const el = form.querySelector(`[data-error-for="${name}"]`);
@@ -109,8 +118,15 @@ document.querySelectorAll('[data-lead-form]').forEach((form) => {
     const btn = form.querySelector('button[type=submit]');
     btn.disabled = true; show('', '');
     try {
-      const res = await fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
-      const data = await res.json().catch(() => ({}));
+      await getToken();
+      if (!tsField.value) await getToken(true);
+      if (!tsField.value) throw new Error('token'); // сервер недоступен — покажем ошибку, а не «успех»
+      const wait = 3500 - (Date.now() - tokAt); // сервер отсекает отправку быстрее 3 с (автозаполнение)
+      if (wait > 0) await new Promise((r) => setTimeout(r, wait));
+      const send = () => fetch(form.action, { method: 'POST', body: new FormData(form), headers: { Accept: 'application/json' } });
+      let res = await send();
+      let data = await res.json().catch(() => ({}));
+      if (data.error === 'expired') { await getToken(true); await new Promise((r) => setTimeout(r, 3500)); res = await send(); data = await res.json().catch(() => ({})); }
       if (!res.ok || !data.ok) throw new Error(data.error || 'fail');
       show('ok', 'Спасибо! Заявка отправлена, мы свяжемся с вами в ближайшее время.');
       goal(`lead_${form.elements.form_type.value}`);

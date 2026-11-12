@@ -13,6 +13,7 @@ const SECTIONS = [
     'tech' => ['Тех. информация', 'page.tech', 'doc', 'pages'],
     'contacts' => ['Контакты', 'page.contacts', 'phone', 'pages'],
     'docs' => ['Документы и правила', 'page.docs', 'shield', 'pages'],
+    'leads' => ['Заявки', 'owner', 'form', 'admin'],
     'users' => ['Сотрудники', 'owner', 'users', 'admin'],
     'audit' => ['Журнал', 'owner', 'clock', 'admin'],
     'profile' => ['Мой профиль', null, 'user', 'me'],
@@ -134,6 +135,7 @@ function shell(string $title, string $body, string $active = '', ?array $user = 
   </header>
   <main class="main">
     <?php if ($flash): ?><div class="flash flash--<?= h($flash[0]) ?>" role="status"><?= h($flash[1]) ?></div><?php endif; ?>
+    <?php if (empty($user['totp_on']) && $active !== 'profile'): ?><div class="flash flash--err" role="note">Вход защищён только паролем. <a href="./?s=profile#twofa">Включите вход по коду из приложения</a> — это 2 минуты.</div><?php endif; ?>
     <?= $body ?>
   </main>
 </div>

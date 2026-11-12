@@ -113,12 +113,46 @@ if (!$user) {
                 usleep(400000);
                 audit('login_fail', post_str('email', 190));
                 $err = 'Неверный e-mail или пароль.';
+            } elseif (!empty($lu['totp_on']) && !empty($lu['totp_secret'])) {
+                // пароль верный, но включён вход по коду: второй шаг
+                $_SESSION['pending2fa'] = ['uid' => (int)$lu['id'], 't' => time()];
+                header('Location: ./');
+                exit;
             } else {
                 login_clear(post_str('email', 190));
                 finish_login($lu);
                 go();
             }
         }
+    }
+
+    // --- второй шаг: код из приложения (5 минут после верного пароля) ---
+    $pend = $_SESSION['pending2fa'] ?? null;
+    if ($pend && time() - (int)$pend['t'] > 300) { unset($_SESSION['pending2fa']); $pend = null; $err = 'Время на ввод кода вышло. Войдите заново.'; }
+    if ($pend) {
+        $pu = user_by_id((int)$pend['uid']);
+        $err2 = '';
+        if ($action === 'login2' && $pu) {
+            csrf_check();
+            if (login_throttled((string)$pu['email'])) {
+                $err2 = 'Слишком много попыток. Подождите 15 минут.';
+            } elseif (totp_check((string)$pu['totp_secret'], post_str('code', 12))) {
+                unset($_SESSION['pending2fa']);
+                login_clear((string)$pu['email']);
+                finish_login($pu);
+                go();
+            } else {
+                login_fail((string)$pu['email']);
+                audit('2fa_fail', (string)$pu['email']);
+                usleep(400000);
+                $err2 = 'Неверный код. Возьмите свежий код из приложения.';
+            }
+        }
+        if ($pu) auth_box('Код из приложения', '<form method="post" class="form">' . csrf_field() . '
+            <label>6 цифр из приложения (Яндекс Ключ, Google Authenticator)<input name="code" inputmode="numeric" pattern="[0-9 ]{6,7}" maxlength="7" autocomplete="one-time-code" required autofocus></label>
+            <button class="btn" name="action" value="login2">Войти</button>
+            <p class="hint">Потеряли телефон? Обратитесь к разработчику: он отключит вход по коду.</p></form>', $err2);
+        unset($_SESSION['pending2fa']);
     }
     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         audit_guest('login_visit', (string)($_SERVER['REQUEST_URI'] ?? '') . ' · ' . mb_substr((string)($_SERVER['HTTP_USER_AGENT'] ?? ''), 0, 120));
@@ -147,6 +181,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $schemas = page_schemas();
 
     switch ($action) {
+        // --- вход по коду (2FA) ---
+        case 'totp_start':
+            $_SESSION['totp_new'] = totp_secret();
+            go('profile', '#twofa');
+        case 'totp_confirm':
+            $sec = (string)($_SESSION['totp_new'] ?? '');
+            if ($sec === '' || !totp_check($sec, post_str('code', 12))) { flash('err', 'Код не подошёл. Проверьте, что время на телефоне точное, и введите свежий код.'); go('profile', '#twofa'); }
+            ensure_totp_columns();
+            dbq('UPDATE users SET totp_secret = ?, totp_on = 1 WHERE id = ?', [$sec, $user['id']]);
+            unset($_SESSION['totp_new']);
+            audit('2fa_on', '', $user);
+            flash('ok', 'Вход по коду включён. Теперь после пароля админка спросит код из приложения.');
+            go('profile');
+        case 'totp_off':
+            if (empty($user['totp_on']) || !totp_check((string)$user['totp_secret'], post_str('code', 12))) { flash('err', 'Чтобы отключить вход по коду, введите верный код из приложения.'); go('profile', '#twofa'); }
+            dbq('UPDATE users SET totp_secret = NULL, totp_on = 0 WHERE id = ?', [$user['id']]);
+            audit('2fa_off', '', $user);
+            flash('ok', 'Вход по коду отключён.');
+            go('profile');
+
         case 'logout':
             audit('logout', '', $user);
             $_SESSION = [];
@@ -311,6 +365,7 @@ if (isset($schemas[$s])) {
 } else {
     switch ($s) {
         case 'contacts': $body = page_contacts(); break;
+        case 'leads': $body = page_leads(); break;
         case 'users': $body = page_users($user); break;
         case 'audit': $body = page_audit(); break;
         case 'profile': $body = page_profile($user); break;

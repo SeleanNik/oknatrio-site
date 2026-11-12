@@ -8,3 +8,13 @@ DirectoryIndex index.php
 <FilesMatch "\.(sqlite|sqlite3|db|jsonl|log|bak|sql)$">
   Require all denied
 </FilesMatch>
+# Страница «Наши работы» отправляет сотни полей (фото всех работ): поднимаем лимит PHP, иначе часть полей теряется при сохранении
+<IfModule mod_php.c>
+  php_value max_input_vars 5000
+</IfModule>
+<IfModule mod_php7.c>
+  php_value max_input_vars 5000
+</IfModule>
+<IfModule mod_php8.c>
+  php_value max_input_vars 5000
+</IfModule>

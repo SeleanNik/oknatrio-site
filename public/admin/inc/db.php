@@ -222,7 +222,32 @@ function publish_pages(): bool
         $d = json_decode($r['value'], true);
         if ($d !== null) $all[substr($r['k'], 5)] = $d;
     }
-    return jwrite(PUB_DATA . '/pages.json', $all);
+    $ok = jwrite(PUB_DATA . '/pages.json', $all);
+    if ($ok && isset($all['home']['heroStats'])) patch_home_stats((array)$all['home']['heroStats']);
+    return $ok;
+}
+
+// Цифры в карточке главного экрана дублируем прямо в index.html: они верны для всех (поисковики, быстрый показ, кэш браузера), а не только после подгрузки данных скриптом
+function patch_home_stats(array $stats): void
+{
+    $file = SITE_ROOT . '/index.html';
+    if (!is_file($file) || !is_writable($file)) return;
+    $html = (string)file_get_contents($file);
+    if ($html === '' || strpos($html, 'data-hero-stats') === false) return;
+    $new = preg_replace_callback(
+        '~(<li[^>]*\sdata-stat="(\d)"[^>]*>\s*<b[^>]*>)(.*?)(</b>\s*<span[^>]*>)(.*?)(</span>)~su',
+        function (array $m) use ($stats): string {
+            $v = trim((string)($stats[(int)$m[2]] ?? ''));
+            if ($v === '') return $m[0];
+            $parts = preg_split('/\s+/u', $v, 2);
+            return $m[1] . htmlspecialchars($parts[0], ENT_NOQUOTES, 'UTF-8') . $m[4] . htmlspecialchars($parts[1] ?? '', ENT_NOQUOTES, 'UTF-8') . $m[6];
+        },
+        $html
+    );
+    if (is_string($new) && $new !== $html && strpos($new, '</html>') !== false) {
+        $tmp = $file . '.tmp';
+        if (@file_put_contents($tmp, $new, LOCK_EX) !== false) @rename($tmp, $file);
+    }
 }
 
 function content_set(string $k, $data, ?array $user): bool
@@ -253,6 +278,15 @@ function content_restore(string $k, int $versionId, ?array $user): bool
 }
 
 // ---------- сотрудники ----------
+// Старые базы могли быть созданы без колонок 2FA: добавляем их один раз
+function ensure_totp_columns(): void
+{
+    $u = dbrow('SELECT * FROM users LIMIT 1');
+    if ($u === null || array_key_exists('totp_on', $u)) return;
+    dbq('ALTER TABLE users ADD COLUMN totp_secret VARCHAR(64) NULL');
+    dbq('ALTER TABLE users ADD COLUMN totp_on TINYINT NOT NULL DEFAULT 0');
+}
+
 function user_by_id(int $id): ?array
 {
     return dbrow('SELECT * FROM users WHERE id = ?', [$id]);

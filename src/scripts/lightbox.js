@@ -25,8 +25,7 @@ function build() {
       <button type="button" class="lb__btn lb__prev" aria-label="Предыдущее фото">${ICON.prev}</button>
       <button type="button" class="lb__btn lb__next" aria-label="Следующее фото">${ICON.next}</button>
       <img class="lb__img" alt="">
-    </div>
-    <div class="lb__thumbs"></div>`;
+    </div>`;
   document.body.append(dlg);
 
   dlg.querySelector('.lb__close').addEventListener('click', () => dlg.close());
@@ -88,7 +87,9 @@ function build() {
   stage.addEventListener('pointerup', up);
   stage.addEventListener('pointercancel', up);
   document.body.classList.remove('lb-open');
-  dlg.addEventListener('close', () => { document.body.style.overflow = ''; });
+  dlg.addEventListener('close', () => { document.body.style.overflow = ''; if (document.fullscreenElement) document.exitFullscreen?.().catch?.(() => {}); });
+  // вышли из полноэкранного режима клавишей Esc: закрываем и просмотр
+  document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement && dlg.open) dlg.close(); });
 }
 
 function applyZoom() {
@@ -126,12 +127,14 @@ function go(n) {
   resetZoom();
   const img = dlg.querySelector('.lb__img');
   img.style.animation = 'none'; void img.offsetWidth; img.style.animation = '';
-  img.src = state.urls[state.i];
+  const want = state.urls[state.i];
+  // сервер иногда обрывает загрузку, если просить много файлов сразу: одна повторная попытка
+  img.onerror = () => { if (img.dataset.retry !== want) { img.dataset.retry = want; setTimeout(() => { if (state.urls[state.i] === want) img.src = want + '?r=1'; }, 700); } };
+  img.src = want;
   img.alt = state.title || '';
   dlg.querySelector('.lb__count').textContent = `${state.i + 1} / ${len}`;
-  dlg.querySelectorAll('.lb__thumbs button').forEach((b, i) => b.classList.toggle('is-on', i === state.i));
   // подгружаем соседние фото заранее
-  [state.i + 1, state.i - 1].forEach((k) => { const u = state.urls[(k + len) % len]; if (u) new Image().src = u; });
+  [state.i + 1, state.i - 1].forEach((k) => { const u = state.urls[(k + len) % len]; if (u) setTimeout(() => { new Image().src = u; }, 300); });
 }
 
 export function openLightbox(urls, start = 0, title = '') {
@@ -141,19 +144,11 @@ export function openLightbox(urls, start = 0, title = '') {
   state = { urls: list, i: start, title };
   dlg.classList.toggle('lb--single', list.length < 2);
   dlg.querySelector('.lb__title').textContent = title || '';
-  const thumbs = dlg.querySelector('.lb__thumbs');
-  thumbs.replaceChildren(...list.map((u, i) => {
-    const b = document.createElement('button');
-    b.type = 'button'; b.setAttribute('aria-label', `Фото ${i + 1}`);
-    const im = document.createElement('img');
-    im.src = u; im.alt = ''; im.loading = 'lazy';
-    b.append(im);
-    b.addEventListener('click', () => go(i));
-    return b;
-  }));
   document.body.style.overflow = 'hidden';
   dlg.showModal();
   go(start);
+  // настоящий полноэкранный режим браузера: вкладки и адресная строка скрываются (Esc или крестик возвращают обратно)
+  try { const fs = dlg.requestFullscreen?.() || document.documentElement.requestFullscreen?.(); fs?.catch?.(() => {}); } catch { /* браузер не разрешил, остаётся обычный просмотр */ }
 }
 
 document.addEventListener('click', (e) => {
