@@ -99,7 +99,8 @@ const ld = {
     transition: transform .6s var(--ease), background-color .45s var(--ease), color .45s var(--ease);
   }
   details.is-open summary::after { transform: rotate(135deg); background-color: var(--c-blue-500); color: #fff; }
-  .faq__a p { margin: 0; padding-bottom: var(--sp-5); color: var(--c-text-muted); }
+  /* pre-line: переносы строк и списки «•» из админки показываются как в поле ответа */
+  .faq__a p { margin: 0; padding-bottom: var(--sp-5); color: var(--c-text-muted); white-space: pre-line; }
 
   /* появление списка */
   .faq__list.js details { opacity: 0; transform: translateY(22px) scale(.985); filter: blur(5px); }

@@ -260,11 +260,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 'email' => $email,
                 'address' => ['full' => $full, 'city' => post_str('city', 80), 'street' => post_str('street', 120), 'postalCode' => post_str('postal', 10)],
                 'hours' => post_str('hours', 100),
+                'kpage' => [
+                    'lead' => clean_str($_POST['kp_lead'] ?? '', 400, true),
+                    'formTitle' => post_str('kp_form_title', 150) ?: 'Оставьте заявку',
+                    'formText' => clean_str($_POST['kp_form_text'] ?? '', 400, true),
+                ],
             ]);
             unset($data['whatsapp'], $data['telegram']);
             $ok = content_set('site', $data, $user);
             $chg = [];
-            foreach ([['phone.display', 'Телефон'], ['email', 'E-mail'], ['hours', 'График работы'], ['address.full', 'Адрес'], ['address.city', 'Город'], ['address.street', 'Улица'], ['address.postalCode', 'Индекс']] as [$p, $lb]) {
+            foreach ([['phone.display', 'Телефон'], ['email', 'E-mail'], ['hours', 'График работы'], ['address.full', 'Адрес'], ['address.city', 'Город'], ['address.street', 'Улица'], ['address.postalCode', 'Индекс'], ['kpage.lead', 'Подзаголовок «Контакты»'], ['kpage.formTitle', 'Заголовок формы'], ['kpage.formText', 'Текст над формой']] as [$p, $lb]) {
                 $a = path_get($old, $p); $b = path_get($data, $p);
                 if ((string)$a !== (string)$b) $chg[] = [$lb, chg_short($a), chg_short($b)];
             }

@@ -135,7 +135,8 @@ function shell(string $title, string $body, string $active = '', ?array $user = 
   </header>
   <main class="main">
     <?php if ($flash): ?><div class="flash flash--<?= h($flash[0]) ?>" role="status"><?= h($flash[1]) ?></div><?php endif; ?>
-    <?php if (empty($user['totp_on']) && $active !== 'profile'): ?><div class="flash flash--err" role="note">Вход защищён только паролем. <a href="./?s=profile#twofa">Включите вход по коду из приложения</a> — это 2 минуты.</div><?php endif; ?>
+    <?php /* напоминание о 2FA временно отключено по просьбе владельца: вернуть — заменить false на true */ ?>
+    <?php if (false && empty($user['totp_on']) && $active !== 'profile'): ?><div class="flash flash--err" role="note">Вход защищён только паролем. <a href="./?s=profile#twofa">Включите вход по коду из приложения</a> — это 2 минуты.</div><?php endif; ?>
     <?= $body ?>
   </main>
 </div>

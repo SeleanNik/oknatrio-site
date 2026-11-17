@@ -5,6 +5,7 @@
 declare(strict_types=1);
 
 const TAG_OPTIONS = ['cottage' => 'Коттедж', 'aluminum' => 'Алюминий', 'pvc' => 'ПВХ'];
+// Поле 'def' — стартовое значение для полей, которых ещё нет в базе (добавлены после запуска сайта)
 
 const PAGE_URLS = [
     'home' => '/',
@@ -202,6 +203,7 @@ function page_schemas(): array
         'works' => ['label' => 'Наши работы', 'groups' => [
             ['title' => 'Страница', 'fields' => [
                 ['k' => 'lead', 'type' => 'text', 'max' => 600, 'label' => 'Подзаголовок'],
+                ['k' => 'cta.title', 'type' => 'text', 'max' => 180, 'label' => 'Призыв внизу страницы (рядом с кнопкой «Оставить заявку»)', 'def' => 'Хотите такой же результат?'],
             ]],
             ['title' => 'Объекты', 'hint' => 'Нажмите на работу, чтобы изменить её. Здесь общий список работ. Какие из них показывать на главной и на страницах Schuco, Alutech и VEKA, выбирается в самих этих разделах. Порядок меняется перетаскиванием.', 'fields' => [
                 ['k' => 'items', 'type' => 'list', 'max' => 200, 'row' => 'title', 'sub' => 'place', 'thumb' => 'images', 'label' => 'Список работ', 'add' => 'Создать работу', 'item' => [
@@ -217,6 +219,8 @@ function page_schemas(): array
         'tech' => ['label' => 'Техническая информация', 'groups' => [
             ['title' => 'Страница', 'fields' => [
                 ['k' => 'lead', 'type' => 'text', 'max' => 600, 'label' => 'Подзаголовок'],
+                ['k' => 'cta.title', 'type' => 'text', 'max' => 180, 'label' => 'Блок внизу страницы: заголовок', 'def' => 'Нужна консультация по системам?'],
+                ['k' => 'cta.text', 'type' => 'text', 'max' => 300, 'label' => 'Блок внизу страницы: текст', 'def' => 'Подскажем систему и комплектацию под ваш объект.'],
             ]],
             ['title' => 'Alutech', 'fields' => [
                 ['k' => 'alutech.text', 'type' => 'textarea', 'max' => 1000, 'rows' => 2, 'label' => 'Описание'],
@@ -401,7 +405,7 @@ function group_preview(array $g, array $data): string
 {
     foreach ($g['fields'] as $f) {
         if ($f['type'] !== 'list') continue;
-        $items = path_get($data, $f['k']);
+        $items = path_get($data, $f['k']) ?? ($f['def'] ?? null);
         $items = is_array($items) ? array_values($items) : [];
         $tk = $f['thumb'] ?? '';
         $rk = $f['row'] ?? 'title';
@@ -425,7 +429,7 @@ function group_preview(array $g, array $data): string
     $txt = [];
     foreach ($g['fields'] as $f) {
         if (!in_array($f['type'], ['text', 'textarea', 'lines'], true)) continue;
-        $v = path_get($data, $f['k']);
+        $v = path_get($data, $f['k']) ?? ($f['def'] ?? null);
         if (is_array($v)) $v = implode(' · ', array_filter(array_map('strval', $v), 'strlen'));
         $v = trim((string)$v);
         if ($v !== '') $txt[] = $v;
@@ -442,7 +446,7 @@ function render_page_form(array $schema, array $data): string
         if (!empty($g['hint'])) $o .= '<p class="hint">' . h($g['hint']) . '</p>';
         $o .= '<div class="panel__body">';
         foreach ($g['fields'] as $f) {
-            $val = path_get($data, $f['k']);
+            $val = path_get($data, $f['k']) ?? ($f['def'] ?? null);
             $o .= $f['type'] === 'list' ? render_list($f, $val, $f['k']) : render_field($f, $val ?? '', fname($f['k']));
         }
         $o .= '</div></details>';
@@ -583,7 +587,7 @@ function clean_page(array $schema, array $in, array $old, array $files, array &$
         foreach ($g['fields'] as $f) {
             $raw = path_get($in, $f['k']);
             $value = $f['type'] === 'list'
-                ? clean_list($f, $raw, path_get($old, $f['k']), $files, $f['k'], $errors)
+                ? clean_list($f, $raw, path_get($old, $f['k']) ?? ($f['def'] ?? null), $files, $f['k'], $errors)
                 : clean_field($f, $raw, $f['k'], $files, $errors);
             path_set($new, $f['k'], $value);
         }

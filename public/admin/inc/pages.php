@@ -237,6 +237,12 @@ function page_contacts(): string
               <label>Улица, дом<input name="street" value="<?= h($a['street'] ?? '') ?>"></label>
             </div></details>
         </div></section>
+        <?php $kp = (array)($d['kpage'] ?? []) + ['lead' => 'Звоните или пишите в мессенджеры.', 'formTitle' => 'Оставьте заявку', 'formText' => 'Перезвоним и ответим на все ваши вопросы.']; ?>
+        <section class="panel"><h2>Тексты на странице «Контакты»</h2><div class="panel__body">
+          <label>Подзаголовок под словом «Контакты» (пусто = не показывать)<textarea name="kp_lead" rows="2" maxlength="400"><?= h((string)$kp['lead']) ?></textarea></label>
+          <label>Заголовок формы<input name="kp_form_title" value="<?= h((string)$kp['formTitle']) ?>" maxlength="150"></label>
+          <label>Текст над формой (пусто = не показывать)<textarea name="kp_form_text" rows="2" maxlength="400"><?= h((string)$kp['formText']) ?></textarea></label>
+        </div></section>
       </div>
       <aside class="editor__side">
         <div class="sidebox">

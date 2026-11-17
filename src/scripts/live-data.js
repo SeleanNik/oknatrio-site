@@ -41,7 +41,8 @@ if (document.querySelector('[data-bind], [data-bind-href]')) {
     if (!d) return;
     document.querySelectorAll('[data-bind]').forEach((el) => {
       const v = get(d, el.dataset.bind);
-      if (typeof v === 'string' && v) el.textContent = v;
+      if (typeof v === 'string' && v) { el.textContent = v; el.hidden = false; }
+      else if (v === '' && el.hasAttribute('data-bind-opt')) el.hidden = true; // необязательный текст очищен в админке
     });
     document.querySelectorAll('[data-bind-href]').forEach((el) => {
       const v = get(d, el.dataset.bindHref);
@@ -101,7 +102,7 @@ if (document.querySelector(EDITABLE)) {
     // простые тексты
     document.querySelectorAll('[data-ed]').forEach((el) => {
       const v = get(d, el.dataset.ed);
-      if (typeof v === 'string') el.textContent = v;
+      if (typeof v === 'string') { el.textContent = v; el.hidden = v === '' && el.tagName === 'P'; }
     });
 
     // главная: карточка со статистикой (число + подпись)

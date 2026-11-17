@@ -20,7 +20,7 @@ const mapSrc = `https://yandex.ru/map-widget/v1/?ll=${lng}%2C${lat}&z=16&pt=${ln
       <div class="container">
         <header class="khead">
           <h1>Контакты</h1>
-          <p>Звоните или пишите в мессенджеры.</p>
+          <p data-bind="kpage.lead" data-bind-opt hidden={!site.kpage.lead}>{site.kpage.lead}</p>
         </header>
 
         <div class="kgrid">
@@ -52,8 +52,8 @@ const mapSrc = `https://yandex.ru/map-widget/v1/?ll=${lng}%2C${lat}&z=16&pt=${ln
           </div>
 
           <div class="kform">
-            <h2>Оставьте заявку</h2>
-            <p>Перезвоним и ответим на все ваши вопросы.</p>
+            <h2 data-bind="kpage.formTitle">{site.kpage.formTitle}</h2>
+            <p data-bind="kpage.formText" data-bind-opt hidden={!site.kpage.formText}>{site.kpage.formText}</p>
             <LeadForm type="measure" idPrefix="contacts" submitLabel="Оставить заявку" />
           </div>
         </div>

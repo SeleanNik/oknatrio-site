@@ -93,7 +93,7 @@ import { pagesData } from '../config/pages.mjs';
 
   <section class="cta">
     <div class="container cta__in">
-      <div><h2>Нужна консультация по системам?</h2><p>Подскажем систему и комплектацию под ваш объект.</p></div>
+      <div><h2 data-ed="tech.cta.title">{pagesData.tech?.cta?.title || 'Нужна консультация по системам?'}</h2><p data-ed="tech.cta.text">{pagesData.tech?.cta?.text ?? 'Подскажем систему и комплектацию под ваш объект.'}</p></div>
       <Button href="/#zayavka" size="lg">Оставить заявку</Button>
     </div>
   </section>

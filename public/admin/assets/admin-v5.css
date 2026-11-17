@@ -297,6 +297,9 @@ details.fold > summary:hover .fold__btn b { background: var(--lime); color: #fff
 .sel__list { position: absolute; z-index: 60; left: 0; min-width: 100%; width: max-content; max-width: min(380px, 86vw); max-height: 280px; overflow-y: auto; margin: 0; padding: .4rem; list-style: none; background: #fff; border-radius: 20px; box-shadow: 0 0 0 1px var(--line), 0 20px 48px rgb(11 21 34 / .2); opacity: 0; visibility: hidden; transform: translateY(-6px) scale(.98); transform-origin: top left; transition: opacity .2s var(--ease), transform .25s var(--ease), visibility 0s linear .25s; top: calc(100% + 8px); }
 .sel__list.is-up { top: auto; bottom: calc(100% + 8px); transform-origin: bottom left; transform: translateY(6px) scale(.98); }
 .sel.is-open .sel__list { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+/* закрытый список не занимает места: иначе он (до 280px) «вылезал» под низ страницы и давал прокрутку в серую пустоту. Высота обнуляется после того, как список погас */
+.sel:not(.is-open) .sel__list { max-height: 0; padding-block: 0; }
+.sel__list { transition: opacity .2s var(--ease), transform .25s var(--ease), visibility 0s linear .25s, max-height 0s linear .25s, padding 0s linear .25s; }
 .sel__opt { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .6rem .8rem; border-radius: 14px; font-size: .86rem; font-weight: 500; cursor: pointer; color: var(--text); transition: background .15s; }
 .sel__opt:hover, .sel__opt.is-hl { background: var(--soft); }
 .sel__opt[aria-selected='true'] { font-weight: 700; color: var(--lime-d); background: var(--lime-soft); }

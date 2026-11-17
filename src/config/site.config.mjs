@@ -22,6 +22,8 @@ export const site = {
   address: { region: 'Москва', country: 'RU', ...contacts.address },
   geo: { lat: 55.6485, lng: 37.3936 }, // TODO: проверить координаты
   hours: contacts.hours,
+  // тексты страницы «Контакты» (админка → Контакты → «Тексты на странице»)
+  kpage: { lead: 'Звоните или пишите в мессенджеры.', formTitle: 'Оставьте заявку', formText: 'Перезвоним и ответим на все ваши вопросы.', ...(contacts.kpage || {}) },
   // Технические каталоги (PDF в public/ или внешняя ссылка). Пусто = кнопка открывает форму «запросить каталог».
   catalogs: {
     alu: '', // TODO: например '/catalog-aluminium.pdf'
