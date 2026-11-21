@@ -497,3 +497,23 @@
     sync();
   });
 })();
+
+// Поля-textarea подстраивают высоту под текст (без внутренней прокрутки, пока текст не выше 65% экрана).
+(function () {
+  const fit = (ta) => {
+    if (!ta.isConnected || !ta.offsetParent) return; // скрытые (свёрнутые секции, закрытые окна) подгоним при показе
+    ta.style.height = 'auto';
+    const extra = ta.offsetHeight - ta.clientHeight;
+    ta.style.height = (ta.scrollHeight + extra) + 'px';
+    ta.style.overflowY = ta.scrollHeight > window.innerHeight * 0.65 ? 'auto' : 'hidden';
+  };
+  const fitIn = (root) => root.querySelectorAll('textarea').forEach(fit);
+  document.addEventListener('input', (e) => { if (e.target.matches && e.target.matches('textarea')) fit(e.target); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Enter' && e.target.matches && e.target.matches('textarea[data-single]')) e.preventDefault(); });
+  document.addEventListener('toggle', (e) => { if (e.target.matches && e.target.matches('details')) fitIn(e.target); }, true);
+  const show = HTMLDialogElement.prototype.showModal;
+  HTMLDialogElement.prototype.showModal = function () { show.call(this); fitIn(this); };
+  window.addEventListener('resize', () => fitIn(document));
+  window.addEventListener('load', () => fitIn(document));
+  fitIn(document);
+})();

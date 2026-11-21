@@ -590,3 +590,7 @@ html.same-page::view-transition-old(root), html.same-page::view-transition-new(r
 
 /* документы: каждый в своей секции */
 .docnote { margin: 0 0 .8rem; font-size: .82rem; color: var(--muted); }
+
+/* textarea растёт по тексту (admin.js), ручной ресайз не нужен */
+textarea { resize: none; overflow-y: hidden; max-height: 65vh; }
+textarea[data-single] { min-height: 44px; line-height: 1.35; }

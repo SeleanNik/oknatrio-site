@@ -71,7 +71,7 @@ function page_schemas(): array
                     ]],
                     ['title' => 'Вопросы и ответы', 'fields' => [
                         ['k' => 'faq', 'type' => 'list', 'max' => 40, 'row' => 'q', 'sub' => 'a', 'label' => 'Вопросы', 'add' => 'Добавить вопрос', 'item' => [
-                            ['k' => 'q', 'type' => 'text', 'label' => 'Вопрос', 'max' => 450, 'req' => true],
+                            ['k' => 'q', 'type' => 'text', 'grow' => true, 'label' => 'Вопрос', 'max' => 450, 'req' => true],
                             ['k' => 'a', 'type' => 'textarea', 'label' => 'Ответ', 'max' => 1800, 'rows' => 4],
                         ]],
                     ]],
@@ -95,7 +95,7 @@ function page_schemas(): array
                 ]]],
                 [['title' => 'Вопросы и ответы', 'fields' => [
                     ['k' => 'faq', 'type' => 'list', 'max' => 40, 'row' => 'q', 'sub' => 'a', 'label' => 'Вопросы', 'add' => 'Добавить вопрос', 'item' => [
-                        ['k' => 'q', 'type' => 'text', 'label' => 'Вопрос', 'max' => 450, 'req' => true],
+                        ['k' => 'q', 'type' => 'text', 'grow' => true, 'label' => 'Вопрос', 'max' => 450, 'req' => true],
                         ['k' => 'a', 'type' => 'textarea', 'label' => 'Ответ', 'max' => 1800, 'rows' => 4],
                     ]],
                 ]]]
@@ -147,7 +147,7 @@ function page_schemas(): array
             ]],
             ['title' => 'Вопросы и ответы', 'hint' => 'Блок «Частые вопросы» перед формой заявки.', 'fields' => [
                 ['k' => 'faq', 'type' => 'list', 'max' => 40, 'row' => 'q', 'sub' => 'a', 'label' => 'Вопросы', 'add' => 'Добавить вопрос', 'item' => [
-                    ['k' => 'q', 'type' => 'text', 'label' => 'Вопрос', 'max' => 450, 'req' => true],
+                    ['k' => 'q', 'type' => 'text', 'grow' => true, 'label' => 'Вопрос', 'max' => 450, 'req' => true],
                     ['k' => 'a', 'type' => 'textarea', 'label' => 'Ответ', 'max' => 1800, 'rows' => 4],
                 ]],
             ]],
@@ -296,6 +296,10 @@ function render_field(array $f, $value, string $name, ?string $itemName = null):
         case 'id':
             return '<input type="hidden"' . $df . ' name="' . $nm . '" value="' . h($v) . '">';
         case 'text':
+            if (!empty($f['grow'])) { // однострочное поле, которое переносит длинный текст и растёт по высоте
+                return '<label>' . $label . '<textarea' . $df . ' name="' . $nm . '" rows="1" data-single' . $max . '>' . h($v) . '</textarea></label>';
+            }
+            // no break
         case 'link':
             $ph = $type === 'link' ? ' placeholder="/okna/pvh/ или https://…"' : '';
             return '<label>' . $label . '<input' . $df . ' name="' . $nm . '" value="' . h($v) . '"' . $max . $ph . '></label>';
