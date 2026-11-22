@@ -52,7 +52,7 @@ $configFile = __DIR__ . '/form-config.php';
 if (is_file($configFile)) $cfg = (array)(require $configFile);
 $real = static fn($v): bool => is_string($v) && filter_var($v, FILTER_VALIDATE_EMAIL) && stripos($v, 'example.') === false;
 $host = preg_replace('/:\d+$/', '', preg_replace('/^www\./', '',(string)($_SERVER['HTTP_HOST'] ?? '')));
-if ($host === '' || $host === 'localhost' || str_ends_with($host, '.test') || filter_var($host, FILTER_VALIDATE_IP)) $host = 'oknatrio.ru';
+if ($host === '' || $host === 'localhost' || substr($host, -5) === '.test' || filter_var($host, FILTER_VALIDATE_IP)) $host = 'oknatrio.ru';
 $cfg = [
     'to'        => $real($cfg['to'] ?? null) ? $cfg['to'] : 'info@oknatrio.ru',
     // Отправитель — реальный ящик домена (info@): хостинги часто отбрасывают письма от несуществующего no-reply@
