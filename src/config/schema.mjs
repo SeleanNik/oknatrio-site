@@ -21,7 +21,7 @@ export const localBusiness = {
   geo: { '@type': 'GeoCoordinates', latitude: site.geo.lat, longitude: site.geo.lng },
   openingHours: 'Mo-Su 09:00-20:00', // TODO: синхронизировать с site.hours
   areaServed: [{ '@type': 'City', name: 'Москва' }, { '@type': 'AdministrativeArea', name: 'Московская область' }],
-  logo: `${siteUrl}/favicon.svg`,
+  logo: `${siteUrl}/logo-512.png`,
   alternateName: ['Трио', 'Окна Трио', 'Трио Инжиниринг Москва'],
   knowsAbout: ['алюминиевые окна', 'пластиковые окна ПВХ', 'Schuco', 'Alutech', 'VEKA', 'остекление балконов и лоджий', 'фасадное остекление', 'зимние сады'],
   hasMap: `https://yandex.ru/maps/?text=${encodeURIComponent(`${site.address.city}, ${site.address.street}`)}`,

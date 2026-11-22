@@ -1,18 +1,30 @@
 ---
-// Текстовый логотип «ТРИО ИНЖИНИРИНГ» (без картинки-знака).
+// Логотип: знак-пирамида (синий + красный, как на прежнем логотипе компании) и слово «ТРИО ИНЖИНИРИНГ».
+// light = версия для тёмного фона (футер). Знак — inline SVG, цвета через переменные.
 const { light = false, compact = false } = Astro.props;
 ---
 <a class:list={['logo', { 'logo--light': light, 'logo--compact': compact }]} href="/" aria-label="Трио Инжиниринг — на главную">
+  <svg class="logo__mark" viewBox="9 12 82 76" aria-hidden="true" focusable="false">
+    <path d="M49.7 17.2 59.9 35.8 34.8 82.8H14.2Z" class="lm-b" stroke-width="2.4" stroke-linejoin="round" />
+    <path d="M70.6 57 84.6 82.8H56.6Z" class="lm-r" stroke-width="2.4" stroke-linejoin="round" />
+    <path d="M52.6 22.6 85.4 82.8M38 82.8H53" class="lm-l" fill="none" stroke-width="2.2" stroke-linecap="round" />
+  </svg>
   <span class="logo__text">ТРИО<small>Инжиниринг</small></span>
 </a>
 
 <style>
-  .logo { display: inline-flex; align-items: center; text-decoration: none; color: var(--c-navy-900); }
-  .logo:hover { color: var(--c-navy-900); }
-  .logo--light, .logo--light:hover { color: #fff; }
-  .logo__text { font: 800 1.6rem/1 var(--font-head); letter-spacing: .04em; display: grid; gap: 4px; }
-  .logo__text small { font: 700 .5625rem/1 var(--font-head); letter-spacing: .34em; margin-right: -.34em; text-transform: uppercase; color: var(--c-amber-500); }
-  .logo--light .logo__text small { color: #8fb0ff; }
+  .logo { --lm-blue: #18498b; --lm-red: #ae1d15; --lm-text: var(--c-navy-900); display: inline-flex; align-items: center; gap: .6rem; text-decoration: none; color: var(--lm-text); }
+  .logo:hover { color: var(--lm-text); }
+  .logo--light, .logo--light:hover { --lm-blue: #4c86e8; --lm-red: #e5483f; --lm-text: #fff; }
+  .logo__mark { height: 2.3rem; width: auto; flex: none; }
+  .logo__mark .lm-b { fill: var(--lm-blue); stroke: var(--lm-blue); }
+  .logo__mark .lm-r { fill: var(--lm-red); stroke: var(--lm-red); }
+  .logo__mark .lm-l { stroke: var(--lm-blue); stroke-opacity: .3; }
+  .logo--light .logo__mark .lm-l { stroke: #fff; }
+  .logo__text { font: 800 1.6rem/1 var(--font-head); letter-spacing: .01em; display: grid; gap: 4px; }
+  .logo__text small { font: 700 .5625rem/1 var(--font-head); letter-spacing: .34em; margin-right: -.34em; text-transform: uppercase; color: var(--lm-blue); }
+  .logo--compact { gap: .5rem; }
+  .logo--compact .logo__mark { height: 2rem; }
   .logo--compact .logo__text { font-size: 1.4rem; gap: 3px; }
   .logo--compact .logo__text small { font-size: .5rem; }
 </style>
